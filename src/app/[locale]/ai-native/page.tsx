@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
+import { aiNativeContent } from "@/content/ai-native";
 import { resolveLocale } from "@/lib/locale";
+import { buildMetadata } from "@/lib/seo";
+import { AiNativeView } from "@/components/pages/ai-native/AiNativeView";
 
-export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await resolveLocale(params);
-  return <section className="container-page section"><h1 className="h1">ai-native ({locale})</h1></section>;
+  return buildMetadata({ locale, slug: "ai-native", ...aiNativeContent[locale].meta });
+}
+
+export default async function AiNativePage({ params }: Props) {
+  return <AiNativeView locale={await resolveLocale(params)} />;
 }

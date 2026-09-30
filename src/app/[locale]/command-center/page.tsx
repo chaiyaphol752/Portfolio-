@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import { resolveLocale } from "@/lib/locale";
+import { buildMetadata } from "@/lib/seo";
+import { commandCenterContent } from "@/content/command-center";
+import { CommandCenterPage } from "@/components/pages/command-center/CommandCenterPage";
 
-export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await resolveLocale(params);
-  return <section className="container-page section"><h1 className="h1">command-center ({locale})</h1></section>;
+  return buildMetadata({ locale, slug: "command-center", ...commandCenterContent[locale].meta });
+}
+
+export default async function Page({ params }: Props) {
+  const locale = await resolveLocale(params);
+  return <CommandCenterPage locale={locale} />;
 }

@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
+import { caseStudiesContent } from "@/content/case-studies";
 import { resolveLocale } from "@/lib/locale";
+import { buildMetadata } from "@/lib/seo";
+import { CaseStudiesView } from "@/components/pages/case-studies/CaseStudiesView";
 
-export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await resolveLocale(params);
-  return <section className="container-page section"><h1 className="h1">case-studies ({locale})</h1></section>;
+  return buildMetadata({ locale, slug: "case-studies", ...caseStudiesContent[locale].meta });
+}
+
+export default async function CaseStudiesPage({ params }: Props) {
+  return <CaseStudiesView locale={await resolveLocale(params)} />;
 }
