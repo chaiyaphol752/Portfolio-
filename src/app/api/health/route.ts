@@ -1,0 +1,21 @@
+import { NextResponse } from "next/server";
+import { hasDatabase, pingDatabase } from "@/lib/contact/store";
+
+export const dynamic = "force-dynamic";
+
+/** Safe, non-secret runtime health information. */
+export async function GET() {
+  const database = hasDatabase() ? ((await pingDatabase()) ? "connected" : "unreachable") : "not-configured";
+  const healthy = database !== "unreachable";
+  return NextResponse.json(
+    {
+      status: healthy ? "ok" : "degraded",
+      service: "ai-native-developer-portfolio",
+      time: new Date().toISOString(),
+      runtime: { node: process.version, region: process.env.VERCEL_REGION ?? "local", environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV },
+      deployment: { commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null },
+      checks: { database, contactWebhook: process.env.CONTACT_WEBHOOK_URL ? "configured" : "not-configured" },
+    },
+    { status: healthy ? 200 : 503, headers: { "Cache-Control": "no-store" } },
+  );
+}

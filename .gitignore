@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+build
+coverage
+.vercel
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+npm-debug.log*
