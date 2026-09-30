@@ -48,7 +48,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
             <p className="max-w-[52ch] text-night-mute lg:col-span-5">{c.terminal.body}</p>
           </div>
           <div className="grid gap-6 lg:grid-cols-12">
-            <div className="lg:col-span-8">
+            <div className="min-w-0 lg:col-span-8">
               <Terminal
                 ctx={buildTerminalContext(locale)}
                 copy={{
@@ -63,10 +63,10 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
                 }}
               />
             </div>
-            <div className="lg:col-span-4">
+            <div className="min-w-0 lg:col-span-4">
               <HealthWidget copy={c.health} rawHref="/api/health" />
             </div>
-            <div className="lg:col-span-12">
+            <div className="min-w-0 lg:col-span-12">
               <PaletteHint {...c.palette} />
             </div>
           </div>
@@ -76,7 +76,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
       <section className="section" aria-labelledby="architecture-title">
         <div className="container-page">
           <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
+            <div className="min-w-0 lg:col-span-8">
               <p className="eyebrow mb-4">{c.architecture.eyebrow}</p>
               <h2 id="architecture-title" className="h1">{c.architecture.title}</h2>
             </div>
@@ -102,7 +102,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
       <section className="pb-[clamp(4rem,9vw,8.5rem)]" aria-labelledby="overview-title">
         <div className="container-page">
           <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
+            <div className="min-w-0 lg:col-span-8">
               <p className="eyebrow mb-4">{c.overview.eyebrow}</p>
               <h2 id="overview-title" className="h1">{c.overview.title}</h2>
             </div>

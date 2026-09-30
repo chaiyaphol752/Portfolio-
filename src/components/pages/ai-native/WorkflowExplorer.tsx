@@ -159,7 +159,7 @@ export function WorkflowExplorer({ content }: { content: AiNativeContent }) {
         </div>
         <p className="mt-3 max-w-[64ch] text-sm text-night-mute">{explorer.matrix.caption}</p>
 
-        <div role="region" aria-label={explorer.matrix.scrollLabel} tabIndex={0} className="mt-8 overflow-x-auto">
+        <div role="region" aria-label={explorer.matrix.scrollLabel} tabIndex={0} className="relative mt-8 overflow-x-auto">
           <table className="w-full min-w-[40rem] border-collapse text-sm">
             <caption className="sr-only">{explorer.matrix.title}</caption>
             <thead>
