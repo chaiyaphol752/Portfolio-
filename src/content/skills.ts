@@ -185,7 +185,7 @@ const th: SkillsContent = {
     javascript: { name: "JavaScript", note: "ภาษาเบื้องหลังทุกการโต้ตอบ เขียนเองโดยไม่พึ่งเฟรมเวิร์กในจุดที่สำคัญ" },
     typescript: { name: "TypeScript", note: "ชนิดข้อมูลแบบเข้มงวด จับข้อผิดพลาดตั้งแต่ตอนบิลด์และบอกเจตนาของโค้ด" },
     react: { name: "React", note: "อินเทอร์เฟซแบบคอมโพเนนต์ ใช้ Server Components เป็นค่าเริ่มต้น และใช้โค้ดฝั่งไคลเอนต์เท่าที่จำเป็น" },
-    nextjs: { name: "Next.js", note: "App Router การเรนเดอร์ฝั่งเซิร์ฟเวอร์ และ Route Handlers ในเฟรมเวิร์กฟูลสแตกเดียวกัน" },
+    nextjs: { name: "Next.js", note: "App Router การเรนเดอร์ฝั่งเซิร์ฟเวอร์ และ Route Handlers ในเฟรมเวิร์ก full-stack เดียวกัน" },
     tailwind: { name: "Tailwind CSS", note: "Design tokens และ utilities ที่ช่วยให้หน้าจอขนาดใหญ่ยังคงสม่ำเสมอ" },
     "responsive-ui": { name: "Responsive UI", note: "เลย์เอาต์ที่ออกแบบสำหรับจอเล็กโดยตั้งใจ ไม่ใช่แค่ย่อลงมาจากเดสก์ท็อป" },
     accessibility: { name: "การเข้าถึงได้ (Accessibility)", note: "การใช้งานด้วยคีย์บอร์ด โฟกัส คอนทราสต์ และความหมายของโครงสร้าง ถือเป็นข้อกำหนด ไม่ใช่ส่วนเสริม" },

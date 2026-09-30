@@ -25,7 +25,7 @@ function SampleLayout({ t }: { t: LabContent["responsive"]["sample"] }) {
         </span>
       </div>
       <div className="grid gap-5 px-4 py-8 @md:px-8 @3xl:grid-cols-2 @3xl:items-end @3xl:py-14">
-        <h4 className="text-[1.65rem] font-medium leading-[1.05] tracking-tight @md:text-4xl @3xl:text-5xl">{t.title}</h4>
+        <p className="text-[1.65rem] font-medium leading-[1.05] tracking-tight @md:text-4xl @3xl:text-5xl">{t.title}</p>
         <div>
           <p className="max-w-[44ch] text-sm text-ink-2 @md:text-base">{t.body}</p>
           <span className="mt-5 inline-flex rounded-full bg-ink px-4 py-2 text-sm text-paper">{t.cta}</span>

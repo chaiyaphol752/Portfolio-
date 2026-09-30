@@ -9,10 +9,12 @@ interface Props {
   body: string;
   button: string;
   keys: string;
+  /** Localized name of the Control key (e.g. "Strg" in German). */
+  ctrl?: string;
 }
 
 /** Promotes the global Ctrl/Cmd + K palette; the palette itself lives in the site shell. */
-export function PaletteHint({ eyebrow, title, body, button, keys }: Props) {
+export function PaletteHint({ eyebrow, title, body, button, keys, ctrl = "Ctrl" }: Props) {
   return (
     <div className="flex flex-col gap-6 rounded-lg border border-night-line p-6 sm:p-8">
       <div>
@@ -27,7 +29,7 @@ export function PaletteHint({ eyebrow, title, body, button, keys }: Props) {
         </button>
         <p className="flex items-center gap-2 text-night-mute">
           <span className="sr-only">{keys}: </span>
-          <kbd className="mono rounded border border-night-line bg-night-3 px-2 py-1 text-xs text-night-ink">Ctrl</kbd>
+          <kbd className="mono rounded border border-night-line bg-night-3 px-2 py-1 text-xs text-night-ink">{ctrl}</kbd>
           <span aria-hidden>/</span>
           <kbd className="mono rounded border border-night-line bg-night-3 px-2 py-1 text-xs text-night-ink">⌘</kbd>
           <span aria-hidden>+</span>

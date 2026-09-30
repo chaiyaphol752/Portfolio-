@@ -295,7 +295,7 @@ const de: AiNativeContent = {
         "Code ausliefern, den niemand versteht",
         "Einer Zusammenfassung mehr trauen als der Dokumentation",
         "Tests weglassen, weil der Code „richtig aussieht“",
-        "Geheimnisse oder Kundendaten in einen Prompt kopieren",
+        "Zugangsdaten oder Kundendaten in einen Prompt kopieren",
       ],
     },
   },
@@ -408,7 +408,7 @@ const de: AiNativeContent = {
       ai: "Liest Build-Logs, erklärt Fehlschläge und entwirft Release-Notes und Dokumentation.",
       tools: "Git, CI, Vercel-Preview- und Produktions-Deployments sowie Health-Checks.",
       artifacts: ["Preview-Deployment", "Produktions-Release", "Release-Notes", "Health-Check"],
-      gate: "Preview geprüft, Geheimnisse kontrolliert, Health-Endpoint grün und ein Weg zurück bekannt.",
+      gate: "Preview geprüft, Secrets kontrolliert, Health-Endpoint grün und ein Weg zurück bekannt.",
     },
   ],
   chain: {
@@ -417,7 +417,7 @@ const de: AiNativeContent = {
     intro: "Aus einer Idee wird Software, indem sie eine Folge von Ergebnissen durchläuft. Jedes davon kann eine Person lesen, hinterfragen und freigeben.",
     diagramTitle: "Von der Idee zur Produktion",
     steps: [
-      { label: "Idee", detail: "Ein Bedarf, in den Worten der Kundschaft." },
+      { label: "Idee", detail: "Ein Bedarf, in den eigenen Worten der Kundschaft." },
       { label: "Anforderungen", detail: "Was gelten muss und was nicht dazugehört." },
       { label: "Spezifikation", detail: "Verhalten, so genau beschrieben, dass es sich testen lässt." },
       { label: "Architektur", detail: "Struktur, Daten und Grenzen, die Abwägungen schriftlich." },

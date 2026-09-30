@@ -97,7 +97,7 @@ function TreeNode({ name, value, path, depth, openDepth, labels, onSelect }: Nod
 /** Collapsible JSON tree; selecting a value reports its JSONPath-style accessor. */
 export function JsonTree({ value, openDepth, labels, onSelect }: { value: unknown; openDepth: number; labels: TreeLabels; onSelect: (path: string) => void }) {
   return (
-    <ul role="tree" aria-label="JSON">
+    <ul aria-label="JSON">
       <TreeNode name={null} value={value} path="$" depth={0} openDepth={openDepth} labels={labels} onSelect={onSelect} />
     </ul>
   );

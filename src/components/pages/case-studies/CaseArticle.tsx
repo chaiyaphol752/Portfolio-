@@ -44,7 +44,7 @@ export function CaseArticle({ study, labels }: Props) {
               data-case-step
               data-case={study.id}
               data-step={stepId}
-              aria-labelledby={headingId}
+              aria-labelledby={`${headingId} ${titleId}`}
               className="grid gap-4 py-10 md:grid-cols-12 md:gap-x-8"
             >
               <div className="md:col-span-3">

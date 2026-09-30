@@ -11,7 +11,7 @@ import type { SystemsContent } from "@/content/systems";
 type FieldName = keyof ContactFieldErrors;
 
 const control =
-  "w-full border-0 border-b border-ink bg-transparent px-0 py-3 text-base text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none focus-visible:outline-none focus-visible:ring-0 aria-[invalid=true]:border-accent-ink";
+  "w-full border-0 border-b border-ink bg-transparent px-0 py-3 text-base text-ink placeholder:text-ink-3 focus:border-accent-ink focus:shadow-[0_1px_0_0_var(--color-accent-ink)] focus:outline-none focus-visible:outline-none focus-visible:ring-0 aria-[invalid=true]:border-accent-ink";
 
 interface FieldProps {
   name: FieldName;

@@ -12,7 +12,7 @@ export function PageFooterNav({ locale, current }: { locale: Locale; current: Pa
   const prev = pages[index - 1];
   const next = pages[index + 1];
   return (
-    <nav aria-label="Page" className="container-page grid gap-px border-t border-line py-8 sm:grid-cols-2">
+    <nav aria-label={t.pageNav} className="container-page grid gap-px border-t border-line py-8 sm:grid-cols-2">
       {prev ? (
         <Link href={localizedPath(locale, prev.slug)} className="group flex items-center gap-4 py-4">
           <ArrowLeft className="size-5 transition-transform group-hover:-translate-x-1" aria-hidden />

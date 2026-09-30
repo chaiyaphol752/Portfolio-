@@ -59,7 +59,7 @@ const en = {
   },
   mindset: {
     eyebrow: "Mindset",
-    quote: "Understand the problem before the ticket, measure before optimising, and write code the next person can read.",
+    quote: "Understand the problem before the ticket, measure before optimizing, and write code the next person can read.",
     points: [
       "Prefer proven tools where they fit, new ones where they clearly win.",
       "Measure performance instead of guessing about it.",
@@ -102,7 +102,7 @@ const en = {
     slowTitle: "Where I slow down",
     slow: [
       "Data models and security boundaries",
-      "Accessibility and real-device behaviour",
+      "Accessibility and real-device behavior",
       "Anything touching payments or personal data",
       "Final review before production",
     ],
@@ -163,15 +163,15 @@ const de: AboutContent = {
     intro: "Ein einfacher Rhythmus, der die Kommunikation klar hält und Überraschungen selten macht.",
     outcomeLabel: "Ergebnis",
     items: [
-      { title: "Zuhören und eingrenzen", text: "Wir klären Ziele, Nutzende und Rahmenbedingungen. Ich stelle die Fragen, die aus einem Wunsch einen Umfang machen.", outcome: "Ein kurzer schriftlicher Umfang und ein erster Plan" },
+      { title: "Zuhören und eingrenzen", text: "Wir klären Ziele, Nutzende und Rahmenbedingungen. Ich stelle die Fragen, die aus einem Wunsch einen Umfang machen.", outcome: "Ein kurzer, schriftlicher Projektumfang und ein erster Plan" },
       { title: "Den soliden Kern planen", text: "Die kleinste Version mit echtem Nutzen wählen und dafür Stack und Struktur festlegen.", outcome: "Abgestimmte Prioritäten und Architektur" },
       { title: "In prüfbaren Schritten bauen", text: "Lauffähige Zwischenstände, die du sehen und kommentieren kannst, mit laufenden Tests und Prüfungen.", outcome: "Regelmäßiger, vorzeigbarer Fortschritt" },
-      { title: "Live gehen und verbessern", text: "Deployen, in Produktion prüfen, dokumentieren und danach anhand der echten Nutzung verbessern.", outcome: "Ein Produkt im Livebetrieb und eine klare nächste Liste" },
+      { title: "Live gehen und verbessern", text: "Deployen, in Produktion prüfen, dokumentieren und danach anhand der echten Nutzung verbessern.", outcome: "Ein Produkt im Livebetrieb und eine klare Liste der nächsten Schritte" },
     ],
   },
   mindset: {
     eyebrow: "Denkweise",
-    quote: "Das Problem verstehen, bevor das Ticket gelesen ist, messen vor dem Optimieren und Code schreiben, den die nächste Person lesen kann.",
+    quote: "Das Problem verstehen, bevor das Ticket abgearbeitet wird, messen vor dem Optimieren und Code schreiben, den die nächste Person lesen kann.",
     points: [
       "Bewährte Werkzeuge nutzen, wo sie passen, neue dort, wo sie klar gewinnen.",
       "Performance messen, statt sie zu erraten.",
@@ -238,7 +238,7 @@ const th: AboutContent = {
     eyebrow: "ตัวตนในงาน",
     statement: "ให้ความสำคัญกับทั้งเส้นทาง ตั้งแต่ไอเดียแรกไปจนถึงผลิตภัณฑ์ที่เปิดใช้งานจริงและไว้ใจได้",
     paragraphs: [
-      "ออกแบบและสร้างทั้งส่วนหน้าที่ผู้ใช้เห็น แบ็กเอนด์ที่ทำให้ระบบเชื่อถือได้ และการ deploy ที่ส่งงานถึงมือผู้ใช้ ชอบงานที่ทุกส่วนต้องเข้ากันอย่างลงตัว",
+      "ออกแบบและสร้างทั้งส่วนหน้าที่ผู้ใช้เห็น แบ็กเอนด์ที่ทำให้ระบบเชื่อถือได้ และการดีพลอยที่ส่งงานถึงมือผู้ใช้ ชอบงานที่ทุกส่วนต้องเข้ากันอย่างลงตัว",
       "เครื่องมือ AI เป็นส่วนหนึ่งของการทำงานประจำวัน ใช้เพื่อค้นคว้า ร่าง และตรวจงานได้เร็วขึ้น ส่วนการตัดสินใจว่าจะสร้างอะไรและดีพอหรือยังนั้นยังเป็นของมนุษย์เสมอ",
     ],
   },
@@ -250,8 +250,8 @@ const th: AboutContent = {
     items: [
       { title: "พื้นฐาน", text: "เข้าใจ HTML, CSS และ JavaScript อย่างถูกต้อง ทั้งความหมายของโครงสร้าง เลย์เอาต์ เบราว์เซอร์ และเครือข่าย เฟรมเวิร์กเปลี่ยนไปเรื่อย ๆ แต่พื้นฐานนี้ยังอยู่" },
       { title: "อินเทอร์เฟซที่ใช้งานจริง", text: "คอมโพเนนต์ที่ responsive และเข้าถึงได้ รองรับตั้งแต่มือถือจอเล็กถึงจอมอนิเตอร์กว้าง โดยมองตัวอักษรและระยะห่างเป็นงานออกแบบ ไม่ใช่เครื่องประดับ" },
-      { title: "คิดแบบ full-stack", text: "API การตรวจสอบข้อมูล ฐานข้อมูล และการ deploy ฟีเจอร์ถือว่าเสร็จเมื่อทำงานบนระบบจริง ไม่ใช่แค่แสดงผลได้บนเครื่องตัวเอง" },
-      { title: "เวิร์กโฟลว์แบบ AI-native", text: "ใช้เครื่องมือเขียนโค้ดแบบเอเจนต์สำหรับค้นคว้า ทำต้นแบบ ตรวจทาน และ refactor โดยจับคู่กับการทดสอบและการตรวจสอบโดยมนุษย์เสมอ" },
+      { title: "คิดแบบ full-stack", text: "API การตรวจสอบข้อมูล ฐานข้อมูล และการดีพลอย ฟีเจอร์ถือว่าเสร็จเมื่อทำงานบนระบบจริง ไม่ใช่แค่แสดงผลได้บนเครื่องตัวเอง" },
+      { title: "เวิร์กโฟลว์แบบ AI-native", text: "ใช้เครื่องมือเขียนโค้ดแบบเอเจนต์สำหรับค้นคว้า ทำต้นแบบ ตรวจทาน และรีแฟกเตอร์ โดยจับคู่กับการทดสอบและการตรวจสอบโดยมนุษย์เสมอ" },
       { title: "นิสัยแบบระบบจริง", text: "ประวัติ Git ที่เล่าเรื่องได้ การตรวจสอบอัตโนมัติ เอกสารประกอบ และโค้ดที่คนถัดไปอ่านและแก้ไขต่อได้" },
     ],
   },
@@ -275,12 +275,12 @@ const th: AboutContent = {
       { title: "ฟังและกำหนดขอบเขต", text: "คุยเรื่องเป้าหมาย ผู้ใช้ และข้อจำกัด ถามคำถามที่เปลี่ยนความต้องการให้เป็นขอบเขตงาน", outcome: "ขอบเขตงานสั้น ๆ เป็นลายลักษณ์อักษรและแผนแรก" },
       { title: "วางแผนแกนหลักที่แข็งแรง", text: "เลือกเวอร์ชันเล็กที่สุดที่สร้างคุณค่าจริง แล้วกำหนดสแตกและโครงสร้างให้เหมาะ", outcome: "ลำดับความสำคัญและสถาปัตยกรรมที่ตกลงร่วมกัน" },
       { title: "สร้างเป็นขั้นที่ตรวจทานได้", text: "ส่งมอบงานที่ใช้งานได้เป็นช่วง ๆ ให้ดูและให้ความเห็นได้ พร้อมการทดสอบและการตรวจสอบที่ทำงานไปด้วยกัน", outcome: "ความคืบหน้าที่เห็นได้จริงอย่างสม่ำเสมอ" },
-      { title: "เปิดใช้งานและปรับปรุงต่อ", text: "deploy ตรวจสอบบนระบบจริง จัดทำเอกสาร แล้วปรับปรุงตามสิ่งที่การใช้งานจริงบอก", outcome: "ผลิตภัณฑ์ที่ใช้งานจริงและรายการสิ่งที่จะทำต่อ" },
+      { title: "เปิดใช้งานและปรับปรุงต่อ", text: "ดีพลอย ตรวจสอบบนระบบจริง จัดทำเอกสาร แล้วปรับปรุงตามสิ่งที่การใช้งานจริงบอก", outcome: "ผลิตภัณฑ์ที่ใช้งานจริงและรายการสิ่งที่จะทำต่อ" },
     ],
   },
   mindset: {
     eyebrow: "แนวคิด",
-    quote: "เข้าใจปัญหาก่อนอ่านตั๋วงาน วัดผลก่อนปรับแต่ง และเขียนโค้ดที่คนถัดไปอ่านรู้เรื่อง",
+    quote: "เข้าใจปัญหาก่อนลงมือทำตามงานที่ได้รับ วัดผลก่อนปรับแต่ง และเขียนโค้ดที่คนถัดไปอ่านรู้เรื่อง",
     points: [
       "ใช้เครื่องมือที่พิสูจน์แล้วเมื่อเหมาะสม และใช้ของใหม่เมื่อดีกว่าอย่างชัดเจน",
       "วัดประสิทธิภาพแทนการเดา",
@@ -298,7 +298,7 @@ const th: AboutContent = {
       "ค้นหาทางเลือกและอ่านโค้ดที่ไม่คุ้นเคย",
       "ร่างคอมโพเนนต์ การทดสอบ และเอกสาร",
       "ลองเปรียบเทียบแนวทางสถาปัตยกรรม",
-      "refactor และตรวจโค้ดรอบแรก",
+      "รีแฟกเตอร์และตรวจโค้ดรอบแรก",
       "ทำงานซ้ำ ๆ ให้อัตโนมัติ",
     ],
     ownTitle: "ส่วนที่มนุษย์รับผิดชอบเอง",
@@ -317,7 +317,7 @@ const th: AboutContent = {
     fast: [
       "โครงเริ่มต้นและโค้ดพื้นฐาน",
       "สำรวจทางเลือกและทำต้นแบบ",
-      "refactor ซ้ำ ๆ โดยมีการทดสอบเป็นตาข่ายนิรภัย",
+      "รีแฟกเตอร์ซ้ำ ๆ โดยมีการทดสอบเป็นตาข่ายนิรภัย",
       "ร่างเอกสาร",
     ],
     slowTitle: "จุดที่ต้องช้าลง",

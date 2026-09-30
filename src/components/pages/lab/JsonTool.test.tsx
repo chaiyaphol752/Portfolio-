@@ -14,7 +14,7 @@ describe("JsonTool", () => {
   it("validates the sample and shows its structure", () => {
     render(<JsonTool t={t.json} />);
     expect(screen.getByText(t.json.valid)).toBeTruthy();
-    expect(screen.getByRole("tree")).toBeTruthy();
+    expect(screen.getByRole("list", { name: "JSON" })).toBeTruthy();
   });
   it("reports the exact error position for invalid input", () => {
     render(<JsonTool t={t.json} />);

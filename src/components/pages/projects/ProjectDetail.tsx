@@ -20,7 +20,7 @@ export function KindBadge({ kind, label }: { kind: ProjectMeta["kind"]; label: s
     <span
       className={
         "mono inline-flex items-center rounded-full border px-2.5 py-0.5 text-[0.68rem] uppercase tracking-wider " +
-        (kind === "demo" ? "border-accent bg-accent text-white" : "border-ink text-ink")
+        (kind === "demo" ? "border-accent-ink bg-accent-ink text-white" : "border-ink text-ink")
       }
     >
       {label}

@@ -48,12 +48,12 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-paper"
+          className="skip-link"
         >
           {t.skipToContent}
         </a>
         <Header locale={locale} t={t} brandName={profile.shortName} monogram={profile.monogram} />
-        <main id="main">{children}</main>
+        <main id="main" tabIndex={-1} className="outline-none">{children}</main>
         <Footer locale={locale} />
         <CommandPalette locale={locale} t={t} githubUrl={profile.links.github} sourceUrl={profile.sourceRepo} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />

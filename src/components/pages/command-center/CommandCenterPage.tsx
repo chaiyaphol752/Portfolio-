@@ -67,7 +67,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
               <HealthWidget copy={c.health} rawHref="/api/health" />
             </div>
             <div className="min-w-0 lg:col-span-12">
-              <PaletteHint {...c.palette} />
+              <PaletteHint {...c.palette} ctrl={locale === "de" ? "Strg" : "Ctrl"} />
             </div>
           </div>
         </div>

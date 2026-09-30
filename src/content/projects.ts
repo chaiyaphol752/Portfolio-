@@ -25,7 +25,7 @@ const en = {
     title: "Explore by category or keyword",
     body: "Self-initiated projects that show how I design and build. They are not client work, and each one is labelled accordingly.",
     searchLabel: "Search projects",
-    searchPlaceholder: "Try “dashboard”, “PostgreSQL” or “mobile”",
+    searchPlaceholder: "Try “dashboard” or “mobile”",
     filterLabel: "Filter by category",
     all: "All",
     results: "{n} of {total} projects",
@@ -135,7 +135,7 @@ const en = {
     "this-portfolio": {
       tagline: "The site you are reading: nine pages, three languages and a real backend.",
       problem: "A portfolio should prove engineering ability, not only describe it.",
-      solution: "An original design system, typed content in EN, DE and TH, a validated contact backend, tests and automated deployment.",
+      solution: "An original design system, typed content in EN, DE and TH, a validated contact backend, tests and a production-ready build.",
       decisions: [
         "Server Components by default and client code only for interaction, which keeps the JavaScript small.",
         "Personal details live in one config file and all copy in typed content modules.",
@@ -164,7 +164,7 @@ const de: ProjectsContent = {
     title: "Nach Kategorie oder Stichwort erkunden",
     body: "Selbst initiierte Projekte, die zeigen, wie ich gestalte und baue. Es sind keine Kundenprojekte, und jedes ist entsprechend gekennzeichnet.",
     searchLabel: "Projekte durchsuchen",
-    searchPlaceholder: "Zum Beispiel „Dashboard“, „PostgreSQL“ oder „mobil“",
+    searchPlaceholder: "z. B. „Dashboard“ oder „mobil“",
     filterLabel: "Nach Kategorie filtern",
     all: "Alle",
     results: "{n} von {total} Projekten",
@@ -222,7 +222,7 @@ const de: ProjectsContent = {
       ],
     },
     gridwatch: {
-      tagline: "Ein Energieverbrauchs-Dashboard für Facility-Manager, aufgebaut auf synthetischen Daten.",
+      tagline: "Ein Energieverbrauchs-Dashboard für das Facility Management, aufgebaut auf synthetischen Daten.",
       problem: "Facility-Teams lesen Zähler in Tabellen ab und bemerken Verschwendung einen Monat zu spät.",
       solution: "Ein Dashboard, das Zählerstände in Trends, Auffälligkeiten und eine verständliche Zusammenfassung je Gebäude verwandelt.",
       decisions: [
@@ -234,21 +234,21 @@ const de: ProjectsContent = {
     tideline: {
       tagline: "Ein Shop-Konzept für Kleinserien-Kleidung mit Warenkorb und Checkout, der vor der echten Zahlung endet.",
       problem: "Kleine Shops verlieren Kaufinteressierte an langsame Seiten und Checkouts, die sich auf dem Handy riskant anfühlen.",
-      solution: "Ein Shopfront mit schnellen Produktseiten, dauerhaftem Warenkorb und kurzem, mobil gedachtem Checkout.",
+      solution: "Ein Webshop mit schnellen Produktseiten, dauerhaftem Warenkorb und kurzem, mobil gedachtem Checkout.",
       decisions: [
         "Der Warenkorb liegt serverseitig unter einer undurchsichtigen ID und überlebt Reloads und Geräte.",
         "Preise werden immer auf dem Server neu berechnet; der Client zeigt sie nur an.",
-        "Der Checkout besteht aus drei kurzen Schritten mit direkter Validierung und sichtbarer Zusammenfassung, zuerst für Daumen optimiert.",
+        "Der Checkout besteht aus drei kurzen Schritten mit direkter Validierung und sichtbarer Zusammenfassung, zuerst für die Bedienung mit dem Daumen optimiert.",
       ],
     },
     "brief-loop": {
       tagline: "Ein Workflow, der ein schriftliches Briefing mit KI-Agenten und menschlichen Kontrollpunkten in einen geprüften Pull Request verwandelt.",
       problem: "KI-generierter Code ist schnell, aber uneinheitlich, wenn Anfragen vage bleiben und niemand das Ergebnis prüft.",
-      solution: "Ein wiederholbarer Kreislauf: Spezifikation, Plan, Umsetzung durch einen Agenten, automatisierte Tests und dann ein menschliches Review-Tor, bevor etwas gemergt wird.",
+      solution: "Ein wiederholbarer Kreislauf: Spezifikation, Plan, Umsetzung durch einen Agenten, automatisierte Tests und dann eine menschliche Freigabe im Review, bevor etwas gemergt wird.",
       decisions: [
         "Jede Stufe hat klare Ein- und Ausgaben, sodass eine fehlgeschlagene Stufe wiederholt werden kann, ohne neu zu beginnen.",
         "Tests und Typprüfungen laufen vor dem Review durch einen Menschen, sodass die Reviewzeit den Designfragen gehört.",
-        "Das menschliche Tor ist Pflicht. Agenten mergen ihre Arbeit nie selbst.",
+        "Die menschliche Freigabe ist Pflicht. Agenten mergen ihre Arbeit nie selbst.",
       ],
     },
     rota: {
@@ -274,7 +274,7 @@ const de: ProjectsContent = {
     "this-portfolio": {
       tagline: "Die Website, die du gerade liest: neun Seiten, drei Sprachen und ein echtes Backend.",
       problem: "Ein Portfolio soll technisches Können belegen, nicht nur beschreiben.",
-      solution: "Ein eigenständiges Designsystem, typisierte Inhalte in EN, DE und TH, ein validiertes Kontakt-Backend, Tests und automatisiertes Deployment.",
+      solution: "Ein eigenständiges Designsystem, typisierte Inhalte in EN, DE und TH, ein validiertes Kontakt-Backend, Tests und einen produktionsreifen Build.",
       decisions: [
         "Standardmäßig Server Components und Client-Code nur für Interaktion, damit das JavaScript klein bleibt.",
         "Persönliche Angaben liegen in einer Konfigurationsdatei und alle Texte in typisierten Inhaltsmodulen.",
@@ -287,13 +287,13 @@ const de: ProjectsContent = {
 const th: ProjectsContent = {
   meta: {
     title: "โปรเจกต์",
-    description: "ตัวสำรวจโปรเจกต์ที่รวมโปรเจกต์แนวคิดที่ริเริ่มเองและเดโมทางเทคนิคที่ใช้งานจริงหนึ่งชิ้น พร้อมปัญหา วิธีแก้ และการตัดสินใจทางวิศวกรรม",
+    description: "ตัวสำรวจโปรเจกต์ที่รวมโปรเจกต์แนวคิดที่ริเริ่มเองและงานสาธิตทางเทคนิคที่ใช้งานจริงหนึ่งชิ้น พร้อมปัญหา วิธีแก้ และการตัดสินใจทางวิศวกรรม",
   },
   hero: {
     eyebrow: "โปรเจกต์",
     titlePlain: "สร้างขึ้นเพื่อ",
     titleAccent: "แสดงวิธีคิด",
-    lede: "โปรเจกต์แนวคิดและเดโมทางเทคนิค แต่ละชิ้นบอกปัญหาที่แก้ การตัดสินใจเบื้องหลัง และสแต็กที่ใช้",
+    lede: "โปรเจกต์แนวคิดและงานสาธิตทางเทคนิค แต่ละชิ้นบอกปัญหาที่แก้ การตัดสินใจเบื้องหลัง และสแต็กที่ใช้",
     complexity: "ความซับซ้อน",
   },
   ui: {
@@ -301,7 +301,7 @@ const th: ProjectsContent = {
     title: "สำรวจตามหมวดหมู่หรือคำค้น",
     body: "โปรเจกต์ที่ริเริ่มเองเพื่อแสดงวิธีออกแบบและสร้างงาน ไม่ใช่งานของลูกค้า และทุกชิ้นติดป้ายกำกับไว้ชัดเจน",
     searchLabel: "ค้นหาโปรเจกต์",
-    searchPlaceholder: "ลองพิมพ์ “dashboard”, “PostgreSQL” หรือ “มือถือ”",
+    searchPlaceholder: "ลองพิมพ์ “dashboard” หรือ “มือถือ”",
     filterLabel: "กรองตามหมวดหมู่",
     all: "ทั้งหมด",
     results: "{n} จาก {total} โปรเจกต์",
@@ -311,7 +311,7 @@ const th: ProjectsContent = {
     detailLabel: "รายละเอียดโปรเจกต์",
     open: "ดูรายละเอียด",
   },
-  kind: { concept: "โปรเจกต์แนวคิด", demo: "เดโมทางเทคนิค" },
+  kind: { concept: "โปรเจกต์แนวคิด", demo: "งานสาธิตทางเทคนิค" },
   detail: {
     problem: "ปัญหา",
     solution: "วิธีแก้",
@@ -335,7 +335,7 @@ const th: ProjectsContent = {
   },
   disclaimer: {
     title: "เกี่ยวกับโปรเจกต์เหล่านี้",
-    body: "โปรเจกต์แนวคิดริเริ่มขึ้นเองและใช้ข้อมูลสังเคราะห์ ไม่ได้ส่งมอบให้ลูกค้าจริง ส่วนเดโมทางเทคนิคคือพอร์ตโฟลิโอนี้ ซึ่งใช้งานอยู่จริงและเปิดซอร์สโค้ดสาธารณะ",
+    body: "โปรเจกต์แนวคิดริเริ่มขึ้นเองและใช้ข้อมูลสังเคราะห์ ไม่ได้ส่งมอบให้ลูกค้าจริง ส่วนงานสาธิตทางเทคนิคคือพอร์ตโฟลิโอนี้ ซึ่งใช้งานอยู่จริงและเปิดซอร์สโค้ดสาธารณะ",
   },
   projects: {
     "relay-desk": {
@@ -350,11 +350,11 @@ const th: ProjectsContent = {
     },
     "fern-clay": {
       tagline: "เว็บไซต์สองภาษาสำหรับสตูดิโอเซรามิกขนาดเล็ก พร้อมแบบฟอร์มสอบถามและจองเวิร์กช็อป",
-      problem: "สตูดิโองานฝีมือต้องดูพิถีพิถันบนออนไลน์เท่ากับตัวงาน ทั้งสองภาษา โดยไม่ต้องใช้ CMS ที่หนัก",
+      problem: "สตูดิโองานฝีมือต้องดูพิถีพิถันบนออนไลน์เท่ากับตัวงาน ในสองภาษา โดยไม่ต้องใช้ CMS ที่หนัก",
       solution: "เว็บไซต์สไตล์บรรณาธิการที่เร็ว มีเส้นทางแยกตามภาษา ปฏิทินเวิร์กช็อป และแบบฟอร์มสอบถามที่ตรวจสอบฝั่งเซิร์ฟเวอร์",
       decisions: [
         "เก็บเนื้อหาเป็นไฟล์ที่กำหนดชนิดข้อมูลแยกตามภาษา หากขาดคำแปลบิลด์จะล้มเหลวแทนที่จะปล่อยออกไป",
-        "ปรับขนาดและโหลดรูปแบบหน่วงผ่านตัวช่วยเดียว เพื่อให้หน้าที่หนักที่สุดยังเบาบนมือถือ",
+        "ปรับขนาดรูปและใช้ lazy loading ผ่านตัวช่วยเดียว เพื่อให้หน้าที่หนักที่สุดยังเบาบนมือถือ",
         "แบบฟอร์มสอบถามใช้งานได้แม้ไม่มี JavaScript และอัปเกรดเป็นการแจ้งผลทันทีเมื่อมี",
       ],
     },
@@ -411,7 +411,7 @@ const th: ProjectsContent = {
     "this-portfolio": {
       tagline: "เว็บไซต์ที่กำลังอ่านอยู่นี้ เก้าหน้า สามภาษา และแบ็กเอนด์ที่ใช้งานจริง",
       problem: "พอร์ตโฟลิโอควรพิสูจน์ความสามารถทางวิศวกรรม ไม่ใช่แค่บรรยาย",
-      solution: "ระบบดีไซน์ดั้งเดิม เนื้อหาที่กำหนดชนิดข้อมูลทั้ง EN, DE และ TH แบ็กเอนด์ติดต่อที่ตรวจสอบข้อมูล เทสต์ และการดีพลอยอัตโนมัติ",
+      solution: "ระบบดีไซน์ดั้งเดิม เนื้อหาที่กำหนดชนิดข้อมูลทั้ง EN, DE และ TH แบ็กเอนด์ติดต่อที่ตรวจสอบข้อมูล เทสต์ และบิลด์ที่พร้อมขึ้นระบบจริง",
       decisions: [
         "ใช้ Server Components เป็นค่าเริ่มต้น และใช้โค้ดฝั่งไคลเอนต์เฉพาะส่วนโต้ตอบ เพื่อให้ JavaScript เล็ก",
         "ข้อมูลส่วนตัวอยู่ในไฟล์คอนฟิกเดียว และข้อความทั้งหมดอยู่ในโมดูลเนื้อหาที่กำหนดชนิดข้อมูล",

@@ -68,7 +68,7 @@ export function Diagram({ diagram, label, id, tone = "night", columns = 3 }: Pro
       {diagram.kind === "flow" && <Flow nodes={diagram.nodes} tone={tone} columns={columns} />}
       {diagram.kind === "layers" && <Layers nodes={diagram.nodes} tone={tone} />}
       {diagram.kind === "tree" && (
-        <div className="overflow-x-auto pb-2">
+        <div className="overflow-x-auto pb-2" tabIndex={0} role="group" aria-labelledby={titleId}>
           <TreeView node={diagram.root} tone={tone} root />
         </div>
       )}

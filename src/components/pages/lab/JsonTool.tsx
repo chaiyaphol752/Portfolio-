@@ -153,7 +153,7 @@ export function JsonTool({ t }: { t: LabContent["json"] }) {
                 ))}
               </dl>
               <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-                <h3 className="eyebrow mr-auto">{t.structure}</h3>
+                <p className="eyebrow mr-auto">{t.structure}</p>
                 <button type="button" className="mono text-[0.72rem] uppercase tracking-wider underline underline-offset-4" onClick={() => { setOpenDepth(Infinity); setEpoch((e) => e + 1); }}>{t.expandAll}</button>
                 <button type="button" className="mono text-[0.72rem] uppercase tracking-wider underline underline-offset-4" onClick={() => { setOpenDepth(1); setEpoch((e) => e + 1); }}>{t.collapseAll}</button>
               </div>

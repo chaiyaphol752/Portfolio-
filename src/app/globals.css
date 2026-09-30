@@ -11,12 +11,12 @@
   --color-paper-3: #dedacd;
   --color-ink: #101114;
   --color-ink-2: #3f424a;
-  --color-ink-3: #666973;
+  --color-ink-3: #5c5f69;
   --color-line: #d4d0c4;
   --color-accent: #f2411a;
   --color-accent-ink: #c2310f;
   --color-accent-soft: #fde3da;
-  --color-signal: #1a8f52;
+  --color-signal: #147a45;
   --color-night: #0f1014;
   --color-night-2: #171920;
   --color-night-3: #21242d;
@@ -67,6 +67,19 @@ html[lang="th"] .eyebrow { letter-spacing: 0.04em; text-transform: none; }
   outline-offset: 3px;
   border-radius: 2px;
 }
+/* Skip link: visually hidden until focused, then a fixed pill above the header. */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; outline-color: var(--color-accent); }
 .on-night :focus-visible { outline-color: var(--color-night-ink); }
 
 /* ---------- Type ---------- */

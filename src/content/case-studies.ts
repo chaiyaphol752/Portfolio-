@@ -433,7 +433,7 @@ const de: CaseStudiesContent = {
     kind: { demo: "Technische Demonstration", concept: "Konzeptprojekt" },
     kindNote: {
       demo: "Echte, laufende Software: die Website, die du gerade liest.",
-      concept: "Eine Designübung. Es gibt keinen echten Kunden und nichts wurde ausgeliefert.",
+      concept: "Eine Designübung. Es gibt keine echte Kundschaft und nichts wurde ausgeliefert.",
     },
     status: "Status",
     stack: "Stack",
@@ -465,7 +465,7 @@ const de: CaseStudiesContent = {
           points: [],
         },
         discovery: {
-          body: "Ich habe aufgelistet, was Kunden tatsächlich prüfen. Lässt es sich in der eigenen Sprache lesen? Funktioniert es auf dem Smartphone? Kommt das Kontaktformular wirklich bei mir an? Ist der Code dahinter einsehbar?",
+          body: "Ich habe aufgelistet, was Auftraggebende tatsächlich prüfen. Lässt es sich in der eigenen Sprache lesen? Funktioniert es auf dem Smartphone? Kommt das Kontaktformular wirklich bei mir an? Ist der Code dahinter einsehbar?",
           points: [],
         },
         constraints: {
@@ -473,12 +473,12 @@ const de: CaseStudiesContent = {
           points: [
             "Drei Sprachen (Englisch, Deutsch, Thai) ohne Übersetzungsdienst zur Laufzeit",
             "Das Kontaktformular meldet nie Erfolg, wenn nichts zugestellt wurde",
-            "Keine Geheimnisse im Client-Bundle oder im Repository",
+            "Keine Secrets im Client-Bundle oder im Repository",
             "Minimales JavaScript im Browser; die meisten Seiten sollen vorab erzeugtes HTML sein",
           ],
         },
         ux: {
-          body: "Jede Seite hat eine vorhersehbare Adresse mit Sprachpräfix, und die Sprache folgt dem Besucher, nicht umgekehrt. Die Reihenfolge der Entscheidung ist bewusst gewählt.",
+          body: "Jede Seite hat eine vorhersehbare Adresse mit Sprachpräfix, und die Sprache folgt den Besuchenden, nicht umgekehrt. Die Reihenfolge der Entscheidung ist bewusst gewählt.",
           points: [],
         },
         architecture: {
@@ -530,7 +530,7 @@ const de: CaseStudiesContent = {
       diagrams: {
         ux: {
           kind: "tree",
-          title: "Welche Sprache sieht ein Besucher?",
+          title: "Welche Sprache bekommt eine besuchende Person zu sehen?",
           caption: "Die Reihenfolge der Entscheidungen im Proxy dieser Website.",
           root: {
             label: "Anfrage ohne Sprachpräfix, z. B. /about",
@@ -566,7 +566,7 @@ const de: CaseStudiesContent = {
             { label: "Browser", detail: "Das Formular sendet an eine Server Action und funktioniert mit serverseitig erzeugtem HTML." },
             { label: "Server Action", detail: "Läuft auf Vercel und liest die rohen Formulardaten." },
             { label: "Zod-Validierung", detail: "Liefert stabile Fehlercodes pro Feld, die im Browser übersetzt werden." },
-            { label: "Spam- und Ratenprüfung", detail: "Ein verstecktes Honeypot-Feld plus Ratenbegrenzung pro Besucher." },
+            { label: "Spam- und Ratenprüfung", detail: "Ein verstecktes Honeypot-Feld plus Ratenbegrenzung pro Person." },
             { label: "Zustellung", detail: "Eine Postgres-Zeile und/oder ein Webhook; mindestens einer muss annehmen." },
             { label: "Antwort", detail: "Erfolg nur, wenn ein Kanal angenommen hat; sonst ein ehrlicher Fehler." },
           ],
@@ -578,7 +578,7 @@ const de: CaseStudiesContent = {
       kind: "concept",
       title: "Terminbuchung für ein kleines Studio",
       tagline: "Ein Konzept, das Terminabsprachen per Chat durch einen Ablauf ersetzt, der keine Doppelbuchung zulässt.",
-      status: "Designübung, nicht für einen Kunden gebaut",
+      status: "Designübung, nicht für Kundschaft gebaut",
       stack: ["Next.js", "PostgreSQL", "Server Actions", "Zod", "Zeitzonenbewusste Terminlogik"],
       sections: {
         problem: {
@@ -704,7 +704,7 @@ const de: CaseStudiesContent = {
         constraints: {
           body: "Was die Lösung geprägt hat:",
           points: [
-            "Die Inhaber sind keine Entwickler und ändern Preise oft",
+            "Die Betreibenden sind keine Entwickelnden und ändern Preise oft",
             "Gäste kommen meist über die Suche und per Smartphone",
             "Eine fehlende Übersetzung muss auffallen, bevor ein Gast sie sieht",
             "Die Hostingkosten sollen nahe null bleiben",
@@ -741,9 +741,9 @@ const de: CaseStudiesContent = {
         tradeoffs: {
           body: "Die Kompromisse, die man benennen sollte:",
           points: [
-            "Änderungen per Code sind für Inhaber eine Hürde; ein CMS beseitigt sie, bringt aber Kosten und eine zweite Quelle der Wahrheit",
+            "Änderungen per Code sind für die Betreibenden eine Hürde; ein CMS beseitigt sie, bringt aber Kosten und eine zweite Quelle der Wahrheit",
             "Typisierte Inhalte erzwingen eine Übersetzung für jeden Schlüssel, was neue Funktionen bremst, aber Lücken verhindert",
-            "Drei Sprachen verdreifachen die Textprüfung; ein Schritt mit Muttersprachlern gehört in den Plan",
+            "Drei Sprachen verdreifachen die Textprüfung; eine Prüfung durch Personen mit der jeweiligen Muttersprache gehört in den Plan",
           ],
         },
         future: {
@@ -791,7 +791,7 @@ const th: CaseStudiesContent = {
       concept: "แบบฝึกด้านการออกแบบ ไม่มีลูกค้าจริงและไม่ได้ส่งมอบงานใด ๆ",
     },
     status: "สถานะ",
-    stack: "เทคโนโลยี",
+    stack: "สแตก",
     steps: {
       problem: "โจทย์",
       discovery: "การสำรวจ",

@@ -6,12 +6,12 @@ import type { DevicePresetId } from "@/lib/lab/responsive";
 const en = {
   meta: {
     title: "Interactive Lab",
-    description: "Three working tools built from scratch: a JSON inspector, a container-query preview and a colour-token generator with WCAG contrast checks.",
+    description: "Three working tools built from scratch: a JSON inspector, a container-query preview and a color-token generator with WCAG contrast checks.",
   },
   hero: {
     eyebrow: "Interactive Lab",
     title: "Small tools, built properly.",
-    lede: "Everything here actually works. Paste real JSON, drag a layout through its breakpoints, generate a colour scale and check its contrast. Nothing leaves your browser.",
+    lede: "Everything here actually works. Paste real JSON, drag a layout through its breakpoints, generate a color scale and check its contrast. Nothing leaves your browser.",
     complexity: "Complexity",
   },
   workbench: {
@@ -20,7 +20,7 @@ const en = {
     tabs: {
       json: { label: "JSON inspector", blurb: "Validate, format, minify and explore." },
       responsive: { label: "Responsive preview", blurb: "Watch a layout react to its container." },
-      tokens: { label: "Colour tokens", blurb: "Scales, contrast and exportable variables." },
+      tokens: { label: "Color tokens", blurb: "Scales, contrast and exportable variables." },
     },
   },
   json: {
@@ -97,18 +97,18 @@ const en = {
     },
   },
   tokens: {
-    base: "Base colour",
+    base: "Base color",
     baseInput: "Hex value",
     name: "Token name",
     format: "Export format",
     formats: { css: "CSS variables", tailwind: "Tailwind theme", json: "JSON" },
-    invalid: "Enter a valid hex colour such as #f2411a.",
+    invalid: "Enter a valid hex color such as #f2411a.",
     scale: "Generated scale",
     baseTag: "Base",
     contrastOnWhite: "on white",
     contrastOnInk: "on ink",
     levels: { AAA: "AAA", AA: "AA", "AA-large": "AA large text", fail: "Fails" } satisfies Record<WcagLevel, string>,
-    legend: "Contrast ratio of each step used as text colour. AA needs 4.5:1, AAA needs 7:1.",
+    legend: "Contrast ratio of each step used as text color. AA needs 4.5:1, AAA needs 7:1.",
     export: "Export",
     copy: "Copy",
     copied: "Copied",
@@ -118,9 +118,9 @@ const en = {
     eyebrow: "How these are built",
     title: "Logic first, interface second.",
     items: [
-      { title: "Pure functions", body: "Parsing, contrast maths and layout rules live in small typed functions with no UI attached." },
+      { title: "Pure functions", body: "Parsing, contrast math and layout rules live in small typed functions with no UI attached." },
       { title: "Covered by tests", body: "Error positions, WCAG ratios and scale generation are checked by automated tests." },
-      { title: "No dependencies", body: "No JSON or colour libraries. Less code shipped, and every rule is readable." },
+      { title: "No dependencies", body: "No JSON or color libraries. Less code shipped, and every rule is readable." },
     ],
   },
   cta: { label: "Discuss a project" },
