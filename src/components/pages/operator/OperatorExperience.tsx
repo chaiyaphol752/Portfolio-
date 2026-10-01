@@ -5,12 +5,14 @@ import { localizedPath } from "@/i18n/routing";
 import { operatorContent } from "@/content/operator";
 import { OperatorFigure } from "./OperatorFigure";
 import { ScrollDirector } from "./ScrollDirector";
+import { InspectorProvider, ScreenTrigger, type SurfaceId } from "./Inspector";
+import { VisorButton } from "./VisorButton";
 import {
+  AgentScreen,
   ArchitectureScreen,
   CodeScreen,
   DiagnosticScreen,
   MaterialRow,
-  OverlayPlane,
   PipelineScreen,
   PrototypeScreen,
   PythonScreen,
@@ -37,7 +39,13 @@ const sceneStyle = (rest: number) => ({ "--rest": rest }) as React.CSSProperties
 
 export function OperatorExperience({ locale }: { locale: Locale }) {
   const t = operatorContent[locale];
+  const trigger = (surface: SurfaceId, screen: React.ReactNode) => (
+    <ScreenTrigger surface={surface} label={t.inspect.open.replace("{name}", t.inspect.names[surface])} cue={t.inspect.cue}>
+      {screen}
+    </ScreenTrigger>
+  );
   return (
+    <InspectorProvider locale={locale} t={t}>
     <div id={ROOT_ID} className={s.root}>
       <ScrollDirector rootId={ROOT_ID} />
       <h1 className="sr-only">{t.meta.title}</h1>
@@ -59,7 +67,10 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
           <div className={s.aperture}>
             <div className={s.backlight} aria-hidden />
             <div className={s.screenGlow} aria-hidden />
-            <OperatorFigure uid="hero" className={s.heroFigure} title={t.figureAlt} />
+            <div className={s.heroFigureWrap}>
+              <OperatorFigure uid="hero" className={s.heroFigure} title={t.figureAlt} />
+              <VisorButton rootId={ROOT_ID} label={t.visor.label} message={t.visor.message} />
+            </div>
             <div className={s.foreground} aria-hidden />
           </div>
           <span className={`${s.edge} ${s.edgeTop}`} aria-hidden />
@@ -77,21 +88,29 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
           <p className={`${s.micro} ${s.cornerTL}`}>{t.field.label}</p>
           <div className={s.fieldSpace}>
             <OperatorFigure uid="field" className={s.fieldFigure} />
-            <div className={s.slot} data-slot="log" style={{ "--at": 0.05 } as React.CSSProperties}><PipelineScreen /></div>
+            <div className={s.slot} data-slot="log" style={{ "--at": 0.05 } as React.CSSProperties}>{trigger("pipeline", <PipelineScreen />)}</div>
             <div className={s.slot} data-slot="code" style={{ "--at": 0.1 } as React.CSSProperties}><CodeScreen /></div>
-            <div className={s.slot} data-slot="wide" style={{ "--at": 0.2 } as React.CSSProperties}><ArchitectureScreen /></div>
-            <div className={s.slot} data-slot="term" style={{ "--at": 0.28 } as React.CSSProperties}><TerminalScreen /></div>
-            <div className={s.slot} data-slot="python" style={{ "--at": 0.36 } as React.CSSProperties}><PythonScreen /></div>
+            <div className={s.slot} data-slot="wide" style={{ "--at": 0.2 } as React.CSSProperties}>{trigger("architecture", <ArchitectureScreen />)}</div>
+            <div className={s.slot} data-slot="term" style={{ "--at": 0.28 } as React.CSSProperties}>{trigger("terminal", <TerminalScreen />)}</div>
+            <div className={s.slot} data-slot="python" style={{ "--at": 0.36 } as React.CSSProperties}>{trigger("python", <PythonScreen />)}</div>
             <div className={s.slot} data-slot="diag" style={{ "--at": 0.44 } as React.CSSProperties}><DiagnosticScreen /></div>
-            <div className={s.slot} data-slot="proto" style={{ "--at": 0.5 } as React.CSSProperties}><PrototypeScreen /></div>
-            <div className={s.slot} data-slot="overlay" style={{ "--at": 0.58 } as React.CSSProperties}><OverlayPlane /></div>
+            <div className={s.slot} data-slot="proto" style={{ "--at": 0.5 } as React.CSSProperties}>{trigger("prototype", <PrototypeScreen />)}</div>
+            <div className={s.slot} data-slot="overlay" style={{ "--at": 0.58 } as React.CSSProperties}>{trigger("agents", <AgentScreen />)}</div>
           </div>
         </div>
         {/* Phones get one dominant screen at a time instead of eight at once. */}
         <div className={s.fieldMobile}>
           <OperatorFigure uid="fieldm" className={s.fieldMobileFigure} />
-          {[<CodeScreen key="c" />, <ArchitectureScreen key="a" />, <PythonScreen key="p" />, <TerminalScreen key="t" />].map((screen, i) => (
-            <div key={i} data-reveal className={s.mobileScreen}>{screen}</div>
+          {(
+            [
+              ["architecture", <ArchitectureScreen key="a" />],
+              ["terminal", <TerminalScreen key="t" />],
+              ["python", <PythonScreen key="p" />],
+              ["pipeline", <PipelineScreen key="l" />],
+              ["agents", <AgentScreen key="g" />],
+            ] as [SurfaceId, React.ReactNode][]
+          ).map(([surface, screen]) => (
+            <div key={surface} data-reveal className={s.mobileScreen}>{trigger(surface, screen)}</div>
           ))}
         </div>
       </section>
@@ -194,5 +213,6 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
         <p className={s.exitNote}>{t.exit.note}</p>
       </section>
     </div>
+    </InspectorProvider>
   );
 }

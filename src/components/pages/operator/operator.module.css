@@ -160,14 +160,56 @@
   -webkit-mask-image: linear-gradient(#000 70%, transparent 97%);
   mask-image: linear-gradient(#000 70%, transparent 97%);
 }
-.heroFigure {
+/* Decorative figures never intercept clicks meant for the screens around them. */
+.fieldFigure, .quietFigure, .fieldMobileFigure, .foreground, .backlight, .screenGlow { pointer-events: none; }
+.heroFigureWrap {
   position: relative;
   height: min(92svh, 120vw);
-  width: auto;
-  max-width: none;
+  aspect-ratio: 600 / 800;
   transform: translateY(calc((1 - var(--p)) * 8%)) scale(calc(1.14 - 0.14 * var(--p)));
   transform-origin: 50% 40%;
 }
+.heroFigure { display: block; width: 100%; height: 100%; }
+
+/* The visor easter egg: an invisible, focusable hit area over the visor band. */
+.visorButton {
+  position: absolute;
+  left: 30%;
+  top: 38.9%;
+  width: 40%;
+  height: max(6%, 44px);
+  transform: translateY(-50%);
+  border-radius: 999px;
+  cursor: pointer;
+  z-index: 6;
+}
+.visorButton:focus-visible { outline: 1px solid rgb(242 65 26 / 0.8); outline-offset: 6px; }
+.visorMessage {
+  position: absolute;
+  left: 50%;
+  top: calc(38.9% - 3.2rem);
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--signal-hot);
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+  z-index: 6;
+}
+:global(html[lang="th"]) .visorMessage { letter-spacing: 0.06em; text-transform: none; font-family: var(--font-sans); font-size: 0.9rem; }
+.visorMessage[data-shown] { opacity: 1; }
+
+/* While synced: the visor signal flares, screen light swells, the aperture edges answer. */
+.root[data-sync] :global(.op-visor-signal) { animation: flare 2.6s ease-out both; }
+.root[data-sync] .screenGlow { animation: swell 2.6s ease-out both; }
+.root[data-sync] .edge { animation: answer 2.6s ease-out both; }
+@keyframes flare { 0% { opacity: 1; filter: none; } 18% { filter: brightness(2.4) drop-shadow(0 0 6px #ffb08f); } 100% { filter: none; } }
+@keyframes swell { 25% { opacity: 1.8; filter: brightness(1.8); } }
+@keyframes answer { 20% { opacity: 0.9; } 100% { opacity: calc(1 - var(--p) * 1.4); } }
 /* Out-of-focus monitor edge in the foreground: depth without a blur filter. */
 .foreground {
   position: absolute;
@@ -242,9 +284,24 @@
 .slot[data-slot="python"] { left: 8%; top: 59%; width: 25%; height: 22%; --ry: 12deg; z-index: 4; }
 .slot[data-slot="diag"] { left: 71%; top: 68%; width: 17%; height: 17%; --ry: -12deg; z-index: 4; }
 .slot[data-slot="proto"] { left: 58%; top: 40%; width: 7%; height: 30%; --ry: -8deg; z-index: 2; filter: brightness(0.75); }
-.slot[data-slot="overlay"] { left: 36%; top: 84%; width: 28%; height: 8%; z-index: 6; }
+.slot[data-slot="overlay"] { left: 35%; top: 79%; width: 30%; height: 13%; z-index: 6; }
 
 .fieldMobile { display: none; }
+
+.agentPlane { background: linear-gradient(90deg, rgb(156 192 232 / 0.06), rgb(236 234 227 / 0.015)) !important; }
+.roster {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.3rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(236 234 227 / 0.62);
+}
 
 /* ---------- screens ---------- */
 .screen {
@@ -602,7 +659,7 @@
   .signalWrap { width: 78vw; }
   .caret { transform: translateX(calc(var(--p) * 39vw + 6px)); }
 
-  .heroFigure { height: auto; width: 128vw; max-height: 86svh; }
+  .heroFigureWrap { height: min(86svh, 170vw); }
   .foreground { width: 70%; height: 30%; }
   .revealCopy { bottom: 2rem; }
 
@@ -626,7 +683,7 @@
   .mobileScreen { height: 40svh; min-width: 0; position: relative; z-index: 1; }
   .mobileScreen > * { height: 100%; }
   .mobileScreen .code { font-size: 0.74rem; }
-  .mobileScreen .log, .mobileScreen .miniBus { font-size: 0.72rem; }
+  .mobileScreen .log, .mobileScreen .miniBus, .mobileScreen .roster, .mobileScreen .pipeline { font-size: 0.72rem; }
   .mobileScreen .miniBus { flex-direction: column; justify-content: space-evenly; background-size: 1px 100%; }
   .screenTitle { font-size: 0.72rem; }
 
@@ -662,5 +719,6 @@
 /* ---------- reduced motion: a composed still, not a broken page ---------- */
 @media (prefers-reduced-motion: reduce) {
   .caret, .bandTrack, :global(.op-visor) > g { animation: none !important; }
+  .root[data-sync] :global(.op-visor-signal), .root[data-sync] .screenGlow, .root[data-sync] .edge { animation: none !important; }
   .scene { --p: var(--rest, 1) !important; }
 }

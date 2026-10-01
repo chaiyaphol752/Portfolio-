@@ -7,7 +7,7 @@ import s from "./operator.module.css";
 type Tok = string | [string, "k" | "s" | "c" | "f" | "a" | "n"];
 type Line = Tok[];
 
-function Code({ lines, className }: { lines: Line[]; className?: string }) {
+export function Code({ lines, className }: { lines: Line[]; className?: string }) {
   return (
     <pre className={`${s.code} ${className ?? ""}`}>
       {lines.map((line, i) => (
@@ -47,7 +47,7 @@ const deliverTs: Line[] = [
   ["}"],
 ];
 
-const agentsPy: Line[] = [
+export const agentsPy: Line[] = [
   [["AGENTS", "f"], " = {"],
   ["  ", ['"python-agent"', "s"], ": {"],
   ["    ", ['"tools"', "s"], ": [", ['"python"', "s"], ", ", ['"file-data"', "s"], ", ", ['"apis"', "s"], "],"],
@@ -187,14 +187,18 @@ export function PrototypeScreen({ className }: { className?: string }) {
   );
 }
 
-/** Transparent overlay plane floating in front of the operator. */
-export function OverlayPlane({ className }: { className?: string }) {
+const roster = ["research", "frontend", "backend", "python", "ai integration", "automation", "testing", "review", "deployment"];
+
+/** Agent roster: a translucent plane listing the specialised agents. */
+export function AgentScreen({ className }: { className?: string }) {
   return (
-    <div className={`${s.overlay} ${className ?? ""}`} aria-hidden>
-      <span>controlled autonomy</span>
-      <span>human checkpoint</span>
-      <span>routing</span>
-    </div>
+    <Chrome title="agents · roster" className={`${s.agentPlane} ${className ?? ""}`} frame="bare">
+      <ul className={s.roster}>
+        {roster.map((a) => (
+          <li key={a}>{a}</li>
+        ))}
+      </ul>
+    </Chrome>
   );
 }
 

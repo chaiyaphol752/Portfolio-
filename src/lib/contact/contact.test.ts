@@ -116,3 +116,22 @@ describe("contact abuse controls", () => {
     expect(clientIp(() => null)).toBe("unknown");
   });
 });
+
+describe("open relay and injection guards", () => {
+  it("drops any recipient-like fields a visitor adds to the form", () => {
+    const r = parseContact({ ...valid, to: "victim@example.com", cc: "x@y.z", bcc: "a@b.c", from: "spoof@example.com" });
+    expect(r.success).toBe(true);
+    if (r.success) {
+      for (const k of ["to", "cc", "bcc", "from"]) expect(k in r.data).toBe(false);
+    }
+  });
+  it("rejects header injection through the reply-to email", () => {
+    for (const email of ["a@b.co\nBcc: x@y.z", "a@b.co\r\nSubject: hi", "a@b.co, c@d.co"]) {
+      expect(parseContact({ ...valid, email }).success).toBe(false);
+    }
+  });
+  it("enforces length limits server-side", () => {
+    expect(parseContact({ ...valid, message: "x".repeat(4001) }).success).toBe(false);
+    expect(parseContact({ ...valid, name: "x".repeat(101) }).success).toBe(false);
+  });
+});

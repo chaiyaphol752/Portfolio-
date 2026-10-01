@@ -52,6 +52,24 @@ await check("operator showcase renders with its figure and exit links", async ()
   await p.mouse.wheel(0, 4000); await p.waitForTimeout(400);
   assert((await p.locator("[data-scene][data-active]").count()) >= 1, "scroll director inactive");
 });
+await check("operator: home entry, screen inspector, safe console, visor", async () => {
+  await p.goto(`${base}/en`, { waitUntil: "networkidle" });
+  assert((await p.locator('#operator-entry-title').count()) === 1 && (await p.locator('a[href="/en/operator"]').count()) > 0, "home entry");
+  await p.goto(`${base}/en/operator`, { waitUntil: "networkidle" });
+  const triggers = p.locator('main button[aria-haspopup="dialog"]');
+  assert((await triggers.count()) >= 6, "interactive screens");
+  const arch = p.getByRole("button", { name: "Open Architecture" }).first();
+  await arch.scrollIntoViewIfNeeded(); await p.waitForTimeout(500); await arch.click({ force: true }); await p.waitForTimeout(600);
+  assert(/View full architecture/.test(await p.locator("dialog[open]").innerText()), "architecture inspector");
+  await p.keyboard.press("Escape"); await p.waitForTimeout(200);
+  const term = p.getByRole("button", { name: "Open Terminal" }).first();
+  await term.click({ force: true }); await p.waitForTimeout(600);
+  const input = p.locator("dialog[open] input"); await input.fill("security"); await input.press("Enter"); await p.waitForTimeout(200);
+  assert(/Content-Security-Policy/.test(await p.locator("dialog[open]").innerText()), "console output");
+  await p.keyboard.press("Escape");
+  await p.getByRole("button", { name: /visor/i }).click({ force: true }); await p.waitForTimeout(300);
+  assert((await p.locator("#operator-root[data-sync]").count()) === 1, "visor easter egg");
+});
 await check("security headers present (CSP, HSTS, frame, nosniff, COOP)", async () => {
   const h = (await p.request.get(`${base}/en`)).headers();
   for (const k of ["content-security-policy", "strict-transport-security", "x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy", "cross-origin-opener-policy"]) assert(h[k], `missing ${k}`);

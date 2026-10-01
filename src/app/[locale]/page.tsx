@@ -10,6 +10,7 @@ import { Services } from "@/components/pages/home/Services";
 import { AiTeaser } from "@/components/pages/home/AiTeaser";
 import { Process } from "@/components/pages/home/Process";
 import { WorkTeaser } from "@/components/pages/home/WorkTeaser";
+import { OperatorEntry } from "@/components/pages/home/OperatorEntry";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -28,6 +29,7 @@ export default async function HomePage({ params }: Props) {
       <HomeHero locale={locale} />
       <Services locale={locale} />
       <AiTeaser locale={locale} />
+      <OperatorEntry locale={locale} />
       <Process locale={locale} />
       <WorkTeaser locale={locale} />
       <CtaBand locale={locale} title={c.closing.title} body={c.closing.body} label={common[locale].cta.startProject} />
