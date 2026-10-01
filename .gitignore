@@ -4,7 +4,10 @@ out
 build
 coverage
 .vercel
+# Environment files: secrets stay local
 .env
+.env.local
+.env.*.local
 .env.*
 !.env.example
 *.pem
