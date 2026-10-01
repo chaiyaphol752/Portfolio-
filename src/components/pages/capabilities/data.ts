@@ -129,7 +129,7 @@ export const capabilityEdges: readonly (readonly [CapabilityId, CapabilityId])[]
   ["postgresql", "database-design"], ["serverless", "vercel"], ["api-integration", "validation"],
   // Workflow automation: n8n moves data between systems; reasoning stays with the orchestrator.
   ["n8n", "webhooks"], ["n8n", "api-integration"], ["n8n", "py-automation"], ["n8n", "orchestration"],
-  ["n8n", "postgresql"], ["webhooks", "backend"],
+  ["n8n", "postgresql"], ["webhooks", "backend"], ["n8n", "python"],
   // Delivery
   ["git", "github"], ["github", "vercel"], ["vercel", "deployment"], ["testing", "deployment"],
   ["nextjs", "performance"], ["typescript", "testing"], ["github", "testing"],

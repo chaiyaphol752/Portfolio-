@@ -1,0 +1,131 @@
+/*
+ * Mobile (<768px): a single vertical spine on the left with a junction per stage.
+ * Tablet (768–1279px): stages stack centred; Models and Tools fork side by side,
+ * joined by orthogonal connectors. Only stage-to-stage connectors are drawn.
+ */
+.stages {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.stage {
+  position: relative;
+  min-width: 0;
+}
+
+.junction {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .stages::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background: var(--color-night-line);
+  }
+  .stage {
+    padding-left: 2.1rem;
+  }
+  .junction {
+    display: block;
+    position: absolute;
+    left: 4px;
+    top: 1.3rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 2px solid var(--color-night-mute);
+    background: var(--color-night);
+  }
+  .stage[data-lit="true"] .junction {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+}
+
+@media (min-width: 768px) {
+  .stages {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+    row-gap: 2.5rem;
+  }
+  .stage {
+    grid-column: span 2;
+  }
+  .stage.half {
+    grid-column: span 1;
+  }
+  /* Vertical connector into every stage from the one above. */
+  .stage + .stage::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -2.5rem;
+    width: 2px;
+    height: 2.5rem;
+    background: var(--color-night-line);
+  }
+  .stage[data-lit="true"]::before {
+    background: var(--color-accent);
+  }
+  /* Fork above Models | Tools and join below them. */
+  .fork,
+  .join {
+    position: absolute;
+    left: 50%;
+    width: calc(100% + 1.5rem);
+    height: 2px;
+    background: var(--color-night-line);
+  }
+  .fork {
+    top: -1.25rem;
+  }
+  /* Stem from the agents stage down to the fork, at the page centre (= fork midpoint). */
+  .fork::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -1.25rem;
+    width: 2px;
+    height: 1.25rem;
+    background: var(--color-night-line);
+  }
+  .join {
+    bottom: -1.25rem;
+  }
+  .stage.half::before {
+    top: -1.25rem;
+    height: 1.25rem;
+  }
+  .stage.half::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1.25rem;
+    width: 2px;
+    height: 1.25rem;
+    background: var(--color-night-line);
+  }
+  .afterPair::before {
+    top: -1.25rem !important;
+    height: 1.25rem !important;
+  }
+}
+
+.tile {
+  transition: border-color 0.2s, background-color 0.2s, opacity 0.25s;
+}
+.dim {
+  opacity: 0.42;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: none;
+  }
+}

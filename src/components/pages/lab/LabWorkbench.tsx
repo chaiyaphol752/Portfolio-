@@ -80,7 +80,7 @@ export function LabWorkbench({ t }: { t: LabContent }) {
       </div>
 
       {/* Tool description strip */}
-      <p className="border-b border-ink bg-paper-2 px-4 py-2 text-[0.8rem] text-ink-2">{t.workbench.tabs[active].blurb}</p>
+      <p className="border-b border-ink bg-paper-2 px-4 py-2 text-[0.85rem] text-ink-2 sm:text-[0.8rem]">{t.workbench.tabs[active].blurb}</p>
 
       <div role="tabpanel" id={`${uid}-panel-${active}`} aria-labelledby={`${uid}-tab-${active}`} tabIndex={0}>
         {active === "request" && <RequestTool t={t.request} />}
@@ -90,7 +90,7 @@ export function LabWorkbench({ t }: { t: LabContent }) {
       </div>
 
       {/* Status bar */}
-      <div className="on-night night mono flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2 text-[0.68rem] text-night-mute">
+      <div className="on-night night mono flex flex-wrap items-center gap-x-5 gap-y-1 px-4 py-2.5 text-[0.75rem] text-night-mute sm:py-2 sm:text-[0.68rem]">
         <span className="inline-flex items-center gap-2">
           <span aria-hidden className="size-1.5 rounded-full bg-ok" />
           {t.shell.status}

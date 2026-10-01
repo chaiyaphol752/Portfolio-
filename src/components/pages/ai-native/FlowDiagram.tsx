@@ -41,7 +41,7 @@ export function FlowDiagram({ steps, locale, parallelLabel, dark = true, details
     const body = (
       <>
         <span className="font-medium">{text}</span>
-        {detail && <span className={clsx("mono mt-1 block text-[0.68rem] leading-snug", dark ? "text-night-mute" : "text-ink-3")}>{detail}</span>}
+        {detail && <span className={clsx("mono mt-1 block text-xs leading-snug", dark ? "text-night-mute" : "text-ink-3")}>{detail}</span>}
       </>
     );
     return isNode(id) ? (
@@ -65,7 +65,7 @@ export function FlowDiagram({ steps, locale, parallelLabel, dark = true, details
           <li className={clsx("lg:min-w-[7.5rem] lg:max-w-[11rem] lg:flex-1", Array.isArray(s) && "lg:max-w-[13rem]")}>
             {Array.isArray(s) ? (
               <div className={clsx("rounded-md border border-dashed p-2", dark ? "border-night-line" : "border-line")}>
-                <p className={clsx("mono mb-1.5 px-1 text-[0.62rem] uppercase tracking-wider", dark ? "text-night-mute" : "text-ink-3")}>{parallelLabel}</p>
+                <p className={clsx("mono mb-1.5 px-1 text-xs uppercase tracking-wider", dark ? "text-night-mute" : "text-ink-3")}>{parallelLabel}</p>
                 <ul className="flex flex-col gap-1">
                   {s.map((id) => (
                     <li key={id}>{step(id, true)}</li>

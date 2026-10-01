@@ -11,19 +11,16 @@ import {
   nodesIn,
   type CapabilityId,
   type DomainId,
-  type Family,
 } from "./data";
 import { hubEdges, relatedSet, tracePath, type Point } from "./graph";
 import { padClass } from "./style";
 
-/** Board columns: web on the left, Python + local AI in the middle, the AI ecosystem on the right. */
+/** Desktop board (≥1024px). Columns: web on the left, Python + local AI in the middle, the AI ecosystem on the right. */
 const columns: readonly (readonly DomainId[])[] = [
   ["interface", "server", "delivery"],
   ["python", "local"],
   ["models", "autonomy", "ai-engineering"],
 ];
-
-const familyAnchor: Record<Family, DomainId> = { web: "interface", python: "python", ai: "models", local: "local" };
 
 
 export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
@@ -86,9 +83,9 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
     if (scroll) pads.current.get(id)?.closest("button")?.focus({ preventScroll: false });
   };
 
-  const inspector = (compact: boolean) => (
-    <div className={clsx("night on-night", compact ? "mt-5 rounded-md p-5" : "grid gap-8 rounded-md p-7 lg:grid-cols-12")}>
-      <div className={compact ? "" : "lg:col-span-5"}>
+  const inspector = (
+    <div className="night on-night grid grid-cols-12 gap-8 rounded-md p-7">
+      <div className="col-span-5">
         <p className="eyebrow">
           {t.ui.selected} · {t.domains[node.domain].label}
           {node.family === "local" && <> · {t.ui.concept}</>}
@@ -96,7 +93,7 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
         <p className="display-serif mt-2 text-[clamp(2rem,4vw,3.25rem)] leading-none">{label(selected)}</p>
         <p className="mono mt-3 text-xs text-night-mute">{interpolate(t.ui.connections, { n: node.related.length })}</p>
       </div>
-      <div className={compact ? "mt-4 space-y-4" : "space-y-5 lg:col-span-7"}>
+      <div className="col-span-7 space-y-5">
         <div>
           <p className="eyebrow mb-2">{t.ui.builds}</p>
           <p className="max-w-[60ch] text-[0.95rem] leading-relaxed text-night-ink">
@@ -140,24 +137,10 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
         {interpolate(t.ui.status, { label: label(selected), n: node.related.length })}
       </p>
 
-      {/* Mobile: jump links between families instead of a squeezed graph. */}
-      <nav aria-label={t.ui.jump} className="sticky top-[var(--header-h)] z-20 -mx-[var(--gutter)] mb-6 border-b border-line bg-paper/95 px-[var(--gutter)] py-3 lg:hidden">
-        <ul className="flex gap-2 overflow-x-auto">
-          {(Object.keys(familyAnchor) as Family[]).map((f) => (
-            <li key={f} className="shrink-0">
-              <a href={`#cap-${familyAnchor[f]}`} className="mono inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[0.72rem] uppercase tracking-wider">
-                <span aria-hidden className={clsx("size-2", padClass[f])} />
-                {t.families[f].label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className="mb-6 hidden lg:block">{inspector(false)}</div>
+      <div className="mb-6">{inspector}</div>
 
       <div ref={attachBoard} role="group" aria-label={t.ui.boardLabel} className="relative">
-        <svg aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block" width={size.w} height={size.h} viewBox={`0 0 ${size.w || 1} ${size.h || 1}`}>
+        <svg aria-hidden className="pointer-events-none absolute inset-0" width={size.w} height={size.h} viewBox={`0 0 ${size.w || 1} ${size.h || 1}`}>
           {traces.hub.map((l) => (
             <path key={l.key} d={l.d} fill="none" className="stroke-paper-3" strokeWidth={1.25} />
           ))}
@@ -166,19 +149,18 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
           ))}
         </svg>
 
-        <div className="relative grid gap-10 lg:grid-cols-3 lg:gap-x-14">
+        <div className="relative grid grid-cols-3 gap-x-14 gap-y-10">
           {columns.map((col, ci) => (
-            <div key={ci} className={clsx("flex flex-col gap-10", ci === 1 && "lg:pt-6")}>
+            <div key={ci} className={clsx("flex flex-col gap-10", ci === 1 && "pt-6")}>
               {col.map((domain) => {
                 const items = nodesIn(domain);
                 const isPython = domain === "python";
-                const containsSelected = items.some((n) => n.id === selected);
                 return (
                   <section
                     key={domain}
                     id={`cap-${domain}`}
                     aria-labelledby={`cap-${domain}-title`}
-                    className={clsx("scroll-mt-[calc(var(--header-h)+4.5rem)]", isPython && "night on-night rounded-md p-6")}
+                    className={clsx(isPython && "night on-night rounded-md p-6")}
                   >
                     <header className={clsx("mb-4 border-b pb-3", isPython ? "border-night-line" : "border-ink")}>
                       <p className={clsx("eyebrow", isPython && "text-night-mute")}>{t.families[items[0]!.family].label}</p>
@@ -187,7 +169,7 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
                       </h3>
                       {isPython && <p className="mt-3 text-sm leading-relaxed text-night-mute">{t.domains.python.body}</p>}
                     </header>
-                    <ul className={clsx("grid gap-x-4", isPython ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2" : "grid-cols-1 sm:grid-cols-2")}>
+                    <ul className={clsx("grid gap-x-4", isPython ? "grid-cols-1 xl:grid-cols-2" : "grid-cols-2")}>
                       {items.map((n) => {
                         const isSel = n.id === selected;
                         const isRel = highlight.has(n.id) && !isSel;
@@ -198,7 +180,7 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
                               aria-pressed={isSel}
                               onClick={() => select(n.id)}
                               className={clsx(
-                                "group flex w-full items-center gap-3 py-2 text-left text-[0.88rem] transition-colors",
+                                "group flex min-h-9 w-full items-center gap-3 py-2 text-left text-[0.88rem] transition-colors",
                                 isPython ? "bg-night" : "bg-paper",
                                 isSel ? (isPython ? "text-night-ink" : "text-ink") : isRel ? (isPython ? "text-night-ink" : "text-ink") : isPython ? "text-night-mute hover:text-night-ink" : "text-ink-2 hover:text-ink",
                                 n.id === "python" && "!py-3 text-base font-semibold",
@@ -223,7 +205,6 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
                         );
                       })}
                     </ul>
-                    {containsSelected && <div className="lg:hidden">{inspector(true)}</div>}
                   </section>
                 );
               })}

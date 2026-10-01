@@ -82,7 +82,7 @@ export function AgentSystem({ copy, locale }: { copy: AiNativeContent["agents"];
                   on ? "border-accent bg-night-3" : "border-night-line hover:border-night-mute",
                 )}
               >
-                <span className="mono text-[0.65rem] uppercase tracking-wider text-night-mute">{copy.items[id].focus}</span>
+                <span className="mono text-xs uppercase tracking-wider text-night-mute">{copy.items[id].focus}</span>
                 <span className="text-sm font-medium leading-tight text-night-ink">{copy.items[id].name}</span>
               </button>
             );

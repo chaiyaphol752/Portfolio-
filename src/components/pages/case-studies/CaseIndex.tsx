@@ -48,7 +48,7 @@ export function CaseIndex({ labels, cases, steps }: Props) {
       {(["full", "overview"] as const).map((m) => (
         <label key={m} className="cursor-pointer">
           <input type="radio" name="reading-mode" className="peer sr-only" checked={mode === m} onChange={() => setMode(m)} />
-          <span className="mono block whitespace-nowrap rounded-full px-3 py-1.5 text-[0.68rem] uppercase tracking-wider text-ink-2 peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2">
+          <span className="mono block whitespace-nowrap rounded-full px-3.5 py-2.5 text-[0.75rem] uppercase tracking-wider lg:px-3 lg:py-1.5 lg:text-[0.68rem] text-ink-2 peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2">
             {labels.reading[m]}
           </span>
         </label>
@@ -68,7 +68,7 @@ export function CaseIndex({ labels, cases, steps }: Props) {
                   href={`#${c.id}`}
                   aria-current={c.id === active.caseId ? "true" : undefined}
                   className={clsx(
-                    "block max-w-[15rem] truncate rounded-full border px-3 py-1.5 text-sm",
+                    "flex min-h-10 max-w-[15rem] items-center truncate rounded-full border px-3.5 text-sm",
                     c.id === active.caseId ? "border-ink bg-ink text-paper" : "border-line text-ink-2",
                   )}
                 >
@@ -78,8 +78,9 @@ export function CaseIndex({ labels, cases, steps }: Props) {
             ))}
           </ul>
         </nav>
-        <div className="mt-3">{toggle}</div>
       </div>
+      {/* Reading mode scrolls with the page on phones so the sticky bar stays one row high. */}
+      <div className="mt-4 lg:hidden">{toggle}</div>
 
       {/* Wide screens: sticky rail. */}
       <div className="hidden lg:sticky lg:top-[calc(var(--header-h)+2rem)] lg:block lg:max-h-[calc(100dvh-var(--header-h)-3rem)] lg:overflow-y-auto lg:pt-14">

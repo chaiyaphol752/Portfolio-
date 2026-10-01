@@ -23,7 +23,7 @@ export function IndexMenu({ locale, t }: { locale: Locale; t: CommonContent }) {
       <button
         type="button"
         onClick={() => ref.current?.showModal()}
-        className="mono inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-[0.72rem] uppercase tracking-wider hover:border-ink"
+        className="mono inline-flex h-11 items-center gap-2 rounded-full border border-line px-3 text-[0.72rem] uppercase tracking-wider hover:border-ink sm:h-10 sm:px-4"
         aria-haspopup="dialog"
       >
         <Menu className="size-4" aria-hidden />

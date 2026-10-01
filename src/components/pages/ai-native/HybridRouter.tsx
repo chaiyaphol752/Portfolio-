@@ -147,7 +147,7 @@ export function HybridRouter({ copy }: { copy: AiNativeContent["hybrid"] }) {
             );
           })}
         </svg>
-        <figcaption className="mono text-[0.7rem] text-night-mute">{copy.simulation}</figcaption>
+        <figcaption className="mono text-xs text-night-mute">{copy.simulation}</figcaption>
       </figure>
     </div>
   );

@@ -49,7 +49,7 @@ export function HomeHero({ locale }: { locale: Locale }) {
               {t.cta.startProject}
             </ButtonLink>
           </div>
-          <Link href={localizedPath(locale, "ai-native")} className="group inline-flex items-center gap-2 text-sm font-medium">
+          <Link href={localizedPath(locale, "ai-native")} className="group inline-flex min-h-11 items-center gap-2 self-start text-sm font-medium lg:self-end">
             <span className="link-underline">{c.secondary}</span>
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
           </Link>

@@ -9,7 +9,7 @@ export function PaletteButton({ label, keysLabel, ctrl }: { label: string; keysL
     <button
       type="button"
       onClick={openCommandPalette}
-      className="group inline-flex items-center gap-3 rounded-sm border border-night-line bg-night-2 px-3 py-2 text-[0.82rem] transition-colors hover:border-night-ink"
+      className="group inline-flex min-h-11 items-center gap-3 rounded-sm border border-night-line bg-night-2 px-3 py-2 text-[0.82rem] transition-colors hover:border-night-ink"
     >
       <Command className="size-4 text-night-mute group-hover:text-night-ink" aria-hidden />
       <span>{label}</span>

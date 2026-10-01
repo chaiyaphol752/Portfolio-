@@ -7,7 +7,7 @@ export function SystemsCatalog({ copy }: { copy: AiNativeContent["catalog"] }) {
       {copy.items.map((item) => (
         <li key={item.title} className="grid gap-6 border-b border-line py-8 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-10">
           <div className="lg:col-span-5">
-            <p className="mono mb-3 inline-block rounded-full border border-line px-2.5 py-0.5 text-[0.65rem] uppercase tracking-wider text-ink-3">{copy.badge}</p>
+            <p className="mono mb-3 inline-block rounded-full border border-line px-2.5 py-0.5 text-xs uppercase tracking-wider text-ink-3">{copy.badge}</p>
             <h3 className="text-[clamp(1.5rem,2.4vw,2rem)] font-medium leading-tight tracking-tight">{item.title}</h3>
             <p className="mt-3 max-w-[48ch] text-ink-2">{item.body}</p>
           </div>

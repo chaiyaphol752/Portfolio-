@@ -26,7 +26,7 @@ export function StatusPanel({ copy, values, sourceLabel, className }: { copy: C[
     <button
       type="button"
       onClick={refresh}
-      className="mono inline-flex items-center gap-1.5 text-[0.68rem] uppercase tracking-wider text-night-mute transition-colors hover:text-night-ink"
+      className="mono -my-3 inline-flex min-h-11 items-center gap-1.5 text-[0.75rem] uppercase tracking-wider text-night-mute transition-colors hover:text-night-ink sm:min-h-0 sm:text-[0.68rem]"
     >
       <RefreshCw className={clsx("size-3", state.kind === "loading" && "motion-safe:animate-spin")} aria-hidden />
       {copy.retry}

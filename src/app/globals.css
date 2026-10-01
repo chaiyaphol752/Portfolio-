@@ -136,6 +136,14 @@ html[lang="th"] .display-serif { font-family: var(--font-sans); font-style: norm
 .mono { font-family: var(--font-mono); font-feature-settings: "zero" 1; }
 .tabular { font-variant-numeric: tabular-nums; }
 
+/* Phones: mono micro-labels never drop below ~11.5px. Decorative mock-ups (aria-hidden)
+   and SVG text keep their scale because they depict miniature screens. */
+@media (max-width: 639.98px) {
+  :is(.text-\[0\.55rem\], .text-\[0\.6rem\], .text-\[0\.62rem\], .text-\[0\.65rem\], .text-\[0\.66rem\], .text-\[0\.68rem\]):not([aria-hidden="true"], [aria-hidden="true"] *, svg *) {
+    font-size: 0.72rem;
+  }
+}
+
 /* ---------- Layout helpers ---------- */
 .container-page { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
 .section { padding-block: clamp(4rem, 9vw, 8.5rem); }

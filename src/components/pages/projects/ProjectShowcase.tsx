@@ -20,13 +20,13 @@ function Labels({ project, t, dark }: { project: ProjectMeta; t: ProjectsContent
     <p className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <span
         className={clsx(
-          "mono rounded-sm px-2 py-1 text-[0.66rem] uppercase tracking-wider",
+          "mono rounded-sm px-2 py-1 text-[0.72rem] uppercase tracking-wider sm:text-[0.66rem]",
           project.kind === "demo" ? "bg-accent-ink text-white" : dark ? "border border-night-line text-night-ink" : "border border-ink text-ink",
         )}
       >
         {t.kind[project.kind]}
       </span>
-      <span className={clsx("mono text-[0.7rem] uppercase tracking-wider", dark ? "text-night-mute" : "text-ink-3")}>
+      <span className={clsx("mono text-[0.72rem] uppercase tracking-wider sm:text-[0.7rem]", dark ? "text-night-mute" : "text-ink-3")}>
         {project.categories.map((c) => t.categories[c]).join(" · ")}
       </span>
     </p>

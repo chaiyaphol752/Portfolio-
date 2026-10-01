@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { AlertTriangle, CheckCircle2, Plus, Send, X } from "lucide-react";
 import { clsx } from "clsx";
 import type { LabContent } from "@/content/lab";
@@ -370,12 +371,12 @@ function KeyValueEditor({ rows, t, idPrefix, onChange, onAdd, onRemove }: Editor
         <ul className="space-y-1">
           {rows.map((row, i) => (
             <li key={i} className="grid grid-cols-[auto_minmax(0,1fr)_minmax(0,1.3fr)_auto] items-center gap-2">
-              <input
-                type="checkbox"
+              <Checkbox
+                box="sm"
                 checked={row.enabled}
                 onChange={(e) => onChange(i, { enabled: e.target.checked })}
                 aria-label={`${t.enabled} ${i + 1}`}
-                className="size-4 accent-[var(--color-ink)]"
+                className="-mx-2"
               />
               <input
                 value={row.key}

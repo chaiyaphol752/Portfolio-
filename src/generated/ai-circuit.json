@@ -1,14 +1,16 @@
 {
   "meta": {
     "generator": "scripts/generate_ai_circuit.py",
-    "description": "AI orchestration architecture: input, orchestrator, planner and agent router, a separate model layer, specialised agents, an automation and tool layer with n8n and Python, data, validation, human approval and delivery.",
-    "topologyHash": "246867dc3903",
-    "nodeCount": 39,
-    "edgeCount": 33,
+    "description": "AI orchestration architecture: human intent, an orchestrator with planner, agent router and model router, specialised agents, a separate model layer, n8n and Python in the automation and tool layer, data, validation, human approval and delivery.",
+    "topologyHash": "c3dff9daa892",
+    "nodeCount": 41,
+    "edgeCount": 35,
+    "connectionCount": 78,
     "agentCount": 12,
+    "stageCount": 9,
+    "workflowCount": 5,
     "groupCount": 7,
-    "traceLength": 8354,
-    "layout": "layered, top to bottom, bus-routed"
+    "traceLength": 8207
   },
   "viewBox": [
     0,
@@ -16,943 +18,1180 @@
     1340,
     1040
   ],
-  "node": {
-    "width": 150,
-    "height": 46
-  },
-  "layers": [
+  "verbs": [
+    "delegates",
+    "routes",
+    "calls",
+    "reads-writes",
+    "validates",
+    "approves",
+    "deploys",
+    "triggers",
+    "automates",
+    "selects-model"
+  ],
+  "stages": [
     {
-      "id": "input",
-      "label": "Input",
-      "y0": 30,
-      "y1": 110
+      "id": "intent",
+      "label": "Human intent",
+      "summary": "A person, a form or an event states what needs to happen.",
+      "nodeIds": [
+        "client",
+        "goal",
+        "form",
+        "triggers",
+        "application"
+      ]
     },
     {
-      "id": "orchestration",
-      "label": "Orchestration",
-      "y0": 135,
-      "y1": 378
+      "id": "orchestrator",
+      "label": "Orchestrator",
+      "summary": "The coordinator: holds state, delegates work and decides when a result is ready.",
+      "nodeIds": [
+        "orchestrator",
+        "state"
+      ]
+    },
+    {
+      "id": "plan-route",
+      "label": "Plan & route",
+      "summary": "The goal becomes tasks; each task goes to the right agent and model.",
+      "nodeIds": [
+        "planner",
+        "agent-router",
+        "model-router"
+      ]
     },
     {
       "id": "agents",
-      "label": "Agents",
-      "y0": 392,
-      "y1": 580
+      "label": "Specialised agents",
+      "summary": "Workers with one responsibility each and only the tools they need.",
+      "nodeIds": [
+        "research-agent",
+        "browser-agent",
+        "frontend-agent",
+        "backend-agent",
+        "python-agent",
+        "data-agent",
+        "test-agent",
+        "review-agent",
+        "ai-agent",
+        "local-agent",
+        "automation-agent",
+        "deploy-agent"
+      ]
+    },
+    {
+      "id": "models",
+      "label": "Model layer",
+      "summary": "Cloud models and local models, chosen per task by the model router.",
+      "nodeIds": [
+        "chatgpt",
+        "claude",
+        "local-ai"
+      ]
     },
     {
       "id": "tools",
       "label": "Automation & tools",
-      "y0": 600,
-      "y1": 720
+      "summary": "n8n runs the workflows, Python provides the programmable tools.",
+      "nodeIds": [
+        "n8n",
+        "python",
+        "apis",
+        "webhooks",
+        "file-data",
+        "browser"
+      ]
     },
     {
       "id": "data",
-      "label": "Data",
-      "y0": 755,
-      "y1": 825
+      "label": "Data & external systems",
+      "summary": "Databases, private documents and the systems that receive results.",
+      "nodeIds": [
+        "database",
+        "embeddings",
+        "private-docs",
+        "actions"
+      ]
     },
     {
       "id": "control",
-      "label": "Control & delivery",
-      "y0": 855,
-      "y1": 1020
+      "label": "Validation & approval",
+      "summary": "Checks run on every result; a person approves anything irreversible.",
+      "nodeIds": [
+        "validation",
+        "approval"
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery",
+      "summary": "Reviewed changes ship through GitHub and Vercel; messages go out by email.",
+      "nodeIds": [
+        "github",
+        "vercel",
+        "production",
+        "email"
+      ]
     }
   ],
-  "labelX": 27,
-  "modelBox": {
-    "id": "models",
-    "label": "AI models",
-    "x0": 1062,
-    "x1": 1300,
-    "y0": 164,
-    "y1": 350
-  },
   "nodes": [
-    {
-      "id": "triggers",
-      "label": "Triggers",
-      "sub": "API · webhook · schedule",
-      "layer": "input",
-      "kind": "input",
-      "status": "capability",
-      "designator": "IN1",
-      "x": 180,
-      "y": 70,
-      "w": 150,
-      "h": 46
-    },
     {
       "id": "client",
       "label": "Human · client",
       "sub": "goal and constraints",
-      "layer": "input",
-      "kind": "input",
+      "type": "input",
+      "stage": "intent",
+      "description": "The person or client who sets the goal, the limits and what counts as done.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "IN2",
-      "x": 420,
-      "y": 70,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "goal",
       "label": "Input · goal",
       "sub": "task, context, limits",
-      "layer": "input",
-      "kind": "input",
+      "type": "input",
+      "stage": "intent",
+      "description": "The task as the system receives it: goal, context and constraints.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "IN3",
-      "x": 660,
-      "y": 70,
-      "w": 150,
-      "h": 46
+      "uses": []
+    },
+    {
+      "id": "form",
+      "label": "Website form",
+      "sub": "enquiry · lead",
+      "type": "input",
+      "stage": "intent",
+      "description": "A form on a website — like the contact form on this site — that starts a workflow.",
+      "mobilePriority": 2,
+      "status": "live",
+      "uses": []
+    },
+    {
+      "id": "triggers",
+      "label": "Triggers",
+      "sub": "API · webhook · schedule",
+      "type": "input",
+      "stage": "intent",
+      "description": "Events that start automated work: an API call, an incoming webhook or a schedule.",
+      "mobilePriority": 2,
+      "status": "capability",
+      "uses": []
     },
     {
       "id": "application",
       "label": "Application",
-      "sub": "Next.js · React · TypeScript",
-      "layer": "input",
-      "kind": "input",
+      "sub": "Next.js · React",
+      "type": "input",
+      "stage": "intent",
+      "description": "The product people use — here a Next.js, React and TypeScript application.",
+      "mobilePriority": 2,
       "status": "live",
-      "designator": "IN4",
-      "x": 900,
-      "y": 70,
-      "w": 150,
-      "h": 46
-    },
-    {
-      "id": "state",
-      "label": "State · checkpoints",
-      "sub": "context, memory, resume",
-      "layer": "orchestration",
-      "kind": "core",
-      "status": "capability",
-      "designator": "U1",
-      "x": 420,
-      "y": 180,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "orchestrator",
       "label": "Orchestrator",
       "sub": "central coordination",
-      "layer": "orchestration",
-      "kind": "core",
+      "type": "core",
+      "stage": "orchestrator",
+      "description": "The central coordinator. It does not answer questions itself — it decides who works on what, keeps the state and puts the results together.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "U2",
-      "x": 660,
-      "y": 180,
-      "w": 190,
-      "h": 52
+      "uses": [
+        "Workflow coordination",
+        "Context passing",
+        "State management",
+        "Task delegation",
+        "Selecting agents and tools",
+        "Routing work",
+        "Retries",
+        "Checkpoints",
+        "Aggregating results"
+      ]
     },
     {
-      "id": "model-router",
-      "label": "Model router",
-      "sub": "capability · privacy · cost",
-      "layer": "orchestration",
-      "kind": "core",
+      "id": "state",
+      "label": "State · checkpoints",
+      "sub": "context, memory, resume",
+      "type": "core",
+      "stage": "orchestrator",
+      "description": "Keeps workflow state, context and checkpoints so work can resume or roll back.",
+      "mobilePriority": 3,
       "status": "capability",
-      "designator": "U3",
-      "x": 900,
-      "y": 180,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "planner",
       "label": "Planner",
       "sub": "task decomposition",
-      "layer": "orchestration",
-      "kind": "core",
+      "type": "core",
+      "stage": "plan-route",
+      "description": "Breaks the goal into small tasks, each with its own check.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "U4",
-      "x": 660,
-      "y": 270,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "agent-router",
       "label": "Agent router",
-      "sub": "assigns specialised agents",
-      "layer": "orchestration",
-      "kind": "core",
+      "sub": "assigns agents",
+      "type": "core",
+      "stage": "plan-route",
+      "description": "Assigns each task to the specialised agent that owns that kind of work.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "U5",
-      "x": 660,
-      "y": 350,
-      "w": 150,
-      "h": 46
+      "uses": []
+    },
+    {
+      "id": "model-router",
+      "label": "Model router",
+      "sub": "capability · privacy",
+      "type": "core",
+      "stage": "plan-route",
+      "description": "Chooses a model per task by capability, privacy, cost, latency and availability. Agents never call models directly.",
+      "mobilePriority": 1,
+      "status": "capability",
+      "uses": []
     },
     {
       "id": "chatgpt",
       "label": "ChatGPT",
       "sub": "OpenAI models",
-      "layer": "models",
-      "kind": "model",
+      "type": "model",
+      "stage": "models",
+      "description": "OpenAI models for research, analysis, reasoning, specifications and content — reached only through the model router.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "M1",
-      "x": 1150,
-      "y": 200,
-      "w": 150,
-      "h": 46
+      "uses": [
+        "Research",
+        "Analysis",
+        "Reasoning",
+        "Specifications",
+        "Content",
+        "Tool use"
+      ]
     },
     {
       "id": "claude",
       "label": "Claude",
       "sub": "Claude · Claude Code",
-      "layer": "models",
-      "kind": "model",
+      "type": "model",
+      "stage": "models",
+      "description": "Claude and Claude Code for repository analysis, planning, implementation, refactoring, debugging and review.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "M2",
-      "x": 1150,
-      "y": 258,
-      "w": 150,
-      "h": 46
+      "uses": [
+        "Repository analysis",
+        "Planning",
+        "Implementation",
+        "Refactoring",
+        "Debugging",
+        "Code review"
+      ]
     },
     {
       "id": "local-ai",
       "label": "Local AI",
       "sub": "private, self-hosted",
-      "layer": "models",
-      "kind": "model",
+      "type": "model",
+      "stage": "models",
+      "description": "Self-hosted models for private data and offline-capable workflows — Ollama-, LM Studio- or llama.cpp-style runtimes with embeddings and retrieval. Shown as a capability, not a running deployment.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "M3",
-      "x": 1150,
-      "y": 316,
-      "w": 150,
-      "h": 46
+      "uses": [
+        "Local inference",
+        "Private documents",
+        "Embeddings",
+        "RAG",
+        "Offline workflows"
+      ]
     },
     {
       "id": "research-agent",
       "label": "Research agent",
       "sub": "sources · analysis",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Collects and analyses sources and documentation.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A1",
-      "x": 180,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "browser-agent",
       "label": "Web · browser agent",
       "sub": "pages · forms · checks",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Reads and checks web pages, forms and live behaviour.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A2",
-      "x": 372,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "frontend-agent",
       "label": "Frontend agent",
       "sub": "React · Next.js UI",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Builds interfaces in React and Next.js.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A3",
-      "x": 564,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "backend-agent",
       "label": "Backend agent",
       "sub": "APIs · validation",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Builds APIs, validation and server logic.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A4",
-      "x": 756,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "python-agent",
       "label": "Python agent",
       "sub": "scripts · tooling",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Writes Python scripts, services and developer tooling.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A5",
-      "x": 948,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "data-agent",
       "label": "Data agent",
       "sub": "parse · transform",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Parses, cleans and transforms data.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A6",
-      "x": 1140,
-      "y": 465,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "test-agent",
       "label": "Testing agent",
       "sub": "unit · e2e · a11y",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Writes and runs unit, end-to-end and accessibility tests.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A7",
-      "x": 276,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "review-agent",
       "label": "Review agent",
       "sub": "diff · security",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Reviews changes for bugs, security and quality before human approval.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A8",
-      "x": 468,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "ai-agent",
       "label": "AI integration agent",
       "sub": "prompts · tool calls",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Connects models to products: prompts, tool calls, fallbacks and limits.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A9",
-      "x": 660,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "local-agent",
       "label": "Local AI agent",
       "sub": "private documents",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Works on private documents with local models only.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A10",
-      "x": 852,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "automation-agent",
       "label": "Automation agent",
       "sub": "workflows · jobs",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Designs and maintains n8n workflows, webhooks and scheduled jobs.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A11",
-      "x": 1044,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "deploy-agent",
       "label": "Deployment agent",
       "sub": "release · rollback",
-      "layer": "agents",
-      "kind": "agent",
+      "type": "agent",
+      "stage": "agents",
+      "description": "Prepares releases and rollbacks; deploys only after approval.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "A12",
-      "x": 1236,
-      "y": 540,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "n8n",
       "label": "n8n",
       "sub": "workflow automation",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Workflow automation and integration. It moves data and events between systems on fixed rules and hands reasoning work to the orchestrator — it is not the AI brain. Shown as an automation architecture capability; no n8n instance runs in this portfolio.",
+      "mobilePriority": 1,
       "status": "capability",
-      "designator": "J1",
-      "x": 180,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": [
+        "Webhooks",
+        "Triggers",
+        "Schedules",
+        "API workflows",
+        "Email workflows",
+        "Data movement",
+        "External integrations",
+        "Calling Python services",
+        "Calling AI workflows"
+      ]
     },
     {
       "id": "python",
       "label": "Python",
       "sub": "scripts · services",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Programmable glue between AI, data and automation. The architecture on this page is generated by a Python script.",
+      "mobilePriority": 1,
       "status": "live",
-      "designator": "J2",
-      "x": 372,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": [
+        "Automation",
+        "AI tools",
+        "API clients",
+        "Data transformation",
+        "File processing",
+        "Agent tools",
+        "Local AI integration",
+        "Backend utilities",
+        "Developer tooling"
+      ]
     },
     {
       "id": "apis",
       "label": "APIs",
       "sub": "REST · Node.js",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Connections to internal and external services over REST and Node.js.",
+      "mobilePriority": 2,
       "status": "live",
-      "designator": "J3",
-      "x": 564,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "webhooks",
       "label": "Webhooks",
       "sub": "events in · events out",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Events in and out — how systems notify each other.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "J4",
-      "x": 756,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "file-data",
-      "label": "File · data processing",
+      "label": "Files · data",
       "sub": "CSV · JSON · PDF",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Reads and transforms CSV, JSON and PDF files.",
+      "mobilePriority": 3,
       "status": "capability",
-      "designator": "J5",
-      "x": 948,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "browser",
       "label": "Browser · web tools",
       "sub": "fetch · render · test",
-      "layer": "tools",
-      "kind": "tool",
+      "type": "tool",
+      "stage": "tools",
+      "description": "Fetches, renders and tests web pages; this site is checked with Playwright.",
+      "mobilePriority": 3,
       "status": "live",
-      "designator": "J6",
-      "x": 1140,
-      "y": 680,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "database",
       "label": "PostgreSQL",
       "sub": "records · state",
-      "layer": "data",
-      "kind": "data",
+      "type": "data",
+      "stage": "data",
+      "description": "Stores records and workflow state.",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "D1",
-      "x": 564,
-      "y": 790,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "embeddings",
-      "label": "Documents · embeddings",
-      "sub": "RAG · private search",
-      "layer": "data",
-      "kind": "data",
+      "label": "Embeddings",
+      "sub": "retrieval · RAG",
+      "type": "data",
+      "stage": "data",
+      "description": "Private documents indexed as embeddings for retrieval (RAG).",
+      "mobilePriority": 2,
       "status": "capability",
-      "designator": "D2",
-      "x": 948,
-      "y": 790,
-      "w": 150,
-      "h": 46
+      "uses": []
+    },
+    {
+      "id": "private-docs",
+      "label": "Private documents",
+      "sub": "files that stay local",
+      "type": "data",
+      "stage": "data",
+      "description": "Documents that must not leave the machine or the company network.",
+      "mobilePriority": 3,
+      "status": "capability",
+      "uses": []
+    },
+    {
+      "id": "actions",
+      "label": "External systems",
+      "sub": "CRM · alerts · APIs",
+      "type": "delivery",
+      "stage": "data",
+      "description": "Where approved results land: CRM updates, notifications, third-party APIs.",
+      "mobilePriority": 2,
+      "status": "capability",
+      "uses": []
     },
     {
       "id": "validation",
       "label": "Validation · tests",
       "sub": "schemas · checks",
-      "layer": "control",
-      "kind": "control",
+      "type": "control",
+      "stage": "control",
+      "description": "Schemas, types and tests. Failures go back to the responsible agent with context.",
+      "mobilePriority": 1,
       "status": "live",
-      "designator": "Q1",
-      "x": 276,
-      "y": 890,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "approval",
       "label": "Human approval",
       "sub": "checkpoint before action",
-      "layer": "control",
-      "kind": "control",
+      "type": "control",
+      "stage": "control",
+      "description": "A person approves before anything irreversible: sending, publishing, deploying or deleting.",
+      "mobilePriority": 1,
       "status": "live",
-      "designator": "Q2",
-      "x": 468,
-      "y": 890,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "github",
       "label": "Git · GitHub",
       "sub": "version control · CI",
-      "layer": "control",
-      "kind": "delivery",
+      "type": "delivery",
+      "stage": "delivery",
+      "description": "Version control and CI. Every change is a reviewed commit.",
+      "mobilePriority": 2,
       "status": "live",
-      "designator": "P1",
-      "x": 660,
-      "y": 890,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "vercel",
       "label": "Vercel",
       "sub": "build · deploy",
-      "layer": "control",
-      "kind": "delivery",
+      "type": "delivery",
+      "stage": "delivery",
+      "description": "Builds and deploys the application.",
+      "mobilePriority": 2,
       "status": "live",
-      "designator": "P2",
-      "x": 852,
-      "y": 890,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "production",
       "label": "Production",
       "sub": "live application",
-      "layer": "control",
-      "kind": "delivery",
+      "type": "delivery",
+      "stage": "delivery",
+      "description": "The live application, verified after every deploy.",
+      "mobilePriority": 1,
       "status": "live",
-      "designator": "P3",
-      "x": 1044,
-      "y": 890,
-      "w": 150,
-      "h": 46
+      "uses": []
     },
     {
       "id": "email",
       "label": "Email · Resend",
       "sub": "notifications",
-      "layer": "control",
-      "kind": "delivery",
+      "type": "delivery",
+      "stage": "delivery",
+      "description": "Outbound email via Resend — live for this site's contact form.",
+      "mobilePriority": 2,
       "status": "live",
-      "designator": "P4",
-      "x": 468,
-      "y": 985,
-      "w": 150,
-      "h": 46
-    },
-    {
-      "id": "actions",
-      "label": "CRM · database · API",
-      "sub": "external systems",
-      "layer": "control",
-      "kind": "delivery",
-      "status": "capability",
-      "designator": "P5",
-      "x": 660,
-      "y": 985,
-      "w": 150,
-      "h": 46
+      "uses": []
     }
   ],
-  "edges": [
+  "connections": [
     {
-      "id": "client--goal",
-      "source": "client",
-      "target": "goal",
-      "kind": "flow",
-      "d": "M495 70 L585 70",
-      "length": 90
+      "id": "client>goal",
+      "from": "client",
+      "to": "goal",
+      "verb": "triggers",
+      "kind": "flow"
     },
     {
-      "id": "application--goal",
-      "source": "application",
-      "target": "goal",
-      "kind": "flow",
-      "d": "M825 70 L735 70",
-      "length": 90
+      "id": "form>application",
+      "from": "form",
+      "to": "application",
+      "verb": "triggers",
+      "kind": "flow"
     },
     {
-      "id": "goal--orchestrator",
-      "source": "goal",
-      "target": "orchestrator",
-      "kind": "flow",
-      "d": "M660 93 L660 154",
-      "length": 61
+      "id": "application>goal",
+      "from": "application",
+      "to": "goal",
+      "verb": "triggers",
+      "kind": "flow"
     },
     {
-      "id": "orchestrator--state",
-      "source": "orchestrator",
-      "target": "state",
-      "kind": "flow",
-      "d": "M565 180 L495 180",
-      "length": 70
+      "id": "goal>orchestrator",
+      "from": "goal",
+      "to": "orchestrator",
+      "verb": "delegates",
+      "kind": "flow"
     },
     {
-      "id": "orchestrator--model-router",
-      "source": "orchestrator",
-      "target": "model-router",
-      "kind": "model",
-      "d": "M755 180 L825 180",
-      "length": 70
+      "id": "orchestrator>state",
+      "from": "orchestrator",
+      "to": "state",
+      "verb": "reads-writes",
+      "kind": "flow"
     },
     {
-      "id": "orchestrator--planner",
-      "source": "orchestrator",
-      "target": "planner",
-      "kind": "flow",
-      "d": "M660 206 L660 247",
-      "length": 41
+      "id": "orchestrator>planner",
+      "from": "orchestrator",
+      "to": "planner",
+      "verb": "delegates",
+      "kind": "flow"
     },
     {
-      "id": "planner--agent-router",
-      "source": "planner",
-      "target": "agent-router",
-      "kind": "flow",
-      "d": "M660 293 L660 327",
-      "length": 34
+      "id": "planner>agent-router",
+      "from": "planner",
+      "to": "agent-router",
+      "verb": "routes",
+      "kind": "flow"
     },
     {
-      "id": "triggers--n8n",
-      "source": "triggers",
-      "target": "n8n",
-      "kind": "automation",
-      "d": "M105 70 L48 70 L40 78 L40 680 L48 688 L105 688",
-      "length": 748
+      "id": "orchestrator>model-router",
+      "from": "orchestrator",
+      "to": "model-router",
+      "verb": "routes",
+      "kind": "model"
     },
     {
-      "id": "n8n--orchestrator",
-      "source": "n8n",
-      "target": "orchestrator",
-      "kind": "automation",
-      "d": "M105 672 L78 672 L70 664 L70 233 L78 225 L612 225 L620 217 L620 206",
-      "length": 1051
+      "id": "model-router>chatgpt",
+      "from": "model-router",
+      "to": "chatgpt",
+      "verb": "selects-model",
+      "kind": "model"
     },
     {
-      "id": "apis--database",
-      "source": "apis",
-      "target": "database",
-      "kind": "data",
-      "d": "M564 703 L564 767",
-      "length": 64
+      "id": "model-router>claude",
+      "from": "model-router",
+      "to": "claude",
+      "verb": "selects-model",
+      "kind": "model"
     },
     {
-      "id": "file-data--embeddings",
-      "source": "file-data",
-      "target": "embeddings",
-      "kind": "data",
-      "d": "M948 703 L948 767",
-      "length": 64
+      "id": "model-router>local-ai",
+      "from": "model-router",
+      "to": "local-ai",
+      "verb": "selects-model",
+      "kind": "model"
     },
     {
-      "id": "tool-bus--validation",
-      "source": "tool-bus",
-      "target": "validation",
-      "kind": "control",
-      "d": "M276 622 L276 867",
-      "length": 245
+      "id": "agent-router>research-agent",
+      "from": "agent-router",
+      "to": "research-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "validation--approval",
-      "source": "validation",
-      "target": "approval",
-      "kind": "control",
-      "d": "M351 890 L393 890",
-      "length": 42
+      "id": "agent-router>browser-agent",
+      "from": "agent-router",
+      "to": "browser-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "approval--github",
-      "source": "approval",
-      "target": "github",
-      "kind": "delivery",
-      "d": "M543 890 L585 890",
-      "length": 42
+      "id": "agent-router>frontend-agent",
+      "from": "agent-router",
+      "to": "frontend-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "github--vercel",
-      "source": "github",
-      "target": "vercel",
-      "kind": "delivery",
-      "d": "M735 890 L777 890",
-      "length": 42
+      "id": "agent-router>backend-agent",
+      "from": "agent-router",
+      "to": "backend-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "vercel--production",
-      "source": "vercel",
-      "target": "production",
-      "kind": "delivery",
-      "d": "M927 890 L969 890",
-      "length": 42
+      "id": "agent-router>python-agent",
+      "from": "agent-router",
+      "to": "python-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "approval--email",
-      "source": "approval",
-      "target": "email",
-      "kind": "delivery",
-      "d": "M468 913 L468 962",
-      "length": 49
+      "id": "agent-router>data-agent",
+      "from": "agent-router",
+      "to": "data-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "approval--actions",
-      "source": "approval",
-      "target": "actions",
-      "kind": "delivery",
-      "d": "M468 913 L468 932 L476 940 L652 940 L660 948 L660 962",
-      "length": 241
+      "id": "agent-router>test-agent",
+      "from": "agent-router",
+      "to": "test-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "model-router--chatgpt",
-      "source": "model-router",
-      "target": "chatgpt",
-      "kind": "model",
-      "d": "M975 180 L1027 180 L1035 188 L1035 192 L1043 200 L1075 200",
-      "length": 120
+      "id": "agent-router>review-agent",
+      "from": "agent-router",
+      "to": "review-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "model-router--claude",
-      "source": "model-router",
-      "target": "claude",
-      "kind": "model",
-      "d": "M975 180 L1027 180 L1035 188 L1035 250 L1043 258 L1075 258",
-      "length": 178
+      "id": "agent-router>ai-agent",
+      "from": "agent-router",
+      "to": "ai-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "model-router--local-ai",
-      "source": "model-router",
-      "target": "local-ai",
-      "kind": "model",
-      "d": "M975 180 L1027 180 L1035 188 L1035 308 L1043 316 L1075 316",
-      "length": 236
+      "id": "agent-router>local-agent",
+      "from": "agent-router",
+      "to": "local-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--research-agent",
-      "source": "agent-router",
-      "target": "research-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L652 410 L188 410 L180 418 L180 442",
-      "length": 549
+      "id": "agent-router>automation-agent",
+      "from": "agent-router",
+      "to": "automation-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--browser-agent",
-      "source": "agent-router",
-      "target": "browser-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L652 410 L380 410 L372 418 L372 442",
-      "length": 357
+      "id": "agent-router>deploy-agent",
+      "from": "agent-router",
+      "to": "deploy-agent",
+      "verb": "routes",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--frontend-agent",
-      "source": "agent-router",
-      "target": "frontend-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L652 410 L572 410 L564 418 L564 442",
-      "length": 165
+      "id": "research-agent>browser",
+      "from": "research-agent",
+      "to": "browser",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--backend-agent",
-      "source": "agent-router",
-      "target": "backend-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L748 410 L756 418 L756 442",
-      "length": 165
+      "id": "research-agent>apis",
+      "from": "research-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--python-agent",
-      "source": "agent-router",
-      "target": "python-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L940 410 L948 418 L948 442",
-      "length": 357
+      "id": "research-agent>file-data",
+      "from": "research-agent",
+      "to": "file-data",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--data-agent",
-      "source": "agent-router",
-      "target": "data-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L1132 410 L1140 418 L1140 442",
-      "length": 549
+      "id": "browser-agent>browser",
+      "from": "browser-agent",
+      "to": "browser",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--ai-agent",
-      "source": "agent-router",
-      "target": "ai-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 517",
-      "length": 144
+      "id": "browser-agent>apis",
+      "from": "browser-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--local-agent",
-      "source": "agent-router",
-      "target": "local-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L844 410 L852 418 L852 517",
-      "length": 336
+      "id": "frontend-agent>browser",
+      "from": "frontend-agent",
+      "to": "browser",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--automation-agent",
-      "source": "agent-router",
-      "target": "automation-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L1036 410 L1044 418 L1044 517",
-      "length": 528
+      "id": "frontend-agent>apis",
+      "from": "frontend-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--test-agent",
-      "source": "agent-router",
-      "target": "test-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L652 410 L284 410 L276 418 L276 517",
-      "length": 528
+      "id": "backend-agent>apis",
+      "from": "backend-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--review-agent",
-      "source": "agent-router",
-      "target": "review-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L652 410 L476 410 L468 418 L468 517",
-      "length": 336
+      "id": "backend-agent>webhooks",
+      "from": "backend-agent",
+      "to": "webhooks",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "agent-router--deploy-agent",
-      "source": "agent-router",
-      "target": "deploy-agent",
-      "kind": "agent-bus",
-      "d": "M660 373 L660 402 L668 410 L1228 410 L1236 418 L1236 517",
-      "length": 720
-    }
-  ],
-  "buses": [
-    {
-      "id": "agent-bus",
-      "label": "agent bus",
-      "d": "M180 410 L1236 410"
+      "id": "backend-agent>python",
+      "from": "backend-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tool-bus",
-      "label": "tool bus",
-      "d": "M180 622 L1236 622"
+      "id": "python-agent>python",
+      "from": "python-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "model-bus",
-      "label": "model bus",
-      "d": "M1035 180 L1035 316"
-    }
-  ],
-  "taps": [
-    {
-      "id": "tap-research-agent",
-      "node": "research-agent",
-      "d": "M180 488 L180 622"
+      "id": "python-agent>file-data",
+      "from": "python-agent",
+      "to": "file-data",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-browser-agent",
-      "node": "browser-agent",
-      "d": "M372 488 L372 622"
+      "id": "python-agent>apis",
+      "from": "python-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-frontend-agent",
-      "node": "frontend-agent",
-      "d": "M564 488 L564 622"
+      "id": "data-agent>python",
+      "from": "data-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-backend-agent",
-      "node": "backend-agent",
-      "d": "M756 488 L756 622"
+      "id": "data-agent>file-data",
+      "from": "data-agent",
+      "to": "file-data",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-python-agent",
-      "node": "python-agent",
-      "d": "M948 488 L948 622"
+      "id": "data-agent>apis",
+      "from": "data-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-data-agent",
-      "node": "data-agent",
-      "d": "M1140 488 L1140 622"
+      "id": "test-agent>browser",
+      "from": "test-agent",
+      "to": "browser",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-ai-agent",
-      "node": "ai-agent",
-      "d": "M660 563 L660 622"
+      "id": "test-agent>python",
+      "from": "test-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-local-agent",
-      "node": "local-agent",
-      "d": "M852 563 L852 622"
+      "id": "review-agent>file-data",
+      "from": "review-agent",
+      "to": "file-data",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-automation-agent",
-      "node": "automation-agent",
-      "d": "M1044 563 L1044 622"
+      "id": "review-agent>browser",
+      "from": "review-agent",
+      "to": "browser",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-test-agent",
-      "node": "test-agent",
-      "d": "M276 563 L276 622"
+      "id": "ai-agent>apis",
+      "from": "ai-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-review-agent",
-      "node": "review-agent",
-      "d": "M468 563 L468 622"
+      "id": "ai-agent>python",
+      "from": "ai-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-deploy-agent",
-      "node": "deploy-agent",
-      "d": "M1236 563 L1236 622"
+      "id": "ai-agent>webhooks",
+      "from": "ai-agent",
+      "to": "webhooks",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-n8n",
-      "node": "n8n",
-      "d": "M180 622 L180 657"
+      "id": "local-agent>python",
+      "from": "local-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-python",
-      "node": "python",
-      "d": "M372 622 L372 657"
+      "id": "local-agent>file-data",
+      "from": "local-agent",
+      "to": "file-data",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-apis",
-      "node": "apis",
-      "d": "M564 622 L564 657"
+      "id": "automation-agent>n8n",
+      "from": "automation-agent",
+      "to": "n8n",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-webhooks",
-      "node": "webhooks",
-      "d": "M756 622 L756 657"
+      "id": "automation-agent>webhooks",
+      "from": "automation-agent",
+      "to": "webhooks",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-file-data",
-      "node": "file-data",
-      "d": "M948 622 L948 657"
+      "id": "automation-agent>apis",
+      "from": "automation-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
     },
     {
-      "id": "tap-browser",
-      "node": "browser",
-      "d": "M1140 622 L1140 657"
+      "id": "automation-agent>python",
+      "from": "automation-agent",
+      "to": "python",
+      "verb": "calls",
+      "kind": "agent-bus"
+    },
+    {
+      "id": "deploy-agent>webhooks",
+      "from": "deploy-agent",
+      "to": "webhooks",
+      "verb": "calls",
+      "kind": "agent-bus"
+    },
+    {
+      "id": "deploy-agent>apis",
+      "from": "deploy-agent",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "agent-bus"
+    },
+    {
+      "id": "triggers>n8n",
+      "from": "triggers",
+      "to": "n8n",
+      "verb": "triggers",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>orchestrator",
+      "from": "n8n",
+      "to": "orchestrator",
+      "verb": "triggers",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>webhooks",
+      "from": "n8n",
+      "to": "webhooks",
+      "verb": "automates",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>apis",
+      "from": "n8n",
+      "to": "apis",
+      "verb": "calls",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>python",
+      "from": "n8n",
+      "to": "python",
+      "verb": "calls",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>email",
+      "from": "n8n",
+      "to": "email",
+      "verb": "automates",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>database",
+      "from": "n8n",
+      "to": "database",
+      "verb": "reads-writes",
+      "kind": "automation"
+    },
+    {
+      "id": "n8n>actions",
+      "from": "n8n",
+      "to": "actions",
+      "verb": "automates",
+      "kind": "automation"
+    },
+    {
+      "id": "python>local-ai",
+      "from": "python",
+      "to": "local-ai",
+      "verb": "calls",
+      "kind": "data"
+    },
+    {
+      "id": "python>private-docs",
+      "from": "python",
+      "to": "private-docs",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "python>embeddings",
+      "from": "python",
+      "to": "embeddings",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "apis>database",
+      "from": "apis",
+      "to": "database",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "file-data>embeddings",
+      "from": "file-data",
+      "to": "embeddings",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "embeddings>private-docs",
+      "from": "embeddings",
+      "to": "private-docs",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "local-ai>embeddings",
+      "from": "local-ai",
+      "to": "embeddings",
+      "verb": "reads-writes",
+      "kind": "data"
+    },
+    {
+      "id": "application>validation",
+      "from": "application",
+      "to": "validation",
+      "verb": "calls",
+      "kind": "control"
+    },
+    {
+      "id": "test-agent>validation",
+      "from": "test-agent",
+      "to": "validation",
+      "verb": "validates",
+      "kind": "control"
+    },
+    {
+      "id": "review-agent>approval",
+      "from": "review-agent",
+      "to": "approval",
+      "verb": "validates",
+      "kind": "control"
+    },
+    {
+      "id": "validation>approval",
+      "from": "validation",
+      "to": "approval",
+      "verb": "validates",
+      "kind": "control"
+    },
+    {
+      "id": "approval>github",
+      "from": "approval",
+      "to": "github",
+      "verb": "approves",
+      "kind": "delivery"
+    },
+    {
+      "id": "approval>email",
+      "from": "approval",
+      "to": "email",
+      "verb": "approves",
+      "kind": "delivery"
+    },
+    {
+      "id": "approval>actions",
+      "from": "approval",
+      "to": "actions",
+      "verb": "approves",
+      "kind": "delivery"
+    },
+    {
+      "id": "github>vercel",
+      "from": "github",
+      "to": "vercel",
+      "verb": "deploys",
+      "kind": "delivery"
+    },
+    {
+      "id": "vercel>production",
+      "from": "vercel",
+      "to": "production",
+      "verb": "deploys",
+      "kind": "delivery"
     }
   ],
   "agents": {
     "research-agent": {
+      "role": "Finds and summarises sources, documentation and API references, with citations.",
+      "inputs": "Open questions, scope",
+      "outputs": "Sourced findings",
       "tools": [
         "browser",
         "apis",
@@ -963,23 +1202,12 @@
         "claude",
         "local-ai"
       ],
-      "checkpoint": "review-agent",
-      "routes": [
-        {
-          "tool": "browser",
-          "d": "M180 488 L180 614 L188 622 L1132 622 L1140 630 L1140 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M180 488 L180 614 L188 622 L556 622 L564 630 L564 657"
-        },
-        {
-          "tool": "file-data",
-          "d": "M180 488 L180 614 L188 622 L940 622 L948 630 L948 657"
-        }
-      ]
+      "validation": "review-agent"
     },
     "browser-agent": {
+      "role": "Navigates pages, fills forms and checks live behaviour.",
+      "inputs": "URLs, user flows to check",
+      "outputs": "Page data, screenshots, issues",
       "tools": [
         "browser",
         "apis"
@@ -988,19 +1216,12 @@
         "chatgpt",
         "claude"
       ],
-      "checkpoint": "validation",
-      "routes": [
-        {
-          "tool": "browser",
-          "d": "M372 488 L372 614 L380 622 L1132 622 L1140 630 L1140 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M372 488 L372 614 L380 622 L556 622 L564 630 L564 657"
-        }
-      ]
+      "validation": "validation"
     },
     "frontend-agent": {
+      "role": "Builds accessible, responsive components and pages.",
+      "inputs": "Design system, content, API contracts",
+      "outputs": "Typed React components",
       "tools": [
         "browser",
         "apis"
@@ -1009,19 +1230,12 @@
         "claude",
         "chatgpt"
       ],
-      "checkpoint": "test-agent",
-      "routes": [
-        {
-          "tool": "browser",
-          "d": "M564 488 L564 614 L572 622 L1132 622 L1140 630 L1140 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M564 488 L564 657"
-        }
-      ]
+      "validation": "test-agent"
     },
     "backend-agent": {
+      "role": "Implements endpoints, validation and server logic.",
+      "inputs": "Data model, requirements",
+      "outputs": "Routes, schemas, server actions",
       "tools": [
         "apis",
         "webhooks",
@@ -1031,23 +1245,12 @@
         "claude",
         "chatgpt"
       ],
-      "checkpoint": "test-agent",
-      "routes": [
-        {
-          "tool": "apis",
-          "d": "M756 488 L756 614 L748 622 L572 622 L564 630 L564 657"
-        },
-        {
-          "tool": "webhooks",
-          "d": "M756 488 L756 657"
-        },
-        {
-          "tool": "python",
-          "d": "M756 488 L756 614 L748 622 L380 622 L372 630 L372 657"
-        }
-      ]
+      "validation": "test-agent"
     },
     "python-agent": {
+      "role": "Writes scripts, services and tooling: generators, converters, API clients.",
+      "inputs": "Task spec, sample data",
+      "outputs": "Tested Python modules",
       "tools": [
         "python",
         "file-data",
@@ -1058,23 +1261,12 @@
         "chatgpt",
         "local-ai"
       ],
-      "checkpoint": "validation",
-      "routes": [
-        {
-          "tool": "python",
-          "d": "M948 488 L948 614 L940 622 L380 622 L372 630 L372 657"
-        },
-        {
-          "tool": "file-data",
-          "d": "M948 488 L948 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M948 488 L948 614 L940 622 L572 622 L564 630 L564 657"
-        }
-      ]
+      "validation": "validation"
     },
     "data-agent": {
+      "role": "Cleans, transforms and reconciles data between formats and systems.",
+      "inputs": "Files, API responses, schemas",
+      "outputs": "Validated, structured data",
       "tools": [
         "python",
         "file-data",
@@ -1085,23 +1277,40 @@
         "claude",
         "local-ai"
       ],
-      "checkpoint": "validation",
-      "routes": [
-        {
-          "tool": "python",
-          "d": "M1140 488 L1140 614 L1132 622 L380 622 L372 630 L372 657"
-        },
-        {
-          "tool": "file-data",
-          "d": "M1140 488 L1140 614 L1132 622 L956 622 L948 630 L948 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M1140 488 L1140 614 L1132 622 L572 622 L564 630 L564 657"
-        }
-      ]
+      "validation": "validation"
+    },
+    "test-agent": {
+      "role": "Writes and runs unit, end-to-end and accessibility checks.",
+      "inputs": "Changes, acceptance criteria",
+      "outputs": "Test results",
+      "tools": [
+        "browser",
+        "python"
+      ],
+      "models": [
+        "claude",
+        "chatgpt"
+      ],
+      "validation": "validation"
+    },
+    "review-agent": {
+      "role": "Assumes there are bugs: reviews the diff, security and copy.",
+      "inputs": "Complete diff, test results",
+      "outputs": "Findings and fixes",
+      "tools": [
+        "file-data",
+        "browser"
+      ],
+      "models": [
+        "claude",
+        "chatgpt"
+      ],
+      "validation": "approval"
     },
     "ai-agent": {
+      "role": "Wires models into products: prompts, tool calling, fallbacks and limits.",
+      "inputs": "Use case, data constraints",
+      "outputs": "AI features, adapters",
       "tools": [
         "apis",
         "python",
@@ -1112,23 +1321,12 @@
         "claude",
         "local-ai"
       ],
-      "checkpoint": "review-agent",
-      "routes": [
-        {
-          "tool": "apis",
-          "d": "M660 563 L660 614 L652 622 L572 622 L564 630 L564 657"
-        },
-        {
-          "tool": "python",
-          "d": "M660 563 L660 614 L652 622 L380 622 L372 630 L372 657"
-        },
-        {
-          "tool": "webhooks",
-          "d": "M660 563 L660 614 L668 622 L748 622 L756 630 L756 657"
-        }
-      ]
+      "validation": "review-agent"
     },
     "local-agent": {
+      "role": "Answers over private documents with local models only — nothing leaves the machine.",
+      "inputs": "Private documents, a question",
+      "outputs": "Grounded answers with sources",
       "tools": [
         "python",
         "file-data"
@@ -1136,19 +1334,12 @@
       "models": [
         "local-ai"
       ],
-      "checkpoint": "approval",
-      "routes": [
-        {
-          "tool": "python",
-          "d": "M852 563 L852 614 L844 622 L380 622 L372 630 L372 657"
-        },
-        {
-          "tool": "file-data",
-          "d": "M852 563 L852 614 L860 622 L940 622 L948 630 L948 657"
-        }
-      ]
+      "validation": "approval"
     },
     "automation-agent": {
+      "role": "Designs n8n workflows, webhooks and scheduled jobs around the AI steps.",
+      "inputs": "Process description, systems to connect",
+      "outputs": "Workflow definitions",
       "tools": [
         "n8n",
         "webhooks",
@@ -1159,69 +1350,12 @@
         "chatgpt",
         "claude"
       ],
-      "checkpoint": "approval",
-      "routes": [
-        {
-          "tool": "n8n",
-          "d": "M1044 563 L1044 614 L1036 622 L188 622 L180 630 L180 657"
-        },
-        {
-          "tool": "webhooks",
-          "d": "M1044 563 L1044 614 L1036 622 L764 622 L756 630 L756 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M1044 563 L1044 614 L1036 622 L572 622 L564 630 L564 657"
-        },
-        {
-          "tool": "python",
-          "d": "M1044 563 L1044 614 L1036 622 L380 622 L372 630 L372 657"
-        }
-      ]
-    },
-    "test-agent": {
-      "tools": [
-        "browser",
-        "python"
-      ],
-      "models": [
-        "claude",
-        "chatgpt"
-      ],
-      "checkpoint": "validation",
-      "routes": [
-        {
-          "tool": "browser",
-          "d": "M276 563 L276 614 L284 622 L1132 622 L1140 630 L1140 657"
-        },
-        {
-          "tool": "python",
-          "d": "M276 563 L276 614 L284 622 L364 622 L372 630 L372 657"
-        }
-      ]
-    },
-    "review-agent": {
-      "tools": [
-        "file-data",
-        "browser"
-      ],
-      "models": [
-        "claude",
-        "chatgpt"
-      ],
-      "checkpoint": "approval",
-      "routes": [
-        {
-          "tool": "file-data",
-          "d": "M468 563 L468 614 L476 622 L940 622 L948 630 L948 657"
-        },
-        {
-          "tool": "browser",
-          "d": "M468 563 L468 614 L476 622 L1132 622 L1140 630 L1140 657"
-        }
-      ]
+      "validation": "approval"
     },
     "deploy-agent": {
+      "role": "Prepares the release, runs the deploy and keeps a rollback ready.",
+      "inputs": "An approved build",
+      "outputs": "Deployment, release notes",
       "tools": [
         "webhooks",
         "apis"
@@ -1229,17 +1363,7 @@
       "models": [
         "claude"
       ],
-      "checkpoint": "approval",
-      "routes": [
-        {
-          "tool": "webhooks",
-          "d": "M1236 563 L1236 614 L1228 622 L764 622 L756 630 L756 657"
-        },
-        {
-          "tool": "apis",
-          "d": "M1236 563 L1236 614 L1228 622 L572 622 L564 630 L564 657"
-        }
-      ]
+      "validation": "approval"
     }
   },
   "tools": [
@@ -1362,6 +1486,7 @@
       "local-ai",
       "model-router",
       "orchestrator",
+      "private-docs",
       "python",
       "python-agent",
       "research-agent"
@@ -1378,11 +1503,13 @@
       "local-agent",
       "local-ai",
       "n8n",
+      "private-docs",
       "python",
       "python-agent",
       "test-agent"
     ],
     "validation": [
+      "application",
       "approval",
       "github",
       "review-agent",
@@ -1410,6 +1537,13 @@
       "client",
       "goal",
       "orchestrator"
+    ],
+    "form": [
+      "application",
+      "email",
+      "form",
+      "n8n",
+      "validation"
     ],
     "research-agent": [
       "agent-router",
@@ -1478,6 +1612,26 @@
       "python",
       "validation"
     ],
+    "test-agent": [
+      "agent-router",
+      "browser",
+      "chatgpt",
+      "claude",
+      "model-router",
+      "python",
+      "test-agent",
+      "validation"
+    ],
+    "review-agent": [
+      "agent-router",
+      "approval",
+      "browser",
+      "chatgpt",
+      "claude",
+      "file-data",
+      "model-router",
+      "review-agent"
+    ],
     "ai-agent": [
       "agent-router",
       "ai-agent",
@@ -1510,26 +1664,6 @@
       "n8n",
       "python",
       "webhooks"
-    ],
-    "test-agent": [
-      "agent-router",
-      "browser",
-      "chatgpt",
-      "claude",
-      "model-router",
-      "python",
-      "test-agent",
-      "validation"
-    ],
-    "review-agent": [
-      "agent-router",
-      "approval",
-      "browser",
-      "chatgpt",
-      "claude",
-      "file-data",
-      "model-router",
-      "review-agent"
     ],
     "deploy-agent": [
       "agent-router",
@@ -1581,7 +1715,9 @@
     ],
     "application": [
       "application",
-      "goal"
+      "form",
+      "goal",
+      "validation"
     ],
     "state": [
       "orchestrator",
@@ -1589,11 +1725,25 @@
     ],
     "database": [
       "apis",
-      "database"
+      "database",
+      "n8n"
     ],
     "embeddings": [
       "embeddings",
-      "file-data"
+      "file-data",
+      "local-ai",
+      "private-docs",
+      "python"
+    ],
+    "private-docs": [
+      "embeddings",
+      "private-docs",
+      "python"
+    ],
+    "actions": [
+      "actions",
+      "approval",
+      "n8n"
     ],
     "github": [
       "approval",
@@ -1611,13 +1761,96 @@
     ],
     "email": [
       "approval",
-      "email"
-    ],
-    "actions": [
-      "actions",
-      "approval"
+      "email",
+      "n8n"
     ]
   },
+  "workflows": [
+    {
+      "id": "development",
+      "label": "Development",
+      "summary": "From a requirement to a verified production deploy.",
+      "steps": [
+        "goal",
+        "orchestrator",
+        "planner",
+        [
+          "frontend-agent",
+          "backend-agent",
+          "python-agent"
+        ],
+        "test-agent",
+        "review-agent",
+        "github",
+        "vercel",
+        "production"
+      ]
+    },
+    {
+      "id": "automation",
+      "label": "Automation",
+      "summary": "An n8n workflow that hands reasoning to the orchestrator and acts only after approval.",
+      "steps": [
+        "triggers",
+        "n8n",
+        "orchestrator",
+        "automation-agent",
+        [
+          "python",
+          "apis"
+        ],
+        "validation",
+        "approval",
+        "actions"
+      ]
+    },
+    {
+      "id": "ai-research",
+      "label": "AI research",
+      "summary": "A research question answered with cloud models, web tools and a human review.",
+      "steps": [
+        "goal",
+        "orchestrator",
+        "research-agent",
+        [
+          "chatgpt",
+          "claude"
+        ],
+        "browser",
+        "python",
+        "validation",
+        "approval",
+        "actions"
+      ]
+    },
+    {
+      "id": "local-ai",
+      "label": "Local AI",
+      "summary": "Answers over private documents without sending them to a cloud model.",
+      "steps": [
+        "private-docs",
+        "python",
+        "embeddings",
+        "local-ai",
+        "validation",
+        "application"
+      ]
+    },
+    {
+      "id": "website-lead",
+      "label": "Website lead",
+      "summary": "A contact form enquiry validated, routed and delivered by email.",
+      "steps": [
+        "form",
+        "application",
+        "validation",
+        "n8n",
+        "email",
+        "database",
+        "actions"
+      ]
+    }
+  ],
   "flows": {
     "development": [
       "dev-orchestrator",
@@ -1687,5 +1920,926 @@
       "n8n",
       "external-system"
     ]
+  },
+  "layouts": {
+    "desktop": {
+      "viewBox": [
+        0,
+        0,
+        1340,
+        1040
+      ],
+      "layers": [
+        {
+          "id": "input",
+          "label": "Input",
+          "y0": 30,
+          "y1": 110
+        },
+        {
+          "id": "orchestration",
+          "label": "Orchestration",
+          "y0": 135,
+          "y1": 378
+        },
+        {
+          "id": "agents",
+          "label": "Agents",
+          "y0": 392,
+          "y1": 580
+        },
+        {
+          "id": "tools",
+          "label": "Automation & tools",
+          "y0": 600,
+          "y1": 720
+        },
+        {
+          "id": "data",
+          "label": "Data",
+          "y0": 755,
+          "y1": 825
+        },
+        {
+          "id": "control",
+          "label": "Control & delivery",
+          "y0": 855,
+          "y1": 1020
+        }
+      ],
+      "labelX": 27,
+      "modelBox": {
+        "id": "models",
+        "label": "AI models",
+        "x0": 1062,
+        "x1": 1300,
+        "y0": 164,
+        "y1": 350
+      },
+      "positions": {
+        "triggers": {
+          "x": 180,
+          "y": 70,
+          "w": 164,
+          "h": 50,
+          "band": "input",
+          "designator": "IN4"
+        },
+        "client": {
+          "x": 420,
+          "y": 70,
+          "w": 164,
+          "h": 50,
+          "band": "input",
+          "designator": "IN1"
+        },
+        "goal": {
+          "x": 660,
+          "y": 70,
+          "w": 164,
+          "h": 50,
+          "band": "input",
+          "designator": "IN2"
+        },
+        "application": {
+          "x": 900,
+          "y": 70,
+          "w": 164,
+          "h": 50,
+          "band": "input",
+          "designator": "IN5"
+        },
+        "form": {
+          "x": 1140,
+          "y": 70,
+          "w": 164,
+          "h": 50,
+          "band": "input",
+          "designator": "IN3"
+        },
+        "state": {
+          "x": 420,
+          "y": 180,
+          "w": 164,
+          "h": 50,
+          "band": "orchestration",
+          "designator": "U2"
+        },
+        "orchestrator": {
+          "x": 660,
+          "y": 180,
+          "w": 200,
+          "h": 56,
+          "band": "orchestration",
+          "designator": "U1"
+        },
+        "model-router": {
+          "x": 900,
+          "y": 180,
+          "w": 164,
+          "h": 50,
+          "band": "orchestration",
+          "designator": "U5"
+        },
+        "planner": {
+          "x": 660,
+          "y": 270,
+          "w": 164,
+          "h": 50,
+          "band": "orchestration",
+          "designator": "U3"
+        },
+        "agent-router": {
+          "x": 660,
+          "y": 350,
+          "w": 164,
+          "h": 50,
+          "band": "orchestration",
+          "designator": "U4"
+        },
+        "chatgpt": {
+          "x": 1150,
+          "y": 200,
+          "w": 164,
+          "h": 50,
+          "band": "models",
+          "designator": "M1"
+        },
+        "claude": {
+          "x": 1150,
+          "y": 258,
+          "w": 164,
+          "h": 50,
+          "band": "models",
+          "designator": "M2"
+        },
+        "local-ai": {
+          "x": 1150,
+          "y": 316,
+          "w": 164,
+          "h": 50,
+          "band": "models",
+          "designator": "M3"
+        },
+        "research-agent": {
+          "x": 180,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A1"
+        },
+        "browser-agent": {
+          "x": 372,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A2"
+        },
+        "frontend-agent": {
+          "x": 564,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A3"
+        },
+        "backend-agent": {
+          "x": 756,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A4"
+        },
+        "python-agent": {
+          "x": 948,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A5"
+        },
+        "data-agent": {
+          "x": 1140,
+          "y": 465,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A6"
+        },
+        "test-agent": {
+          "x": 276,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A7"
+        },
+        "review-agent": {
+          "x": 468,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A8"
+        },
+        "ai-agent": {
+          "x": 660,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A9"
+        },
+        "local-agent": {
+          "x": 852,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A10"
+        },
+        "automation-agent": {
+          "x": 1044,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A11"
+        },
+        "deploy-agent": {
+          "x": 1236,
+          "y": 540,
+          "w": 164,
+          "h": 50,
+          "band": "agents",
+          "designator": "A12"
+        },
+        "n8n": {
+          "x": 180,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J1"
+        },
+        "python": {
+          "x": 372,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J2"
+        },
+        "apis": {
+          "x": 564,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J3"
+        },
+        "webhooks": {
+          "x": 756,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J4"
+        },
+        "file-data": {
+          "x": 948,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J5"
+        },
+        "browser": {
+          "x": 1140,
+          "y": 680,
+          "w": 164,
+          "h": 50,
+          "band": "tools",
+          "designator": "J6"
+        },
+        "database": {
+          "x": 564,
+          "y": 790,
+          "w": 164,
+          "h": 50,
+          "band": "data",
+          "designator": "D1"
+        },
+        "embeddings": {
+          "x": 948,
+          "y": 790,
+          "w": 164,
+          "h": 50,
+          "band": "data",
+          "designator": "D2"
+        },
+        "private-docs": {
+          "x": 1140,
+          "y": 790,
+          "w": 164,
+          "h": 50,
+          "band": "data",
+          "designator": "D3"
+        },
+        "validation": {
+          "x": 276,
+          "y": 890,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "Q1"
+        },
+        "approval": {
+          "x": 468,
+          "y": 890,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "Q2"
+        },
+        "github": {
+          "x": 660,
+          "y": 890,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "P2"
+        },
+        "vercel": {
+          "x": 852,
+          "y": 890,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "P3"
+        },
+        "production": {
+          "x": 1044,
+          "y": 890,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "P4"
+        },
+        "email": {
+          "x": 468,
+          "y": 985,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "P5"
+        },
+        "actions": {
+          "x": 660,
+          "y": 985,
+          "w": 164,
+          "h": 50,
+          "band": "control",
+          "designator": "P1"
+        }
+      },
+      "traces": [
+        {
+          "id": "client>goal",
+          "connection": "client>goal",
+          "kind": "flow",
+          "d": "M502 70 L578 70",
+          "length": 76
+        },
+        {
+          "id": "application>goal",
+          "connection": "application>goal",
+          "kind": "flow",
+          "d": "M818 70 L742 70",
+          "length": 76
+        },
+        {
+          "id": "form>application",
+          "connection": "form>application",
+          "kind": "flow",
+          "d": "M1058 70 L982 70",
+          "length": 76
+        },
+        {
+          "id": "goal>orchestrator",
+          "connection": "goal>orchestrator",
+          "kind": "flow",
+          "d": "M660 95 L660 152",
+          "length": 57
+        },
+        {
+          "id": "orchestrator>state",
+          "connection": "orchestrator>state",
+          "kind": "flow",
+          "d": "M560 180 L502 180",
+          "length": 58
+        },
+        {
+          "id": "orchestrator>model-router",
+          "connection": "orchestrator>model-router",
+          "kind": "model",
+          "d": "M760 180 L818 180",
+          "length": 58
+        },
+        {
+          "id": "orchestrator>planner",
+          "connection": "orchestrator>planner",
+          "kind": "flow",
+          "d": "M660 208 L660 245",
+          "length": 37
+        },
+        {
+          "id": "planner>agent-router",
+          "connection": "planner>agent-router",
+          "kind": "flow",
+          "d": "M660 295 L660 325",
+          "length": 30
+        },
+        {
+          "id": "triggers>n8n",
+          "connection": "triggers>n8n",
+          "kind": "automation",
+          "d": "M98 70 L48 70 L40 78 L40 680 L48 688 L98 688",
+          "length": 734
+        },
+        {
+          "id": "n8n>orchestrator",
+          "connection": "n8n>orchestrator",
+          "kind": "automation",
+          "d": "M98 672 L78 672 L70 664 L70 233 L78 225 L612 225 L620 217 L620 208",
+          "length": 1042
+        },
+        {
+          "id": "apis>database",
+          "connection": "apis>database",
+          "kind": "data",
+          "d": "M564 705 L564 765",
+          "length": 60
+        },
+        {
+          "id": "file-data>embeddings",
+          "connection": "file-data>embeddings",
+          "kind": "data",
+          "d": "M948 705 L948 765",
+          "length": 60
+        },
+        {
+          "id": "embeddings>private-docs",
+          "connection": "embeddings>private-docs",
+          "kind": "data",
+          "d": "M1030 790 L1058 790",
+          "length": 28
+        },
+        {
+          "id": "test-agent>validation",
+          "connection": "test-agent>validation",
+          "kind": "control",
+          "d": "M276 622 L276 865",
+          "length": 243
+        },
+        {
+          "id": "validation>approval",
+          "connection": "validation>approval",
+          "kind": "control",
+          "d": "M358 890 L386 890",
+          "length": 28
+        },
+        {
+          "id": "approval>github",
+          "connection": "approval>github",
+          "kind": "delivery",
+          "d": "M550 890 L578 890",
+          "length": 28
+        },
+        {
+          "id": "github>vercel",
+          "connection": "github>vercel",
+          "kind": "delivery",
+          "d": "M742 890 L770 890",
+          "length": 28
+        },
+        {
+          "id": "vercel>production",
+          "connection": "vercel>production",
+          "kind": "delivery",
+          "d": "M934 890 L962 890",
+          "length": 28
+        },
+        {
+          "id": "approval>email",
+          "connection": "approval>email",
+          "kind": "delivery",
+          "d": "M468 915 L468 960",
+          "length": 45
+        },
+        {
+          "id": "approval>actions",
+          "connection": "approval>actions",
+          "kind": "delivery",
+          "d": "M468 915 L468 932 L476 940 L652 940 L660 948 L660 960",
+          "length": 237
+        },
+        {
+          "id": "model-router>chatgpt",
+          "connection": "model-router>chatgpt",
+          "kind": "model",
+          "d": "M982 180 L1027 180 L1035 188 L1035 192 L1043 200 L1068 200",
+          "length": 106
+        },
+        {
+          "id": "model-router>claude",
+          "connection": "model-router>claude",
+          "kind": "model",
+          "d": "M982 180 L1027 180 L1035 188 L1035 250 L1043 258 L1068 258",
+          "length": 164
+        },
+        {
+          "id": "model-router>local-ai",
+          "connection": "model-router>local-ai",
+          "kind": "model",
+          "d": "M982 180 L1027 180 L1035 188 L1035 308 L1043 316 L1068 316",
+          "length": 222
+        },
+        {
+          "id": "agent-router>research-agent",
+          "connection": "agent-router>research-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L652 410 L188 410 L180 418 L180 440",
+          "length": 545
+        },
+        {
+          "id": "agent-router>browser-agent",
+          "connection": "agent-router>browser-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L652 410 L380 410 L372 418 L372 440",
+          "length": 353
+        },
+        {
+          "id": "agent-router>frontend-agent",
+          "connection": "agent-router>frontend-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L652 410 L572 410 L564 418 L564 440",
+          "length": 161
+        },
+        {
+          "id": "agent-router>backend-agent",
+          "connection": "agent-router>backend-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L748 410 L756 418 L756 440",
+          "length": 161
+        },
+        {
+          "id": "agent-router>python-agent",
+          "connection": "agent-router>python-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L940 410 L948 418 L948 440",
+          "length": 353
+        },
+        {
+          "id": "agent-router>data-agent",
+          "connection": "agent-router>data-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L1132 410 L1140 418 L1140 440",
+          "length": 545
+        },
+        {
+          "id": "agent-router>test-agent",
+          "connection": "agent-router>test-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L652 410 L284 410 L276 418 L276 515",
+          "length": 524
+        },
+        {
+          "id": "agent-router>review-agent",
+          "connection": "agent-router>review-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L652 410 L476 410 L468 418 L468 515",
+          "length": 332
+        },
+        {
+          "id": "agent-router>ai-agent",
+          "connection": "agent-router>ai-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 515",
+          "length": 140
+        },
+        {
+          "id": "agent-router>local-agent",
+          "connection": "agent-router>local-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L844 410 L852 418 L852 515",
+          "length": 332
+        },
+        {
+          "id": "agent-router>automation-agent",
+          "connection": "agent-router>automation-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L1036 410 L1044 418 L1044 515",
+          "length": 524
+        },
+        {
+          "id": "agent-router>deploy-agent",
+          "connection": "agent-router>deploy-agent",
+          "kind": "agent-bus",
+          "d": "M660 375 L660 402 L668 410 L1228 410 L1236 418 L1236 515",
+          "length": 716
+        }
+      ],
+      "buses": [
+        {
+          "id": "agent-bus",
+          "d": "M180 410 L1236 410"
+        },
+        {
+          "id": "tool-bus",
+          "d": "M180 622 L1236 622"
+        },
+        {
+          "id": "model-bus",
+          "d": "M1035 180 L1035 316"
+        }
+      ],
+      "taps": [
+        {
+          "id": "tap-research-agent",
+          "node": "research-agent",
+          "d": "M180 490 L180 622"
+        },
+        {
+          "id": "tap-browser-agent",
+          "node": "browser-agent",
+          "d": "M372 490 L372 622"
+        },
+        {
+          "id": "tap-frontend-agent",
+          "node": "frontend-agent",
+          "d": "M564 490 L564 622"
+        },
+        {
+          "id": "tap-backend-agent",
+          "node": "backend-agent",
+          "d": "M756 490 L756 622"
+        },
+        {
+          "id": "tap-python-agent",
+          "node": "python-agent",
+          "d": "M948 490 L948 622"
+        },
+        {
+          "id": "tap-data-agent",
+          "node": "data-agent",
+          "d": "M1140 490 L1140 622"
+        },
+        {
+          "id": "tap-test-agent",
+          "node": "test-agent",
+          "d": "M276 565 L276 622"
+        },
+        {
+          "id": "tap-review-agent",
+          "node": "review-agent",
+          "d": "M468 565 L468 622"
+        },
+        {
+          "id": "tap-ai-agent",
+          "node": "ai-agent",
+          "d": "M660 565 L660 622"
+        },
+        {
+          "id": "tap-local-agent",
+          "node": "local-agent",
+          "d": "M852 565 L852 622"
+        },
+        {
+          "id": "tap-automation-agent",
+          "node": "automation-agent",
+          "d": "M1044 565 L1044 622"
+        },
+        {
+          "id": "tap-deploy-agent",
+          "node": "deploy-agent",
+          "d": "M1236 565 L1236 622"
+        },
+        {
+          "id": "tap-n8n",
+          "node": "n8n",
+          "d": "M180 622 L180 655"
+        },
+        {
+          "id": "tap-python",
+          "node": "python",
+          "d": "M372 622 L372 655"
+        },
+        {
+          "id": "tap-apis",
+          "node": "apis",
+          "d": "M564 622 L564 655"
+        },
+        {
+          "id": "tap-webhooks",
+          "node": "webhooks",
+          "d": "M756 622 L756 655"
+        },
+        {
+          "id": "tap-file-data",
+          "node": "file-data",
+          "d": "M948 622 L948 655"
+        },
+        {
+          "id": "tap-browser",
+          "node": "browser",
+          "d": "M1140 622 L1140 655"
+        }
+      ],
+      "routes": {
+        "research-agent": [
+          {
+            "tool": "browser",
+            "connection": "research-agent>browser",
+            "d": "M180 490 L180 614 L188 622 L1132 622 L1140 630 L1140 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "research-agent>apis",
+            "d": "M180 490 L180 614 L188 622 L556 622 L564 630 L564 655"
+          },
+          {
+            "tool": "file-data",
+            "connection": "research-agent>file-data",
+            "d": "M180 490 L180 614 L188 622 L940 622 L948 630 L948 655"
+          }
+        ],
+        "browser-agent": [
+          {
+            "tool": "browser",
+            "connection": "browser-agent>browser",
+            "d": "M372 490 L372 614 L380 622 L1132 622 L1140 630 L1140 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "browser-agent>apis",
+            "d": "M372 490 L372 614 L380 622 L556 622 L564 630 L564 655"
+          }
+        ],
+        "frontend-agent": [
+          {
+            "tool": "browser",
+            "connection": "frontend-agent>browser",
+            "d": "M564 490 L564 614 L572 622 L1132 622 L1140 630 L1140 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "frontend-agent>apis",
+            "d": "M564 490 L564 655"
+          }
+        ],
+        "backend-agent": [
+          {
+            "tool": "apis",
+            "connection": "backend-agent>apis",
+            "d": "M756 490 L756 614 L748 622 L572 622 L564 630 L564 655"
+          },
+          {
+            "tool": "webhooks",
+            "connection": "backend-agent>webhooks",
+            "d": "M756 490 L756 655"
+          },
+          {
+            "tool": "python",
+            "connection": "backend-agent>python",
+            "d": "M756 490 L756 614 L748 622 L380 622 L372 630 L372 655"
+          }
+        ],
+        "python-agent": [
+          {
+            "tool": "python",
+            "connection": "python-agent>python",
+            "d": "M948 490 L948 614 L940 622 L380 622 L372 630 L372 655"
+          },
+          {
+            "tool": "file-data",
+            "connection": "python-agent>file-data",
+            "d": "M948 490 L948 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "python-agent>apis",
+            "d": "M948 490 L948 614 L940 622 L572 622 L564 630 L564 655"
+          }
+        ],
+        "data-agent": [
+          {
+            "tool": "python",
+            "connection": "data-agent>python",
+            "d": "M1140 490 L1140 614 L1132 622 L380 622 L372 630 L372 655"
+          },
+          {
+            "tool": "file-data",
+            "connection": "data-agent>file-data",
+            "d": "M1140 490 L1140 614 L1132 622 L956 622 L948 630 L948 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "data-agent>apis",
+            "d": "M1140 490 L1140 614 L1132 622 L572 622 L564 630 L564 655"
+          }
+        ],
+        "test-agent": [
+          {
+            "tool": "browser",
+            "connection": "test-agent>browser",
+            "d": "M276 565 L276 614 L284 622 L1132 622 L1140 630 L1140 655"
+          },
+          {
+            "tool": "python",
+            "connection": "test-agent>python",
+            "d": "M276 565 L276 614 L284 622 L364 622 L372 630 L372 655"
+          }
+        ],
+        "review-agent": [
+          {
+            "tool": "file-data",
+            "connection": "review-agent>file-data",
+            "d": "M468 565 L468 614 L476 622 L940 622 L948 630 L948 655"
+          },
+          {
+            "tool": "browser",
+            "connection": "review-agent>browser",
+            "d": "M468 565 L468 614 L476 622 L1132 622 L1140 630 L1140 655"
+          }
+        ],
+        "ai-agent": [
+          {
+            "tool": "apis",
+            "connection": "ai-agent>apis",
+            "d": "M660 565 L660 614 L652 622 L572 622 L564 630 L564 655"
+          },
+          {
+            "tool": "python",
+            "connection": "ai-agent>python",
+            "d": "M660 565 L660 614 L652 622 L380 622 L372 630 L372 655"
+          },
+          {
+            "tool": "webhooks",
+            "connection": "ai-agent>webhooks",
+            "d": "M660 565 L660 614 L668 622 L748 622 L756 630 L756 655"
+          }
+        ],
+        "local-agent": [
+          {
+            "tool": "python",
+            "connection": "local-agent>python",
+            "d": "M852 565 L852 614 L844 622 L380 622 L372 630 L372 655"
+          },
+          {
+            "tool": "file-data",
+            "connection": "local-agent>file-data",
+            "d": "M852 565 L852 614 L860 622 L940 622 L948 630 L948 655"
+          }
+        ],
+        "automation-agent": [
+          {
+            "tool": "n8n",
+            "connection": "automation-agent>n8n",
+            "d": "M1044 565 L1044 614 L1036 622 L188 622 L180 630 L180 655"
+          },
+          {
+            "tool": "webhooks",
+            "connection": "automation-agent>webhooks",
+            "d": "M1044 565 L1044 614 L1036 622 L764 622 L756 630 L756 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "automation-agent>apis",
+            "d": "M1044 565 L1044 614 L1036 622 L572 622 L564 630 L564 655"
+          },
+          {
+            "tool": "python",
+            "connection": "automation-agent>python",
+            "d": "M1044 565 L1044 614 L1036 622 L380 622 L372 630 L372 655"
+          }
+        ],
+        "deploy-agent": [
+          {
+            "tool": "webhooks",
+            "connection": "deploy-agent>webhooks",
+            "d": "M1236 565 L1236 614 L1228 622 L764 622 L756 630 L756 655"
+          },
+          {
+            "tool": "apis",
+            "connection": "deploy-agent>apis",
+            "d": "M1236 565 L1236 614 L1228 622 L572 622 L564 630 L564 655"
+          }
+        ]
+      }
+    }
   }
 }

@@ -5,6 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 import { capabilitiesContent } from "@/content/capabilities";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { CapabilityNetwork } from "@/components/pages/capabilities/CapabilityNetwork";
+import { CapabilityExplorer } from "@/components/pages/capabilities/CapabilityExplorer";
 import { Chains } from "@/components/pages/capabilities/Chains";
 import { capabilityEdges, capabilityNodes, familyIds } from "@/components/pages/capabilities/data";
 import { padClass } from "@/components/pages/capabilities/style";
@@ -57,7 +58,13 @@ export default async function CapabilitiesPage({ params }: { params: Promise<{ l
 
       <section aria-labelledby="board-title" className="container-page py-[clamp(3rem,6vw,5rem)]">
         <h2 id="board-title" className="sr-only">{t.ui.boardLabel}</h2>
-        <CapabilityNetwork t={t} />
+        {/* Same data, two presentations: the full board on desktop, an explorer on phones and tablets. */}
+        <div className="hidden lg:block">
+          <CapabilityNetwork t={t} />
+        </div>
+        <div className="lg:hidden">
+          <CapabilityExplorer t={t} />
+        </div>
       </section>
 
       <section aria-labelledby="chains-title" className="border-t border-line bg-paper-2">

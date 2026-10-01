@@ -7,7 +7,7 @@ function Uses({ items, columns = false }: { items: string[]; columns?: boolean }
     <ul className={columns ? "grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-3" : "space-y-2"}>
       {items.map((u) => (
         <li key={u} className="flex items-baseline gap-3 text-sm">
-          <span aria-hidden className="mono text-[0.65rem] text-accent-ink">—</span>
+          <span aria-hidden className="mono text-xs text-accent-ink">—</span>
           {u}
         </li>
       ))}

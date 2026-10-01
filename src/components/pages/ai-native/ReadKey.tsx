@@ -15,7 +15,7 @@ export function ReadKey({ copy }: { copy: AiNativeContent["key"] }) {
               <button
                 type="button"
                 onClick={() => selectOnCircuit(item.id)}
-                className="text-left text-sm font-medium text-night-ink underline decoration-night-line underline-offset-4 hover:decoration-accent"
+                className="inline-flex min-h-11 min-w-11 items-center text-left text-sm font-medium text-night-ink underline decoration-night-line underline-offset-4 hover:decoration-accent"
               >
                 {item.term}
               </button>

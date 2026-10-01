@@ -60,12 +60,14 @@ export function ContactView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Sticky on small screens only, inside the page so it never covers the footer. */}
-      <nav aria-label={t.mobileBar} className="sticky bottom-0 z-30 border-t border-ink bg-paper md:hidden">
+      {/* Sticky on small screens only, inside the page so it never covers the footer.
+          Hidden while a form field has focus so it can't sit over the field being typed in. */}
+      <nav aria-label={t.mobileBar} className="sticky bottom-0 z-30 border-t border-ink bg-paper md:hidden [body:has(form_:focus)_&]:hidden">
         <div className="container-page grid grid-cols-2 gap-2 py-2.5">
           <a href={mailtoHref} className="btn btn-ghost !min-h-11 justify-center !px-3 text-sm">
             <Mail className="size-4" aria-hidden />
-            {c.contact.write}
+            {/* Short label: the long form ("E-Mail schreiben") does not fit half of a 320px screen. */}
+            {c.contact.email}
           </a>
           <a href={profile.contact.phone.href} className="btn btn-primary !min-h-11 justify-center !px-3 text-sm">
             <Phone className="size-4" aria-hidden />

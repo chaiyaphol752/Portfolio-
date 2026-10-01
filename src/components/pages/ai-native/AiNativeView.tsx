@@ -3,7 +3,7 @@ import type { Locale } from "@/i18n/config";
 import { localizedPath } from "@/i18n/routing";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { CtaBand } from "@/components/ui/CtaBand";
-import { CircuitBoard } from "@/components/circuit/CircuitBoard";
+import { OrchestrationExplorer } from "@/components/circuit/OrchestrationExplorer";
 import { Ecosystem } from "./Ecosystem";
 import { HybridRouter } from "./HybridRouter";
 import { AutonomousLoop } from "./AutonomousLoop";
@@ -52,7 +52,7 @@ export function AiNativeView({ locale }: { locale: Locale }) {
             <p className="max-w-[64ch] text-sm text-night-mute lg:col-span-8">{c.hero.boardBody}</p>
           </div>
           <ReadKey copy={c.key} />
-          <CircuitBoard locale={locale} />
+          <OrchestrationExplorer locale={locale} />
         </div>
       </section>
 

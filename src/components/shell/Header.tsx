@@ -79,7 +79,7 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
           <Link
             href={localizedPath(locale, "contact")}
             aria-current={currentId === "contact" ? "page" : undefined}
-            className="btn btn-primary !min-h-10 !px-4 !py-0 text-[0.85rem] max-sm:hidden"
+            className="btn btn-primary !min-h-11 !gap-2 !px-3.5 !py-0 text-[0.82rem] sm:!min-h-10 sm:!px-4 sm:text-[0.85rem]"
           >
             {t.startProject}
           </Link>

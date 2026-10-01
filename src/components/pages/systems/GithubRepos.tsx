@@ -26,7 +26,7 @@ export function GithubRepos({ t, locale, result, profileUrl }: Props) {
           {result.repos.map((repo) => (
             <li key={repo.url} className="grid gap-x-8 gap-y-2 border-b border-line py-5 sm:grid-cols-12">
               <h3 className="h3 sm:col-span-4">
-                <ExternalLink href={repo.url} hint={hint} className="link-underline break-words">{repo.name}</ExternalLink>
+                <ExternalLink href={repo.url} hint={hint} className="inline-flex min-h-11 items-center break-words underline decoration-line underline-offset-4 hover:decoration-ink sm:min-h-0">{repo.name}</ExternalLink>
               </h3>
               <p className="body-copy text-sm sm:col-span-5">{repo.description ?? t.noDescription}</p>
               <p className="mono flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.75rem] text-ink-2 sm:col-span-3 sm:justify-end">
@@ -46,7 +46,7 @@ export function GithubRepos({ t, locale, result, profileUrl }: Props) {
         </ul>
       )}
       <p className="mt-6">
-        <ExternalLink href={profileUrl} hint={hint} className="link-underline text-sm font-medium">{t.profile}</ExternalLink>
+        <ExternalLink href={profileUrl} hint={hint} className="inline-flex min-h-11 items-center text-sm font-medium underline decoration-line underline-offset-4 hover:decoration-ink">{t.profile}</ExternalLink>
       </p>
     </div>
   );

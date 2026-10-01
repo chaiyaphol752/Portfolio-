@@ -56,7 +56,7 @@ export function Services({ locale }: { locale: Locale }) {
                 <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
                   <p className="h3">{group.title}</p>
                   {group.cta && (
-                    <Link href={contact} className="group inline-flex items-center gap-1 text-sm font-medium text-accent-ink">
+                    <Link href={contact} className="group -my-3 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent-ink">
                       <span className="link-underline">{group.cta}</span>
                       <ArrowUpRight className="size-4" aria-hidden />
                     </Link>

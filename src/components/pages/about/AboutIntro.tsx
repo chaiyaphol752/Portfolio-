@@ -18,16 +18,17 @@ export function AboutIntro({ locale }: { locale: Locale }) {
     {
       label: c.facts.contact,
       value: (
-        <span className="flex flex-col gap-1">
-          <a href={mailtoHref} className="mono link-underline self-start break-all text-[0.85rem]">{profile.contact.email}</a>
-          <a href={profile.contact.phone.href} className="mono tabular link-underline self-start text-[0.85rem]">{profile.contact.phone.display}</a>
+        <span className="flex flex-col">
+          {/* min-h-11 keeps each link a comfortable 44px tap target on phones. */}
+          <a href={mailtoHref} className="mono inline-flex min-h-11 items-center self-start break-all text-[0.85rem] underline decoration-line underline-offset-4 hover:decoration-ink lg:min-h-8">{profile.contact.email}</a>
+          <a href={profile.contact.phone.href} className="mono tabular inline-flex min-h-11 items-center self-start text-[0.85rem] underline decoration-line underline-offset-4 hover:decoration-ink lg:min-h-8">{profile.contact.phone.display}</a>
         </span>
       ),
     },
     {
       label: c.facts.code,
       value: (
-        <ExternalLink href={profile.links.github} hint={t.externalLink} className="link-underline">
+        <ExternalLink href={profile.links.github} hint={t.externalLink} className="inline-flex min-h-11 items-center break-all underline decoration-line underline-offset-4 hover:decoration-ink lg:min-h-8">
           github.com/{profile.githubUsername}
         </ExternalLink>
       ),
@@ -54,7 +55,7 @@ export function AboutIntro({ locale }: { locale: Locale }) {
             <p className="eyebrow mb-2">{c.facts.title}</p>
             <dl>
               {facts.map((f) => (
-                <div key={f.label} className="grid grid-cols-[7.5rem_1fr] gap-4 border-b border-line py-3 text-[0.92rem] lg:grid-cols-1 lg:gap-1">
+                <div key={f.label} className="grid grid-cols-1 gap-1 border-b border-line py-3 text-[0.92rem] sm:grid-cols-[7.5rem_1fr] sm:gap-4 lg:grid-cols-1 lg:gap-1">
                   <dt className="text-ink-3">{f.label}</dt>
                   <dd className="min-w-0">{f.value}</dd>
                 </div>

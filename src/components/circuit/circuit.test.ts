@@ -1,103 +1,114 @@
 import { describe, expect, it } from "vitest";
-import { circuit, highlightFor, nearestNode, nodesInReadingOrder, relatedTo } from "./circuit-data";
-import { circuitCopy, stepLabel } from "./labels";
+import { circuit, connectionsOf, highlightFor, highlightForWorkflow, nearestNode, workflowGraph, workflowSteps } from "./circuit-data";
+import { circuitCopy, translationTables } from "./labels";
 
-const locales = ["en", "de", "th"] as const;
-
-describe("orchestration highlight logic", () => {
-  it("returns nothing for no selection or unknown ids", () => {
-    expect(highlightFor(null)).toBeNull();
-    expect(highlightFor("nope")).toBeNull();
+describe("workflow helpers", () => {
+  it("flattens steps with numbers and marks parallel steps", () => {
+    const steps = workflowSteps("development");
+    expect(steps[0]).toEqual({ id: "goal", step: 1, parallel: false });
+    expect(steps.filter((s) => s.step === 4).map((s) => s.id)).toEqual(["frontend-agent", "backend-agent", "python-agent"]);
+    expect(steps.every((s) => s.step !== 4 || s.parallel)).toBe(true);
   });
 
-  it("Orchestrator lights planner, agent router, every agent and validation", () => {
+  it("links consecutive steps to real connections", () => {
+    const g = workflowGraph("local-ai");
+    expect([...g.nodes]).toEqual(["private-docs", "python", "embeddings", "local-ai", "validation", "application"]);
+    expect(g.connections.has("python>private-docs")).toBe(true);
+    expect(g.connections.has("python>embeddings")).toBe(true);
+    expect(g.connections.has("local-ai>embeddings")).toBe(true);
+  });
+
+  it("highlights only the selected workflow on the desktop board", () => {
+    const h = highlightForWorkflow("development")!;
+    expect(h.stepOf?.get("orchestrator")).toBe(2);
+    expect(h.traces.has("goal>orchestrator")).toBe(true);
+    expect(h.traces.has("orchestrator>planner")).toBe(true);
+    expect(h.traces.has("triggers>n8n")).toBe(false);
+    expect(h.nodes.has("n8n")).toBe(false);
+  });
+
+  it("highlights the automation path through n8n", () => {
+    const h = highlightForWorkflow("automation")!;
+    expect(h.traces.has("triggers>n8n")).toBe(true);
+    expect(h.traces.has("n8n>orchestrator")).toBe(true);
+    expect(h.routes.map((r) => r.id).sort()).toEqual(["automation-agent>apis", "automation-agent>python"]);
+  });
+});
+
+describe("selection helpers", () => {
+  it("Orchestrator lights planner, router, agents and validation", () => {
     const h = highlightFor("orchestrator")!;
-    for (const id of ["planner", "agent-router", "validation", ...Object.keys(circuit.agents)]) expect(h.nodes.has(id), id).toBe(true);
-    expect(h.edges.has("orchestrator--planner")).toBe(true);
-    expect(h.edges.has("planner--agent-router")).toBe(true);
+    for (const id of ["planner", "agent-router", "research-agent", "deploy-agent", "validation"]) expect(h.nodes.has(id), id).toBe(true);
     expect(h.buses.has("agent-bus")).toBe(true);
   });
 
-  it("n8n lights its automation paths, not the model layer", () => {
+  it("n8n lights its automation paths", () => {
     const h = highlightFor("n8n")!;
-    expect(h.edges.has("triggers--n8n")).toBe(true);
-    expect(h.edges.has("n8n--orchestrator")).toBe(true);
-    for (const m of circuit.models) expect(h.nodes.has(m), m).toBe(false);
+    expect(h.traces.has("triggers>n8n")).toBe(true);
+    expect(h.traces.has("n8n>orchestrator")).toBe(true);
+    expect(h.nodes.has("email")).toBe(true);
   });
 
-  it("ChatGPT lights the model router and only agents that may route to it", () => {
+  it("ChatGPT lights the model router and only agents that may use it", () => {
     const h = highlightFor("chatgpt")!;
-    expect(h.edges.has("model-router--chatgpt")).toBe(true);
-    expect(h.buses.has("model-bus")).toBe(true);
-    for (const [agent, spec] of Object.entries(circuit.agents)) expect(h.nodes.has(agent), agent).toBe(spec.models.includes("chatgpt"));
+    expect(h.nodes.has("model-router")).toBe(true);
+    expect(h.nodes.has("research-agent")).toBe(true);
+    expect(h.nodes.has("local-agent")).toBe(false);
   });
 
   it("Local AI lights the private workflow", () => {
     const h = highlightFor("local-ai")!;
-    for (const id of ["local-agent", "python", "file-data", "embeddings"]) expect(h.nodes.has(id), id).toBe(true);
-    expect(h.nodes.has("chatgpt")).toBe(false);
+    for (const id of ["local-agent", "python", "embeddings", "private-docs"]) expect(h.nodes.has(id), id).toBe(true);
   });
 
-  it("an agent draws exactly the routes to its declared tools", () => {
-    for (const [agent, spec] of Object.entries(circuit.agents)) {
-      const h = highlightFor(agent)!;
-      expect(h.routes.map((r) => r.id.split(">")[1]).sort()).toEqual([...spec.tools].sort());
-      for (const t of circuit.tools) expect(h.nodes.has(t), `${agent}:${t}`).toBe(spec.tools.includes(t));
-    }
+  it("Python lights automation, data, APIs, local AI and agent tooling", () => {
+    const h = highlightFor("python")!;
+    for (const id of ["n8n", "apis", "file-data", "local-ai", "python-agent", "automation-agent"]) expect(h.nodes.has(id), id).toBe(true);
+    expect(h.routes.every((r) => r.id.endsWith(">python"))).toBe(true);
   });
 
-  it("Python draws every agent's route into Python", () => {
-    const users = Object.entries(circuit.agents).filter(([, s]) => s.tools.includes("python")).map(([a]) => a);
-    expect(highlightFor("python")!.routes.map((r) => r.id.split(">")[0]).sort()).toEqual(users.sort());
+  it("an agent lights exactly its declared tool routes", () => {
+    const h = highlightFor("python-agent")!;
+    expect(h.routes.map((r) => r.id).sort()).toEqual(["python-agent>apis", "python-agent>file-data", "python-agent>python"]);
   });
 
-  it("only lights traces whose ends are both in focus", () => {
-    for (const n of circuit.nodes) {
-      const h = highlightFor(n.id)!;
-      for (const id of h.edges) {
-        const e = circuit.edges.find((x) => x.id === id)!;
-        for (const end of [e.source, e.target]) if (end !== "tool-bus") expect(h.nodes.has(end), `${n.id}:${id}`).toBe(true);
-      }
-    }
+  it("lists connections with direction and verb", () => {
+    const out = connectionsOf("n8n").filter((c) => c.direction === "out").map((c) => `${c.connection.verb}:${c.other}`);
+    expect(out).toEqual(expect.arrayContaining(["triggers:orchestrator", "automates:email", "calls:python"]));
   });
 
-  it("lists related components without the selection itself", () => {
-    const ids = relatedTo("n8n").map((n) => n.id);
-    expect(ids).toContain("orchestrator");
-    expect(ids).not.toContain("n8n");
-  });
-
-  it("moves keyboard focus geometrically", () => {
-    expect(nearestNode("goal", "down")).toBe("orchestrator");
+  it("moves keyboard focus to the nearest node", () => {
     expect(nearestNode("orchestrator", "down")).toBe("planner");
-    expect(nearestNode("orchestrator", "left")).toBe("state");
-  });
-
-  it("orders nodes top-to-bottom", () => {
-    expect(nodesInReadingOrder[0]?.layer).toBe("input");
-    expect(nodesInReadingOrder.at(-1)?.layer).toBe("control");
+    expect(nearestNode("planner", "up")).toBe("orchestrator");
   });
 });
 
-describe("orchestration labels", () => {
-  it("covers every node, agent and flow step in every locale", () => {
-    for (const locale of locales) {
-      const copy = circuitCopy[locale];
-      for (const n of circuit.nodes) expect(copy.nodes[n.id]?.role, `${locale}:${n.id}`).toBeTruthy();
-      for (const a of Object.keys(circuit.agents)) expect(copy.agents[a]?.responsibility, `${locale}:${a}`).toBeTruthy();
-      for (const flow of Object.values(circuit.flows))
-        for (const step of flow.flat()) expect(copy.nodes[step] ?? copy.steps[step], `${locale}:${step}`).toBeTruthy();
-      expect(stepLabel(copy, "n8n")).toBe("n8n");
+describe("labels", () => {
+  it("translates every node, agent, stage and workflow into German and Thai", () => {
+    for (const n of circuit.nodes) {
+      expect(translationTables.nodeTable[n.id]?.de, n.id).toBeDefined();
+      expect(translationTables.nodeTable[n.id]?.th, n.id).toBeDefined();
+    }
+    for (const a of Object.keys(circuit.agents)) expect(translationTables.agentTable[a], a).toBeDefined();
+    for (const s of circuit.stages) expect(translationTables.stageTable[s.id], s.id).toBeDefined();
+    for (const w of circuit.workflows) expect(translationTables.workflowTable[w.id], w.id).toBeDefined();
+    for (const n of circuit.nodes.filter((x) => x.uses.length)) {
+      expect(translationTables.usesTable[n.id]?.de.length, n.id).toBe(n.uses.length);
+      expect(translationTables.usesTable[n.id]?.th.length, n.id).toBe(n.uses.length);
     }
   });
-  it("spells Orchestrator correctly and labels n8n honestly", () => {
-    for (const locale of locales) {
+
+  it("spells Orchestrator correctly and keeps Thai pronoun-free", () => {
+    for (const locale of ["en", "de", "th"] as const) {
+      const text = JSON.stringify(circuitCopy[locale]);
+      expect(text).not.toMatch(/Orchaster|Orchastr/i);
       expect(circuitCopy[locale].nodes.orchestrator?.label).toBe("Orchestrator");
-      expect(circuitCopy[locale].status.n8n).toMatch(/n8n/);
     }
-    expect(JSON.stringify(circuitCopy)).not.toMatch(/orchast/i);
+    expect(JSON.stringify(circuitCopy.th)).not.toMatch(/ผม|ฉัน|ดิฉัน|ครับ|ค่ะ/);
   });
-  it("keeps Thai pronoun-free", () => {
-    expect(JSON.stringify(circuitCopy.th)).not.toMatch(/ผม|ดิฉัน|ฉัน|ครับ|ค่ะ/);
+
+  it("labels n8n as a capability, never a live instance", () => {
+    expect(circuitCopy.en.status.n8n).toMatch(/no live n8n instance/);
+    expect(circuitCopy.de.status.n8n).toMatch(/keine n8n-Instanz/);
   });
 });

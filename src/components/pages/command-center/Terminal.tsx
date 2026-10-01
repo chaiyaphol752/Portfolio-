@@ -140,7 +140,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
         aria-label={copy.logLabel}
         tabIndex={0}
         onClick={() => window.getSelection()?.toString() === "" && inputRef.current?.focus()}
-        className="mono h-[20rem] space-y-4 overflow-y-auto px-4 py-4 text-[0.8rem] leading-relaxed sm:h-[24rem] lg:h-[25rem]"
+        className="mono h-[16rem] space-y-4 overflow-y-auto px-4 py-4 text-[0.8rem] leading-relaxed sm:h-[24rem] lg:h-[25rem]"
       >
         {entries.map((entry) => (
           <div key={entry.id} className="space-y-1">
@@ -164,7 +164,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
         }}
         className="border-t border-night-line"
       >
-        <div className="flex items-center gap-3 px-4 py-3">
+        <div className="flex items-center gap-3 px-4 py-2 sm:py-3">
           <label htmlFor={inputId} className="mono hidden shrink-0 text-[0.82rem] text-night-mute sm:block">
             {copy.prompt}
           </label>
@@ -185,11 +185,11 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
             enterKeyHint="go"
             aria-label={`${copy.label}: ${copy.placeholder}`}
             placeholder={copy.placeholder}
-            className="mono min-w-0 flex-1 bg-transparent text-[0.9rem] text-night-ink placeholder:text-night-mute focus:outline-none"
+            className="mono min-h-11 min-w-0 flex-1 bg-transparent text-base text-night-ink placeholder:text-night-mute focus:outline-none sm:min-h-0 sm:text-[0.9rem]"
           />
           <button
             type="submit"
-            className="mono inline-flex h-9 shrink-0 items-center gap-2 rounded-sm border border-night-line px-3.5 text-xs text-night-ink transition-colors hover:border-night-ink"
+            className="mono inline-flex h-11 shrink-0 items-center gap-2 rounded-sm border border-night-line px-3.5 text-xs text-night-ink transition-colors hover:border-night-ink sm:h-9"
           >
             {copy.submit}
             <CornerDownLeft className="size-3.5" aria-hidden />
@@ -202,7 +202,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
               key={name}
               type="button"
               onClick={() => run(name)}
-              className="mono rounded-sm border border-night-line px-2.5 py-1 text-xs text-night-mute transition-colors hover:border-night-ink hover:text-night-ink"
+              className="mono inline-flex min-h-11 items-center rounded-sm border border-night-line px-3.5 text-[0.8rem] text-night-mute transition-colors hover:border-night-ink hover:text-night-ink sm:min-h-0 sm:px-2.5 sm:py-1 sm:text-xs"
             >
               {name}
             </button>

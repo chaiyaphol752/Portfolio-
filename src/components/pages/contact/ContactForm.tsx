@@ -8,6 +8,7 @@ import { locales, localeMeta, type Locale } from "@/i18n/config";
 import { interpolate } from "@/lib/interpolate";
 import type { ContactContent } from "@/content/contact";
 import type { CommonContent } from "@/content/common";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { ContactActions } from "@/components/ui/ContactActions";
 
 type FieldName = keyof ContactFieldErrors;
@@ -182,15 +183,14 @@ export function ContactForm({ t, common, locale }: Props) {
       </Field>
 
       <div className="sm:col-span-2">
-        <label className="flex cursor-pointer items-start gap-3 text-sm text-ink-2">
-          <input
+        <label className="flex cursor-pointer items-start gap-1 text-sm text-ink-2">
+          <Checkbox
             id="contact-consent"
             name="consent"
-            type="checkbox"
             required
             aria-invalid={Boolean(message("consent"))}
             aria-describedby={message("consent") ? "contact-consent-error" : undefined}
-            className="mt-0.5 size-5 shrink-0 accent-accent"
+            className="-ml-3 -mt-2.5"
           />
           <span>{t.labels.consent}</span>
         </label>

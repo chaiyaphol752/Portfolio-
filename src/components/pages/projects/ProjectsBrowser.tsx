@@ -40,10 +40,10 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
     <>
       <section aria-labelledby="index-title" className="container-page pb-[clamp(3rem,6vw,5rem)]">
         <div className="grid gap-8 border-t border-ink pt-6 lg:grid-cols-12">
-          <div className="lg:col-span-4">
+          <div className="min-w-0 lg:col-span-4">
             <h2 id="index-title" className="eyebrow">{t.ui.indexTitle}</h2>
             <label htmlFor={searchId} className="sr-only">{t.ui.searchLabel}</label>
-            <div className="mt-4 flex items-center gap-2 border-b border-ink pb-2">
+            <div className="mt-4 flex items-center gap-2 border-b border-ink">
               <Search className="size-4 shrink-0 text-ink-3" aria-hidden />
               <input
                 id={searchId}
@@ -51,7 +51,7 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t.ui.searchPlaceholder}
-                className="min-w-0 flex-1 bg-transparent text-[0.95rem] placeholder:text-ink-3 focus:outline-none"
+                className="min-h-11 min-w-0 flex-1 bg-transparent text-base placeholder:text-ink-3 focus:outline-none sm:text-[0.95rem]"
               />
             </div>
             <fieldset className="mt-6">
@@ -68,12 +68,12 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
                       disabled={!active && n === 0}
                       onClick={() => setCategory(c)}
                       className={clsx(
-                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.8rem] transition-colors disabled:opacity-40",
+                        "inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[0.85rem] transition-colors disabled:opacity-40 sm:min-h-0 sm:px-3 sm:text-[0.8rem]",
                         active ? "border-ink bg-ink text-paper" : "border-line hover:border-ink",
                       )}
                     >
                       {c === "all" ? t.ui.all : t.categories[c]}
-                      <span className="mono tabular text-[0.68rem] opacity-70">{n}</span>
+                      <span className="mono tabular text-[0.72rem] opacity-70 sm:text-[0.68rem]">{n}</span>
                     </button>
                   );
                 })}
@@ -82,7 +82,7 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
             <p className="mono mt-5 text-xs text-ink-3" aria-live="polite">
               {interpolate(t.ui.results, { n: visible.length, total: items.length })}
               {filtered && (
-                <button type="button" onClick={reset} className="ml-3 inline-flex items-center gap-1 underline underline-offset-4">
+                <button type="button" onClick={reset} className="ml-3 inline-flex min-h-11 items-center gap-1 underline underline-offset-4 sm:min-h-0">
                   <X className="size-3" aria-hidden />
                   {t.ui.reset}
                 </button>
@@ -90,7 +90,7 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
             </p>
           </div>
 
-          <div className="lg:col-span-8">
+          <div className="min-w-0 lg:col-span-8">
             <table className="w-full border-collapse text-left">
               <thead className="max-sm:sr-only">
                 <tr className="eyebrow border-b border-line">
@@ -103,16 +103,16 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
                 {visible.map((item) => (
                   <tr key={item.id} className="group border-b border-line">
                     <th scope="row" className="py-3 pr-4 font-normal">
-                      <a href={`#project-${item.id}`} className="inline-flex items-center gap-2 text-[1.05rem] font-medium tracking-tight group-hover:text-accent-ink">
+                      <a href={`#project-${item.id}`} className="inline-flex min-h-11 items-center gap-2 text-[1.05rem] font-medium tracking-tight group-hover:text-accent-ink md:min-h-0">
                         {item.name}
                         <ArrowDownRight className="size-4 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
                         <span className="sr-only"> — {t.ui.jump}</span>
                       </a>
-                      <span className="mono block text-[0.7rem] text-ink-3 md:hidden">{item.serviceLabel}</span>
+                      <span className="mono block text-[0.75rem] text-ink-3 md:hidden">{item.serviceLabel}</span>
                     </th>
                     <td className="py-3 pr-4 text-sm text-ink-2 max-md:hidden">{item.serviceLabel}</td>
                     <td className="py-3 text-right">
-                      <span className={clsx("mono whitespace-nowrap text-[0.68rem] uppercase tracking-wider", item.demo ? "text-accent-ink" : "text-ink-3")}>{item.kindLabel}</span>
+                      <span className={clsx("mono text-[0.72rem] uppercase tracking-wider sm:whitespace-nowrap sm:text-[0.68rem]", item.demo ? "text-accent-ink" : "text-ink-3")}>{item.kindLabel}</span>
                     </td>
                   </tr>
                 ))}

@@ -31,7 +31,7 @@ function Stage({ id, copy }: { id: LoopStageId; copy: Copy }) {
       <div>
         <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="text-lg font-medium tracking-tight">{copy.stages[id].label}</span>
-          {t && <span className={clsx("mono text-[0.65rem] uppercase tracking-wider", t === "human" ? "text-ink" : "text-accent-ink")}>{copy.tags[t]}</span>}
+          {t && <span className={clsx("mono text-xs uppercase tracking-wider", t === "human" ? "text-ink" : "text-accent-ink")}>{copy.tags[t]}</span>}
         </p>
         <p className="text-sm text-ink-2">{copy.stages[id].detail}</p>
       </div>
@@ -57,7 +57,7 @@ export function AutonomousLoop({ copy }: { copy: Copy }) {
             <p className="mono absolute right-0 top-1/2 flex w-9 -translate-y-1/2 justify-center text-accent-ink">
               <CornerLeftUp className="size-4" aria-hidden />
             </p>
-            <p className="mono mt-2 text-[0.7rem] uppercase tracking-wider text-accent-ink">{copy.loopLabel}</p>
+            <p className="mono mt-2 text-xs uppercase tracking-wider text-accent-ink">{copy.loopLabel}</p>
           </li>
           {after.map((id) => <Stage key={id} id={id} copy={copy} />)}
         </ol>
