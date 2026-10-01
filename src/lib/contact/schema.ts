@@ -1,28 +1,25 @@
-import { z } from "zod";
+// zod/mini: same validation semantics as zod, tree-shakable, so the client bundle stays small.
+import * as z from "zod/mini";
 import { locales } from "@/i18n/config";
 
 export const projectTypes = ["new-website", "redesign", "features", "webapp", "ai-integration", "automation", "local-ai", "other"] as const;
 export const budgets = ["under-1k", "1k-5k", "5k-15k", "15k-plus", "unsure"] as const;
-
-/** Empty form inputs arrive as "" — treat them as "not provided". */
-const optional = <T extends z.ZodTypeAny>(schema: T) =>
-  z.preprocess((v) => (typeof v === "string" && v.trim() === "" ? undefined : v), schema.optional());
 
 /**
  * Error messages are stable codes, not sentences: the client maps each code to
  * a translated message, so validation feedback is localized without server-side i18n.
  */
 export const contactSchema = z.object({
-  name: z.string().trim().min(2, "name.short").max(100, "name.long"),
-  email: z.string().trim().max(200, "email.long").email("email.invalid"),
-  company: optional(z.string().trim().max(120, "company.long")),
+  name: z.string().check(z.trim(), z.minLength(2, "name.short"), z.maxLength(100, "name.long")),
+  email: z.string().check(z.trim(), z.maxLength(200, "email.long"), z.regex(z.regexes.email, "email.invalid")),
+  company: z.optional(z.string().check(z.trim(), z.maxLength(120, "company.long"))),
   projectType: z.enum(projectTypes, { error: "projectType.invalid" }),
-  budget: optional(z.enum(budgets, { error: "budget.invalid" })),
-  message: z.string().trim().min(20, "message.short").max(4000, "message.long"),
+  budget: z.optional(z.enum(budgets, { error: "budget.invalid" })),
+  message: z.string().check(z.trim(), z.minLength(20, "message.short"), z.maxLength(4000, "message.long")),
   language: z.enum(locales, { error: "language.invalid" }),
   consent: z.literal("on", { error: "consent.required" }),
   /** Honeypot: real visitors never see or fill this field. */
-  website: z.string().max(0).optional(),
+  website: z.optional(z.string().check(z.maxLength(0))),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
@@ -31,11 +28,19 @@ export type ContactErrorCode = "name.short" | "name.long" | "email.invalid" | "e
 
 export type ContactFieldErrors = Partial<Record<keyof ContactInput, string>>;
 
+const optionalFields = ["company", "budget"] as const;
+
 /** Returns validated data or a per-field map of error codes. */
 export function parseContact(raw: Record<string, unknown>):
   | { success: true; data: ContactInput }
   | { success: false; fieldErrors: ContactFieldErrors; honeypot: boolean } {
-  const result = contactSchema.safeParse(raw);
+  // Empty form inputs arrive as "": treat optional ones as "not provided".
+  const input = { ...raw };
+  for (const key of optionalFields) {
+    const value = input[key];
+    if (typeof value === "string" && value.trim() === "") delete input[key];
+  }
+  const result = contactSchema.safeParse(input);
   if (result.success) return { success: true, data: result.data };
   const fieldErrors: ContactFieldErrors = {};
   let honeypot = false;

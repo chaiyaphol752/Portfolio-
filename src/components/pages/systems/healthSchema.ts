@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 /** Shape of GET /api/health; validated on the client so a malformed response can't crash the panel. */
 export const healthSchema = z.object({
@@ -6,13 +6,13 @@ export const healthSchema = z.object({
   service: z.string(),
   time: z.string(),
   runtime: z.object({ node: z.string(), region: z.string(), environment: z.string() }),
-  deployment: z.object({ commit: z.string().nullable() }),
+  deployment: z.object({ commit: z.nullable(z.string()) }),
   checks: z.object({
     database: z.string(),
     contactWebhook: z.string(),
     // Optional so the panel keeps working against an older deployment of the endpoint.
-    email: z.string().optional(),
-    contactChannels: z.array(z.string()).optional(),
+    email: z.optional(z.string()),
+    contactChannels: z.optional(z.array(z.string())),
   }),
 });
 
