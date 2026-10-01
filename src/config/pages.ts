@@ -22,7 +22,7 @@ export interface PageDef {
   primary: boolean;
 }
 
-const primaryIds: readonly PageId[] = ["projects", "capabilities", "ai-native", "lab", "about"];
+const primaryIds: readonly PageId[] = ["projects", "capabilities", "ai-native", "lab", "operator", "about"];
 
 export const pages: readonly PageDef[] = pageIds.map((id) => ({
   id,

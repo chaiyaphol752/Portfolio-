@@ -70,6 +70,22 @@ await check("operator: home entry, screen inspector, safe console, visor", async
   await p.getByRole("button", { name: /visor/i }).click({ force: true }); await p.waitForTimeout(300);
   assert((await p.locator("#operator-root[data-sync]").count()) === 1, "visor easter egg");
 });
+await check("operator: hero button on home, scene rail, surprise switch toggles the lights", async () => {
+  await p.goto(`${base}/en`, { waitUntil: "networkidle" });
+  assert((await p.locator('section[aria-labelledby="home-title"] a[href="/en/operator"]').count()) === 1, "hero button");
+  assert((await p.locator('header nav a[href="/en/operator"]').count()) === 1, "header link");
+  assert(await p.locator('header nav a[href="/en/operator"]').isVisible(), "header link hidden at desktop width");
+  const heroBottom = await p.evaluate(() => document.querySelector('section[aria-labelledby="home-title"]').getBoundingClientRect().bottom + scrollY);
+  const bandTop = await p.evaluate(() => document.querySelector("#operator-entry-title").closest("section").getBoundingClientRect().top + scrollY);
+  assert(Math.abs(bandTop - heroBottom) < 4, "operator band is not directly under the hero");
+  await p.goto(`${base}/en/operator`, { waitUntil: "networkidle" });
+  assert((await p.locator("[data-rail]").count()) === 8, "rail");
+  await p.getByRole("button", { name: "Do not press" }).click(); await p.waitForTimeout(1300);
+  assert((await p.locator("#operator-root[data-lights]").count()) === 1, "lights on");
+  assert(/source is public/.test(await p.locator('[role="status"][data-shown]').innerText()), "message");
+  await p.getByRole("button", { name: "Lights off" }).click(); await p.waitForTimeout(1300);
+  assert((await p.locator("#operator-root[data-lights]").count()) === 0, "lights off");
+});
 await check("security headers present (CSP, HSTS, frame, nosniff, COOP)", async () => {
   const h = (await p.request.get(`${base}/en`)).headers();
   for (const k of ["content-security-policy", "strict-transport-security", "x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy", "cross-origin-opener-policy"]) assert(h[k], `missing ${k}`);

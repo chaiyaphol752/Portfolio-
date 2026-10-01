@@ -16,12 +16,20 @@ const en = {
   loop: { label: "Continuous system", line: "It keeps going." },
   collapse: { line: "Signal, not noise." },
   exit: {
+    kicker: "End of transmission",
     work: "View the work",
     project: "Start a project",
     back: "Return to portfolio",
     note: "Operator is a visual piece. The architecture and code are real; the figure is an illustration.",
   },
   scroll: "Scroll",
+  rail: { label: "Scenes", items: ["Signal", "Operator", "Screens", "Core", "Code", "Human", "System", "Exit"] },
+  surprise: {
+    label: "Do not press",
+    off: "Lights off",
+    message: "Lights on. Nothing hidden — the source is public.",
+    link: "Read the source",
+  },
   entry: {
     eyebrow: "After hours",
     title: "Operator",
@@ -112,12 +120,20 @@ const de: OperatorContent = {
   loop: { label: "Kontinuierliches System", line: "Es geht weiter." },
   collapse: { line: "Signal statt Rauschen." },
   exit: {
+    kicker: "Ende der Übertragung",
     work: "Arbeiten ansehen",
     project: "Projekt starten",
     back: "Zurück zum Portfolio",
     note: "Operator ist ein visuelles Stück. Architektur und Code sind echt; die Figur ist eine Illustration.",
   },
   scroll: "Scrollen",
+  rail: { label: "Szenen", items: ["Signal", "Operator", "Bildschirme", "Kern", "Code", "Mensch", "System", "Ausgang"] },
+  surprise: {
+    label: "Nicht drücken",
+    off: "Licht aus",
+    message: "Licht an. Nichts versteckt – der Quellcode ist öffentlich.",
+    link: "Quellcode lesen",
+  },
   entry: {
     eyebrow: "Nach Feierabend",
     title: "Operator",
@@ -206,12 +222,20 @@ const th: OperatorContent = {
   loop: { label: "ระบบที่ต่อเนื่อง", line: "และยังดำเนินต่อไป" },
   collapse: { line: "สัญญาณ ไม่ใช่เสียงรบกวน" },
   exit: {
+    kicker: "สิ้นสุดการส่งสัญญาณ",
     work: "ดูผลงาน",
     project: "เริ่มโปรเจกต์",
     back: "กลับสู่พอร์ตโฟลิโอ",
     note: "Operator เป็นงานภาพ สถาปัตยกรรมและโค้ดที่เห็นเป็นของจริง ส่วนตัวละครเป็นภาพประกอบ",
   },
   scroll: "เลื่อนลง",
+  rail: { label: "ฉาก", items: ["สัญญาณ", "Operator", "หน้าจอ", "แกนกลาง", "โค้ด", "มนุษย์", "ระบบ", "ทางออก"] },
+  surprise: {
+    label: "ห้ามกด",
+    off: "ปิดไฟ",
+    message: "เปิดไฟแล้ว ไม่มีอะไรซ่อนอยู่ ซอร์สโค้ดเปิดเป็นสาธารณะ",
+    link: "อ่านซอร์สโค้ด",
+  },
   entry: {
     eyebrow: "ยามดึก",
     title: "Operator",

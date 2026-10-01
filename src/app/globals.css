@@ -241,3 +241,15 @@ dialog[open] { animation: rise 0.25s ease-out both; }
   color: var(--color-ink);
   color-scheme: dark;
 }
+
+/* Operator "lights on": the header returns to the regular paper palette. */
+html[data-operator-lights] .site-header[data-tone="dark"] {
+  --color-paper: inherit;
+  --color-ink: inherit;
+  --color-ink-2: inherit;
+  --color-ink-3: inherit;
+  --color-line: inherit;
+  background: rgb(244 242 236 / 0.95);
+  color: var(--color-ink);
+  color-scheme: light;
+}

@@ -7,6 +7,9 @@ import { OperatorFigure } from "./OperatorFigure";
 import { ScrollDirector } from "./ScrollDirector";
 import { InspectorProvider, ScreenTrigger, type SurfaceId } from "./Inspector";
 import { VisorButton } from "./VisorButton";
+import { Hud } from "./Hud";
+import { profile } from "@/config/profile";
+import { common } from "@/content/common";
 import {
   AgentScreen,
   ArchitectureScreen,
@@ -48,13 +51,16 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
     <InspectorProvider locale={locale} t={t}>
     <div id={ROOT_ID} className={s.root}>
       <ScrollDirector rootId={ROOT_ID} />
+      <Hud rootId={ROOT_ID} t={t} repoUrl={profile.sourceRepo} externalHint={common[locale].externalLink} />
       <h1 className="sr-only">{t.meta.title}</h1>
 
       {/* 00 — threshold: darkness and a single signal */}
-      <section data-scene className={`${s.scene} ${s.threshold}`} style={sceneStyle(1)} aria-label={t.threshold.signal}>
+      <section id="op-threshold" data-scene="threshold" className={`${s.scene} ${s.threshold}`} style={sceneStyle(1)} aria-label={t.threshold.signal}>
         <div className={s.stage}>
           <p className={`${s.micro} ${s.cornerTL}`}>{t.threshold.signal}</p>
           <p className={`${s.micro} ${s.cornerTR}`}>operator</p>
+          {/* The title is set as architecture: outlined above the line, lit below it. */}
+          <p className={s.wordmark} aria-hidden>OPERATOR</p>
           <Signal />
           <p className={s.thresholdLine}>{t.threshold.line}</p>
           <p className={`${s.micro} ${s.scrollHint}`} aria-hidden>{t.scroll}</p>
@@ -62,7 +68,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 01 — the operator, revealed through the aperture */}
-      <section data-scene className={`${s.scene} ${s.reveal}`} style={sceneStyle(1)} aria-label={t.operator.label}>
+      <section id="op-operator" data-scene="operator" className={`${s.scene} ${s.reveal}`} style={sceneStyle(1)} aria-label={t.operator.label}>
         <div className={s.stage}>
           <div className={s.aperture}>
             <div className={s.backlight} aria-hidden />
@@ -75,6 +81,13 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
           </div>
           <span className={`${s.edge} ${s.edgeTop}`} aria-hidden />
           <span className={`${s.edge} ${s.edgeBottom}`} aria-hidden />
+          {/* Visible only with the lights on: how the image is actually made. */}
+          <dl className={s.spec} aria-hidden>
+            <div><dt>figure</dt><dd>inline SVG · 0 image files</dd></div>
+            <div><dt>light</dt><dd>CSS gradients · no WebGL</dd></div>
+            <div><dt>signal</dt><dd>1 line · 5 scenes</dd></div>
+            <div><dt>motion</dt><dd>1 CSS variable per scene</dd></div>
+          </dl>
           <div className={s.revealCopy}>
             <p className={s.micro}>{t.operator.label}</p>
             <p className={s.statement}>{t.operator.line}</p>
@@ -83,7 +96,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 02 — the screen field: different formats, one hierarchy */}
-      <section data-scene className={`${s.scene} ${s.field}`} style={sceneStyle(1)} aria-label={t.field.label}>
+      <section id="op-screens" data-scene="screens" className={`${s.scene} ${s.field}`} style={sceneStyle(1)} aria-label={t.field.label}>
         <div className={s.stage}>
           <p className={`${s.micro} ${s.cornerTL}`}>{t.field.label}</p>
           <div className={s.fieldSpace}>
@@ -116,7 +129,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 03 — orchestration core, distilled */}
-      <section data-scene className={`${s.scene} ${s.core}`} style={sceneStyle(1)} aria-label={t.core.label}>
+      <section id="op-core" data-scene="core" className={`${s.scene} ${s.core}`} style={sceneStyle(1)} aria-label={t.core.label}>
         <div className={s.stage}>
           <div className={s.coreMonitor}>
             <p className={s.micro}>{t.core.label}</p>
@@ -139,7 +152,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 04 — code as material */}
-      <section data-scene className={`${s.scene} ${s.material}`} style={sceneStyle(0.5)} aria-label={t.code.label}>
+      <section id="op-code" data-scene="code" className={`${s.scene} ${s.material}`} style={sceneStyle(0.5)} aria-label={t.code.label}>
         <div className={s.stage}>
           <p className={`${s.micro} ${s.cornerTL}`}>{t.code.label}</p>
           <div className={s.materialRows}>
@@ -152,7 +165,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 05 — machine / human: the quiet scene */}
-      <section data-scene className={`${s.scene} ${s.quiet}`} style={sceneStyle(0.5)} aria-label={t.quiet.line}>
+      <section id="op-human" data-scene="human" className={`${s.scene} ${s.quiet}`} style={sceneStyle(0.5)} aria-label={t.quiet.line}>
         <div className={s.stage}>
           <OperatorFigure uid="quiet" className={s.quietFigure} />
           <p className={`${s.statement} ${s.quietLine}`}>{t.quiet.line}</p>
@@ -160,7 +173,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 06 — the continuous system: a corridor of frames that never reaches its end */}
-      <section data-scene className={`${s.scene} ${s.loop}`} style={sceneStyle(0.35)} aria-label={t.loop.label}>
+      <section id="op-loop" data-scene="loop" className={`${s.scene} ${s.loop}`} style={sceneStyle(0.35)} aria-label={t.loop.label}>
         <div className={s.stage}>
           <p className={`${s.micro} ${s.cornerTL}`}>{t.loop.label}</p>
           <div className={s.corridor} aria-hidden>
@@ -196,7 +209,7 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
       </section>
 
       {/* 07 — signal collapse: the opening returns */}
-      <section data-scene className={`${s.scene} ${s.collapse}`} style={sceneStyle(1)} aria-label={t.collapse.line}>
+      <section id="op-signal" data-scene="signal" className={`${s.scene} ${s.collapse}`} style={sceneStyle(1)} aria-label={t.collapse.line}>
         <div className={s.stage}>
           <Signal />
           <p className={s.thresholdLine}>{t.collapse.line}</p>
@@ -205,9 +218,13 @@ export function OperatorExperience({ locale }: { locale: Locale }) {
 
       {/* 08 — exit */}
       <section className={s.exit}>
+        <p className={s.micro}>{t.exit.kicker}</p>
+        <Link href={localizedPath(locale, "contact")} className={s.exitPrimary}>
+          <span>{t.exit.project}</span>
+          <ArrowRight aria-hidden />
+        </Link>
         <nav aria-label={t.meta.title} className={s.exitLinks}>
           <Link href={localizedPath(locale, "projects")}>{t.exit.work}<ArrowRight className="size-4" aria-hidden /></Link>
-          <Link href={localizedPath(locale, "contact")}>{t.exit.project}<ArrowRight className="size-4" aria-hidden /></Link>
           <Link href={localizedPath(locale)}>{t.exit.back}<ArrowRight className="size-4" aria-hidden /></Link>
         </nav>
         <p className={s.exitNote}>{t.exit.note}</p>

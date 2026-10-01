@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import { localizedPath } from "@/i18n/routing";
 import { common } from "@/content/common";
@@ -48,6 +48,12 @@ export function HomeHero({ locale }: { locale: Locale }) {
             <ButtonLink href={localizedPath(locale, "contact")} variant="ghost">
               {t.cta.startProject}
             </ButtonLink>
+            {/* A direct door into the Operator showcase, marked with its signal dot. */}
+            <Link href={localizedPath(locale, "operator")} className="btn btn-ghost mono !gap-2.5 text-[0.8rem] uppercase tracking-[0.14em]">
+              <span aria-hidden className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgb(242_65_26_/_0.8)]" />
+              {t.nav.operator}
+              <ArrowUpRight className="size-4" aria-hidden />
+            </Link>
           </div>
           <Link href={localizedPath(locale, "ai-native")} className="group inline-flex min-h-11 items-center gap-2 self-start text-sm font-medium lg:self-end">
             <span className="link-underline">{c.secondary}</span>

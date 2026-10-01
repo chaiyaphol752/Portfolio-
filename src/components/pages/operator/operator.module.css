@@ -21,6 +21,9 @@
   overflow-x: clip;
 }
 
+/* The HUD layer occupies one viewport in flow; the first scene slides back under it. */
+.root > section:first-of-type { margin-top: -100svh; }
+
 .scene {
   --p: var(--rest, 1);
   position: relative;
@@ -121,6 +124,30 @@
   color: var(--mute);
   opacity: clamp(0, calc((var(--p) - 0.4) * 3), 1);
 }
+.wordmark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: min(17.2vw, 19rem);
+  line-height: 1;
+  letter-spacing: calc(-0.045em + (1 - var(--p)) * 0.1em);
+  white-space: nowrap;
+  user-select: none;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(236 234 227 / 0.17);
+  /* Lit from the signal line downward. */
+  background: linear-gradient(180deg, transparent 50%, rgb(236 234 227 / 0.3) 50%, rgb(236 234 227 / 0.02) 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: calc(0.2 + var(--p) * 0.8);
+}
+.threshold .thresholdLine { top: calc(50% + min(10vw, 11rem)); }
+.threshold .signalWrap { width: min(92vw, 1500px); }
+.threshold .caret { transform: translateX(calc(var(--p) * min(46vw, 750px) + 10px)); }
 .scrollHint {
   position: absolute;
   left: 50%;
@@ -170,6 +197,43 @@
   transform-origin: 50% 40%;
 }
 .heroFigure { display: block; width: 100%; height: 100%; }
+.reveal[data-active] .heroFigure { animation: breathe 7s ease-in-out infinite alternate; transform-origin: 50% 70%; }
+@keyframes breathe { to { transform: scale(1.008) translateY(-0.25%); } }
+
+/* Pointer-reactive light and depth (--mx / --my are set for fine pointers only). */
+.screenGlow { translate: calc(var(--mx, 0) * 9%) calc(var(--my, 0) * 6%); }
+.backlight { translate: calc(var(--mx, 0) * -2%) calc(var(--my, 0) * -1.5%); }
+.heroFigureWrap { translate: calc(var(--mx, 0) * -0.9%) calc(var(--my, 0) * -0.6%); }
+.fieldSpace { perspective-origin: calc(50% + var(--mx, 0) * 14%) calc(45% + var(--my, 0) * 10%); }
+.vanishing, .rails { translate: calc(var(--mx, 0) * 1.2%) calc(var(--my, 0) * 1%); }
+
+/* Spec sheet: revealed only when the lights are on. */
+.spec {
+  position: absolute;
+  top: calc(var(--header-h) + 2rem);
+  left: var(--gutter);
+  z-index: 10;
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.6s 0.4s;
+}
+.spec div { display: grid; grid-template-columns: 5rem auto; gap: 0.75rem; padding-bottom: 0.3rem; border-bottom: 1px solid rgb(236 234 227 / 0.25); }
+.spec dt { text-transform: uppercase; letter-spacing: 0.16em; color: var(--mute); }
+.spec dd { margin: 0; }
+.root[data-lights] .spec { opacity: 1; }
+
+/* ---------- lights on: the same room, inverted into daylight ---------- */
+.root[data-lights] { background: #f8f7f5; }
+.root[data-lights] .stage,
+.root[data-lights] .exit,
+.root[data-lights] .mobileScreen,
+.root[data-lights] .fieldMobileFigure { filter: invert(1) hue-rotate(180deg); }
 
 /* The visor easter egg: an invisible, focusable hit area over the visor band. */
 .visorButton {
@@ -616,17 +680,35 @@
 .exit {
   display: grid;
   justify-items: center;
-  gap: 2.5rem;
-  padding: clamp(5rem, 14svh, 9rem) var(--gutter) clamp(4rem, 10svh, 6rem);
+  gap: 2rem;
+  padding: clamp(5rem, 16svh, 10rem) var(--gutter) clamp(6.5rem, 14svh, 8rem);
   text-align: center;
+  background: var(--void);
 }
+.exitPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2vw, 1.75rem);
+  padding-bottom: 0.15em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.7rem, 9vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  background: linear-gradient(90deg, transparent, var(--signal) 18%, var(--signal-hot) 50%, var(--signal) 82%, transparent) 50% 100% / 100% 2px no-repeat;
+  transition: gap 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+:global(html[lang="th"]) .exitPrimary { font-family: var(--font-sans); font-style: normal; font-weight: 300; line-height: 1.3; }
+.exitPrimary svg { width: 0.62em; height: 0.62em; flex-shrink: 0; }
+.exitPrimary:hover { gap: clamp(1.2rem, 3vw, 2.75rem); }
 .exitLinks { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 2.5rem; }
 .exitLinks a {
   display: inline-flex;
   min-height: 48px;
   align-items: center;
   gap: 0.6rem;
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
   color: var(--ink);
   border-bottom: 1px solid #2a2d35;
   transition: border-color 0.3s, color 0.3s;
@@ -656,6 +738,15 @@
 
   .micro { font-size: 0.72rem; }
   .cornerTR { display: none; }
+  .wordmark { font-size: 19.5vw; }
+  .threshold .signalWrap { width: 84vw; }
+  .threshold .caret { transform: translateX(calc(var(--p) * 42vw + 4px)); }
+  .threshold .thresholdLine { top: calc(50% + 13vw + 1rem); }
+  .scrollHint { bottom: 5.25rem; }
+  .spec { top: calc(var(--header-h) + 1rem); font-size: 0.72rem; }
+  .revealCopy { max-width: 62vw; transition: bottom 0.5s; }
+  /* Make room for the lights-on note above the switch. */
+  .root[data-lights] .revealCopy { bottom: 11.5rem; }
   .signalWrap { width: 78vw; }
   .caret { transform: translateX(calc(var(--p) * 39vw + 6px)); }
 
@@ -718,7 +809,9 @@
 
 /* ---------- reduced motion: a composed still, not a broken page ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .caret, .bandTrack, :global(.op-visor) > g { animation: none !important; }
+  .caret, .bandTrack, .heroFigure, :global(.op-visor) > g { animation: none !important; }
+  .spec { transition: none; }
+  .exitPrimary { transition: none; }
   .root[data-sync] :global(.op-visor-signal), .root[data-sync] .screenGlow, .root[data-sync] .edge { animation: none !important; }
   .scene { --p: var(--rest, 1) !important; }
 }

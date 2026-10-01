@@ -49,17 +49,19 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
               .map((p) => {
                 const active = p.id === currentId;
                 return (
-                  <li key={p.id}>
+                  // Operator joins the header from xl up; below that the six labels don't fit in German.
+                  <li key={p.id} className={p.id === "operator" ? "hidden xl:block" : undefined}>
                     <Link
                       href={localizedPath(locale, p.slug)}
                       aria-current={active ? "page" : undefined}
                       className={clsx(
-                        "relative inline-flex h-9 items-center px-3 text-[0.88rem] transition-colors",
+                        "relative inline-flex h-9 items-center whitespace-nowrap px-2 text-[0.88rem] transition-colors xl:px-3",
                         active ? "text-ink" : "text-ink-2 hover:text-ink",
                       )}
                     >
+                      {p.id === "operator" && <span aria-hidden className="mr-1.5 size-1.5 rounded-full bg-accent" />}
                       {t.nav[p.id]}
-                      <span aria-hidden className={clsx("absolute inset-x-3 bottom-1 h-px", active ? "bg-accent" : "bg-transparent")} />
+                      <span aria-hidden className={clsx("absolute inset-x-2 bottom-1 h-px xl:inset-x-3", active ? "bg-accent" : "bg-transparent")} />
                     </Link>
                   </li>
                 );
@@ -73,7 +75,7 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
             onClick={openCommandPalette}
             aria-label={t.commandPalette.hint}
             title={`${t.commandPalette.hint} (${t.commandPalette.shortcut})`}
-            className="hidden size-10 items-center justify-center rounded-full border border-line hover:border-ink md:inline-flex"
+            className="hidden size-10 items-center justify-center rounded-full border border-line hover:border-ink md:inline-flex lg:hidden xl:inline-flex"
           >
             <Search className="size-4" aria-hidden />
           </button>

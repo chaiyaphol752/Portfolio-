@@ -1,0 +1,180 @@
+/* A viewport-sized sticky layer: its children behave like fixed elements, but only while
+   the Operator root fills the viewport, so they leave with the page instead of covering
+   the footer. The first scene is pulled up under it (see .root > section:first-of-type);
+   a negative margin here would shrink the sticky range to zero height. */
+.hud {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 30;
+  pointer-events: none;
+  --ink: #eceae3;
+  --mute: #8e919b;
+  --signal: #f2411a;
+  --signal-hot: #ffb08f;
+}
+.hud > * { pointer-events: auto; }
+
+/* Page progress: the signal line again, growing under the header. */
+.progress {
+  position: absolute;
+  top: var(--header-h);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--page, 0));
+  background: linear-gradient(90deg, var(--signal), var(--signal-hot));
+  opacity: 0.85;
+}
+
+/* ---------- scene rail (desktop) ---------- */
+.rail {
+  position: absolute;
+  top: 50%;
+  right: 1.1rem;
+  transform: translateY(-50%);
+  display: none;
+}
+.rail ol { display: grid; gap: 0.15rem; margin: 0; padding: 0; list-style: none; }
+.rail a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  min-height: 28px;
+  padding-left: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+:global(html[lang="th"]) .rail a { font-family: var(--font-sans); letter-spacing: 0.02em; text-transform: none; font-size: 0.8rem; }
+.railLabel { opacity: 0; transform: translateX(6px); transition: opacity 0.3s, transform 0.3s; }
+.railTick { width: 14px; height: 1px; background: currentColor; opacity: 0.55; transition: width 0.3s, background-color 0.3s, opacity 0.3s; }
+.rail a:hover .railLabel, .rail a:focus-visible .railLabel, .rail a[aria-current] .railLabel { opacity: 1; transform: none; }
+.rail a:hover, .rail a:focus-visible { color: var(--ink); }
+.rail a[aria-current] { color: var(--ink); }
+.rail a[aria-current] .railTick { width: 30px; background: var(--signal); opacity: 1; box-shadow: 0 0 8px rgb(242 65 26 / 0.7); }
+.rail a:focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+@media (min-width: 1024px) {
+  .rail { display: block; }
+}
+
+/* ---------- the switch ---------- */
+.switch {
+  position: absolute;
+  bottom: 1.25rem;
+  right: var(--gutter);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 48px;
+  padding: 0 1.1rem 0 0.55rem;
+  border: 1px solid #2f323b;
+  border-radius: 999px;
+  background: rgb(7 8 10 / 0.82);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.switch:hover { border-color: var(--signal); }
+.switch:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.switchCap {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a66, var(--signal) 55%, #8f2109);
+  box-shadow: 0 0 0 3px #15171c, 0 0 0 4px #33363f, 0 0 18px rgb(242 65 26 / 0.55);
+  transition: transform 0.15s;
+}
+.switchCap::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  border: 1px solid rgb(242 65 26 / 0.5);
+  animation: beckon 2.8s ease-out infinite;
+}
+.switch:active .switchCap { transform: scale(0.9); }
+.switch[aria-pressed="true"] .switchCap { background: radial-gradient(circle at 35% 30%, #fff, #d9d6cc 60%, #9a978c); box-shadow: 0 0 0 3px #e6e3da, 0 0 0 4px #b9b5a8; }
+.switch[aria-pressed="true"] .switchCap::after { animation: none; opacity: 0; }
+.switchLabel {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+:global(html[lang="th"]) .switchLabel { font-family: var(--font-sans); letter-spacing: 0.02em; text-transform: none; font-size: 0.9rem; }
+@keyframes beckon {
+  0% { transform: scale(0.75); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ---------- message shown while the lights are on ---------- */
+.toast {
+  position: absolute;
+  top: calc(var(--header-h) + 1rem);
+  left: 50%;
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--gutter));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem 1.1rem;
+  padding: 0.35rem 1.1rem;
+  border: 1px solid #101114;
+  border-radius: 6px;
+  background: rgb(248 247 245 / 0.94);
+  font-size: 0.92rem;
+  color: #101114;
+  opacity: 0;
+  transform: translate(-50%, -8px);
+  transition: opacity 0.6s 0.5s, transform 0.6s 0.5s;
+  pointer-events: none !important;
+}
+.toast[data-shown] { opacity: 1; transform: translate(-50%, 0); pointer-events: auto !important; }
+.toast:not([data-shown]) { visibility: hidden; }
+.toast a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- the flash: the aperture opens until the whole frame is light ---------- */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  pointer-events: none;
+  opacity: 0;
+}
+.flash[data-flash="on"] { background: #f8f7f5; animation: aperture 1.05s cubic-bezier(0.6, 0, 0.2, 1) both; }
+.flash[data-flash="off"] { background: #07080a; animation: aperture 1.05s cubic-bezier(0.6, 0, 0.2, 1) both; }
+@keyframes aperture {
+  0% { opacity: 1; clip-path: inset(49.8% 0 49.8% 0); }
+  40% { opacity: 1; clip-path: inset(0); }
+  55% { opacity: 1; clip-path: inset(0); }
+  100% { opacity: 0; clip-path: inset(0); }
+}
+
+/* Lights on: the HUD is not inverted with the stages, so it switches palette itself. */
+:global([data-lights]) .hud { --ink: #101114; --mute: #5b5e68; }
+:global([data-lights]) .switch { background: rgb(248 247 245 / 0.9); border-color: #101114; }
+
+@media (max-width: 767px) {
+  .switch { bottom: 1rem; padding-right: 0.95rem; }
+  .toast { top: auto; bottom: 5rem; width: calc(100vw - 2 * var(--gutter)); font-size: 0.9rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .switchCap::after, .flash { animation: none !important; }
+  .railLabel, .railTick, .toast { transition: none; }
+}

@@ -27,9 +27,9 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <HomeHero locale={locale} />
+      <OperatorEntry locale={locale} />
       <Services locale={locale} />
       <AiTeaser locale={locale} />
-      <OperatorEntry locale={locale} />
       <Process locale={locale} />
       <WorkTeaser locale={locale} />
       <CtaBand locale={locale} title={c.closing.title} body={c.closing.body} label={common[locale].cta.startProject} />
