@@ -228,3 +228,16 @@ dialog[open] { animation: rise 0.25s ease-out both; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
+
+/* ---------- Dark header tone (Operator page only) ----------
+   Re-maps the paper/ink tokens inside the header so every child keeps working unchanged. */
+.site-header[data-tone="dark"] {
+  --color-paper: #07080a;
+  --color-ink: #eceae3;
+  --color-ink-2: #b9bbc3;
+  --color-ink-3: #8e919b;
+  --color-line: #23262e;
+  background: rgb(7 8 10 / 0.88);
+  color: var(--color-ink);
+  color-scheme: dark;
+}

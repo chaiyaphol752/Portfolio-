@@ -6,7 +6,7 @@ import { mkdirSync } from "node:fs";
 const base = process.env.BASE_URL ?? "http://localhost:3000";
 const out = process.argv[2] ?? "qa-shots";
 const locales = (process.argv[3] ?? "en,de,th").split(",");
-const slugs = ["", "projects", "capabilities", "ai-native", "case-studies", "lab", "systems", "command-center", "about", "contact"];
+const slugs = ["", "projects", "capabilities", "ai-native", "case-studies", "lab", "systems", "command-center", "operator", "about", "contact"];
 const all = {
   w320: { width: 320, height: 720 },
   phone: { width: 360, height: 780 },

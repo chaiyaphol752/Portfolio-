@@ -26,7 +26,10 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
   const currentId = getPageBySlug(slug)?.id ?? "home";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-[2px]">
+    <header
+      data-tone={currentId === "operator" ? "dark" : undefined}
+      className="site-header sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-[2px]"
+    >
       <div className="container-page flex h-[var(--header-h)] items-center justify-between gap-4">
         <Link href={localizedPath(locale)} className="flex items-center gap-3" aria-label={`${brandName} — ${t.brandLabel}`}>
           <span aria-hidden className="relative grid size-8 place-items-center rounded-full bg-ink font-display text-base italic text-paper">

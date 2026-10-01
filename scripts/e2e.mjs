@@ -44,6 +44,14 @@ if (submitReal) await check("contact: REAL submission is delivered", async () =>
   const t = await text();
   assert(/thank|received|sent|reached/i.test(t) && !/unavailable|can.t deliver|went wrong/i.test(t), t.slice(0, 300));
 });
+await check("operator showcase renders with its figure and exit links", async () => {
+  await p.goto(`${base}/en/operator`, { waitUntil: "networkidle" });
+  assert((await p.locator("h1").innerText()).trim() === "Operator", "h1");
+  assert((await p.locator('svg[role="img"][aria-label*="masked"]').count()) === 1, "figure alt");
+  assert((await p.locator('main a[href="/en/contact"]').count()) >= 1, "exit link");
+  await p.mouse.wheel(0, 4000); await p.waitForTimeout(400);
+  assert((await p.locator("[data-scene][data-active]").count()) >= 1, "scroll director inactive");
+});
 await check("/api/health ok", async () => { const r = await p.request.get(`${base}/api/health`); assert(r.ok(), "status"); });
 await check("sitemap + robots", async () => { assert((await (await p.request.get(`${base}/sitemap.xml`)).text()).includes("/th/contact"), "sitemap"); assert((await (await p.request.get(`${base}/robots.txt`)).text()).includes("Sitemap"), "robots"); });
 await check("no uncaught page errors", async () => { assert(errors.length === 0, errors.slice(0, 2).join(" | ")); });

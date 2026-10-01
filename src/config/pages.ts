@@ -7,6 +7,7 @@ export const pageIds = [
   "lab",
   "systems",
   "command-center",
+  "operator",
   "about",
   "contact",
 ] as const;
