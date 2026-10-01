@@ -52,6 +52,16 @@ await check("operator showcase renders with its figure and exit links", async ()
   await p.mouse.wheel(0, 4000); await p.waitForTimeout(400);
   assert((await p.locator("[data-scene][data-active]").count()) >= 1, "scroll director inactive");
 });
+await check("security headers present (CSP, HSTS, frame, nosniff, COOP)", async () => {
+  const h = (await p.request.get(`${base}/en`)).headers();
+  for (const k of ["content-security-policy", "strict-transport-security", "x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy", "cross-origin-opener-policy"]) assert(h[k], `missing ${k}`);
+  assert(/frame-ancestors 'none'/.test(h["content-security-policy"]) && /object-src 'none'/.test(h["content-security-policy"]), "csp directives");
+  assert(!h["x-powered-by"], "x-powered-by exposed");
+});
+await check("health endpoint is minimal (no versions or secrets)", async () => {
+  const body = await (await p.request.get(`${base}/api/health`)).text();
+  assert(!/v\d+\.\d+\.\d+|re_[A-Za-z0-9]|postgres:\/\/|DATABASE_URL|RESEND_API_KEY/.test(body), "health leaks detail");
+});
 await check("/api/health ok", async () => { const r = await p.request.get(`${base}/api/health`); assert(r.ok(), "status"); });
 await check("sitemap + robots", async () => { assert((await (await p.request.get(`${base}/sitemap.xml`)).text()).includes("/th/contact"), "sitemap"); assert((await (await p.request.get(`${base}/robots.txt`)).text()).includes("Sitemap"), "robots"); });
 await check("no uncaught page errors", async () => { assert(errors.length === 0, errors.slice(0, 2).join(" | ")); });

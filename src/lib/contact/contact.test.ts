@@ -89,3 +89,30 @@ describe("delivery", () => {
     expect(await deliverContact(data)).toEqual({ ok: false, reason: "failed" });
   });
 });
+
+describe("contact abuse controls", () => {
+  beforeEach(resetRateLimits);
+  it("limits per email address independently of IP", async () => {
+    const { checkContactLimits } = await import("./rate-limit");
+    for (let i = 0; i < 3; i++) expect(checkContactLimits({ ip: `10.0.0.${i}`, email: "victim@example.com" }, 0).allowed).toBe(true);
+    expect(checkContactLimits({ ip: "10.0.0.9", email: "Victim@Example.com" }, 0).allowed).toBe(false);
+  });
+  it("has a per-instance global circuit breaker", async () => {
+    const { checkContactLimits } = await import("./rate-limit");
+    let blocked = false;
+    for (let i = 0; i < 45; i++) blocked ||= !checkContactLimits({ ip: `ip${i}`, email: `u${i}@example.com` }, 0).allowed;
+    expect(blocked).toBe(true);
+  });
+  it("suppresses duplicate submissions within the window", async () => {
+    const { isDuplicate } = await import("./rate-limit");
+    expect(isDuplicate("abc", { now: 0 })).toBe(false);
+    expect(isDuplicate("abc", { now: 1000 })).toBe(true);
+    expect(isDuplicate("abc", { now: 31 * 60_000 })).toBe(false);
+  });
+  it("prefers Vercel's client IP header", async () => {
+    const { clientIp } = await import("./rate-limit");
+    const headers: Record<string, string> = { "x-forwarded-for": "6.6.6.6", "x-vercel-forwarded-for": "1.2.3.4" };
+    expect(clientIp((n) => headers[n] ?? null)).toBe("1.2.3.4");
+    expect(clientIp(() => null)).toBe("unknown");
+  });
+});

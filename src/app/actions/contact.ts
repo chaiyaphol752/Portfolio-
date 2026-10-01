@@ -2,7 +2,8 @@
 
 import { headers } from "next/headers";
 import { parseContact, type ContactFieldErrors } from "@/lib/contact/schema";
-import { rateLimit } from "@/lib/contact/rate-limit";
+import { createHash } from "node:crypto";
+import { checkContactLimits, clientIp, isDuplicate } from "@/lib/contact/rate-limit";
 import { deliverContact } from "@/lib/contact/deliver";
 
 export type ContactState =
@@ -22,9 +23,12 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   if (!parsed.success) return { status: "invalid", fieldErrors: parsed.fieldErrors };
 
   const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
-  const limit = rateLimit(`contact:${ip}`);
+  const limit = checkContactLimits({ ip: clientIp((name) => h.get(name)), email: parsed.data.email });
   if (!limit.allowed) return { status: "rate-limited", retryAfterSec: limit.retryAfterSec };
+
+  // A repeated identical submission (double click, retry) is acknowledged but not sent twice.
+  const fingerprint = createHash("sha256").update(`${parsed.data.email.toLowerCase()}\n${parsed.data.message}`).digest("hex");
+  if (isDuplicate(fingerprint)) return { status: "success", acknowledged: false };
 
   try {
     const result = await deliverContact(parsed.data);

@@ -1,6 +1,6 @@
 import type { ContactInput } from "./schema";
 import { hasDatabase, insertSubmission } from "./store";
-import { emailConfig, sendAcknowledgement, sendOwnerNotification } from "./email";
+import { EmailDeliveryError, emailConfig, sendAcknowledgement, sendOwnerNotification } from "./email";
 
 export type Channel = "email" | "database" | "webhook";
 export type DeliveryResult = { ok: true; channels: Channel[]; acknowledged: boolean } | { ok: false; reason: "unavailable" | "failed" };
@@ -15,6 +15,17 @@ async function postWebhook(url: string, input: ContactInput): Promise<void> {
     signal: AbortSignal.timeout(5_000),
   });
   if (!response.ok) throw new Error(`Webhook responded ${response.status}`);
+}
+
+/**
+ * Server log text for a failed channel. Only our own messages (provider error *name*, HTTP
+ * status) are logged verbatim; anything else (e.g. database driver errors, which can include
+ * connection details) is reduced to its error type. Submission content is never logged.
+ */
+function safeReason(reason: unknown): string {
+  if (reason instanceof EmailDeliveryError) return reason.message;
+  if (reason instanceof Error && /^Webhook responded \d{3}$/.test(reason.message)) return reason.message;
+  return reason instanceof Error ? reason.name : "unknown error";
 }
 
 /** Which channels the current environment can deliver through (no secrets, safe for /api/health). */
@@ -43,7 +54,7 @@ export async function deliverContact(input: ContactInput): Promise<DeliveryResul
   const settled = await Promise.allSettled(tasks.map((t) => t.run()));
   const channels = tasks.filter((_, i) => settled[i]?.status === "fulfilled").map((t) => t.name);
   settled.forEach((r, i) => {
-    if (r.status === "rejected") console.error(`[contact] ${tasks[i]?.name} delivery failed:`, r.reason instanceof Error ? r.reason.message : "unknown error");
+    if (r.status === "rejected") console.error(`[contact] ${tasks[i]?.name} delivery failed:`, safeReason(r.reason));
   });
   if (!channels.length) return { ok: false, reason: "failed" };
 

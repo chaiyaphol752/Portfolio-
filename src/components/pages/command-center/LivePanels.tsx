@@ -51,7 +51,7 @@ export function StatusPanel({ copy, values, sourceLabel, className }: { copy: C[
                 rows={[
                   [copy.fields.environment, v(state.data.runtime.environment)],
                   [copy.fields.region, v(state.data.runtime.region)],
-                  [copy.fields.runtime, `Node ${state.data.runtime.node}`],
+                  [copy.fields.runtime, state.data.runtime.node],
                   [copy.fields.database, v(state.data.checks.database)],
                   [copy.fields.email, v(state.data.checks.email ?? "not-configured")],
                   [copy.measured, `${state.latencyMs} ms`],
@@ -171,7 +171,7 @@ export function DeploymentPanel({
           [copy.platform, "Vercel"],
           [copy.environment, ready ? v(ready.runtime.environment) : "…"],
           [copy.region, ready ? v(ready.runtime.region) : "…"],
-          [copy.runtime, ready ? `Node ${ready.runtime.node}` : "…"],
+          [copy.runtime, ready ? ready.runtime.node : "…"],
         ]}
       />
       <p className="mono mt-4 text-[0.7rem] leading-relaxed text-night-mute">

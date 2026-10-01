@@ -5,7 +5,10 @@ import { configuredChannels } from "@/lib/contact/deliver";
 
 export const dynamic = "force-dynamic";
 
-/** Safe, non-secret runtime health information. */
+/**
+ * Safe, non-secret runtime health information. Deliberately minimal: no versions,
+ * hostnames, credentials or provider responses — only configured/not-configured states.
+ */
 export async function GET() {
   const database = hasDatabase() ? ((await pingDatabase()) ? "connected" : "unreachable") : "not-configured";
   const healthy = database !== "unreachable";
@@ -15,7 +18,7 @@ export async function GET() {
       status: healthy ? "ok" : "degraded",
       service: "ai-native-developer-portfolio",
       time: new Date().toISOString(),
-      runtime: { node: process.version, region: process.env.VERCEL_REGION ?? "local", environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV },
+      runtime: { node: "Node.js", region: process.env.VERCEL_REGION ?? "local", environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV },
       deployment: { commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null },
       checks: {
         database,
