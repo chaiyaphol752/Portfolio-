@@ -1,0 +1,1276 @@
+{
+  "meta": {
+    "generator": "scripts/generate_ai_circuit.py",
+    "description": "AI-native engineering circuit: human intent through orchestration, cloud and local models, tools, validation and deployment.",
+    "topologyHash": "ca59339b7e2f",
+    "nodeCount": 26,
+    "edgeCount": 35,
+    "groupCount": 8,
+    "traceLength": 9595,
+    "grid": {
+      "columns": 9,
+      "rows": 9,
+      "pitchX": 134,
+      "pitchY": 98
+    }
+  },
+  "viewBox": [
+    0,
+    0,
+    1272,
+    912
+  ],
+  "node": {
+    "width": 150,
+    "height": 46
+  },
+  "groups": [
+    {
+      "id": "human",
+      "label": "Human intent and review"
+    },
+    {
+      "id": "orchestration",
+      "label": "Planning and orchestration"
+    },
+    {
+      "id": "model",
+      "label": "Models: cloud and local"
+    },
+    {
+      "id": "agent",
+      "label": "Specialised agents"
+    },
+    {
+      "id": "tool",
+      "label": "Tools and integrations"
+    },
+    {
+      "id": "data",
+      "label": "Data and private context"
+    },
+    {
+      "id": "quality",
+      "label": "Validation and tests"
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery and production"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "intent",
+      "label": "Human intent",
+      "sub": "goal · constraints",
+      "group": "human",
+      "designator": "H1",
+      "x": 636,
+      "y": 64
+    },
+    {
+      "id": "planner",
+      "label": "Planner",
+      "sub": "task decomposition",
+      "group": "orchestration",
+      "designator": "U1",
+      "x": 368,
+      "y": 162
+    },
+    {
+      "id": "orchestrator",
+      "label": "Orchestrator",
+      "sub": "state · checkpoints",
+      "group": "orchestration",
+      "designator": "U2",
+      "x": 636,
+      "y": 162
+    },
+    {
+      "id": "research",
+      "label": "Research",
+      "sub": "sources · analysis",
+      "group": "orchestration",
+      "designator": "U3",
+      "x": 904,
+      "y": 162
+    },
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "sub": "OpenAI ecosystem",
+      "group": "model",
+      "designator": "M1",
+      "x": 368,
+      "y": 260
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "sub": "Claude Code",
+      "group": "model",
+      "designator": "M2",
+      "x": 636,
+      "y": 260
+    },
+    {
+      "id": "local-ai",
+      "label": "Local AI",
+      "sub": "self-hosted models",
+      "group": "model",
+      "designator": "M3",
+      "x": 904,
+      "y": 260
+    },
+    {
+      "id": "private-data",
+      "label": "Private data",
+      "sub": "documents · files",
+      "group": "data",
+      "designator": "D1",
+      "x": 1172,
+      "y": 260
+    },
+    {
+      "id": "router",
+      "label": "Tool router",
+      "sub": "tool + model routing",
+      "group": "orchestration",
+      "designator": "U4",
+      "x": 636,
+      "y": 358
+    },
+    {
+      "id": "embeddings",
+      "label": "Embeddings · RAG",
+      "sub": "vector search",
+      "group": "data",
+      "designator": "D2",
+      "x": 1172,
+      "y": 358
+    },
+    {
+      "id": "design-agent",
+      "label": "Design agent",
+      "sub": "UI · tokens",
+      "group": "agent",
+      "designator": "A1",
+      "x": 100,
+      "y": 260
+    },
+    {
+      "id": "frontend-agent",
+      "label": "Frontend agent",
+      "sub": "React · Next.js",
+      "group": "agent",
+      "designator": "A2",
+      "x": 100,
+      "y": 358
+    },
+    {
+      "id": "backend-agent",
+      "label": "Backend agent",
+      "sub": "APIs · data",
+      "group": "agent",
+      "designator": "A3",
+      "x": 100,
+      "y": 456
+    },
+    {
+      "id": "test-agent",
+      "label": "Test agent",
+      "sub": "unit · e2e",
+      "group": "agent",
+      "designator": "A4",
+      "x": 100,
+      "y": 554
+    },
+    {
+      "id": "review-agent",
+      "label": "Review agent",
+      "sub": "diff · security",
+      "group": "agent",
+      "designator": "A5",
+      "x": 100,
+      "y": 652
+    },
+    {
+      "id": "python",
+      "label": "Python",
+      "sub": "scripts · automation",
+      "group": "tool",
+      "designator": "J1",
+      "x": 368,
+      "y": 456
+    },
+    {
+      "id": "web-api",
+      "label": "Web · API",
+      "sub": "HTTP · webhooks",
+      "group": "tool",
+      "designator": "J2",
+      "x": 636,
+      "y": 456
+    },
+    {
+      "id": "data",
+      "label": "Data",
+      "sub": "transform · parse",
+      "group": "data",
+      "designator": "D3",
+      "x": 904,
+      "y": 456
+    },
+    {
+      "id": "github",
+      "label": "GitHub",
+      "sub": "repository · CI",
+      "group": "tool",
+      "designator": "J3",
+      "x": 1172,
+      "y": 456
+    },
+    {
+      "id": "automation",
+      "label": "Automation",
+      "sub": "jobs · pipelines",
+      "group": "tool",
+      "designator": "J4",
+      "x": 368,
+      "y": 554
+    },
+    {
+      "id": "backend",
+      "label": "Backend",
+      "sub": "server · validation",
+      "group": "tool",
+      "designator": "J5",
+      "x": 636,
+      "y": 554
+    },
+    {
+      "id": "database",
+      "label": "Database",
+      "sub": "PostgreSQL",
+      "group": "data",
+      "designator": "D4",
+      "x": 904,
+      "y": 554
+    },
+    {
+      "id": "validation",
+      "label": "Validation · tests",
+      "sub": "types · tests · review",
+      "group": "quality",
+      "designator": "Q1",
+      "x": 636,
+      "y": 652
+    },
+    {
+      "id": "human-review",
+      "label": "Human approval",
+      "sub": "verify · decide",
+      "group": "human",
+      "designator": "H2",
+      "x": 904,
+      "y": 652
+    },
+    {
+      "id": "vercel",
+      "label": "Deployment",
+      "sub": "Vercel",
+      "group": "delivery",
+      "designator": "P1",
+      "x": 636,
+      "y": 750
+    },
+    {
+      "id": "production",
+      "label": "Production",
+      "sub": "live application",
+      "group": "delivery",
+      "designator": "P2",
+      "x": 636,
+      "y": 848
+    }
+  ],
+  "edges": [
+    {
+      "id": "intent--orchestrator",
+      "source": "intent",
+      "target": "orchestrator",
+      "kind": "signal",
+      "d": "M636 87 L636 139",
+      "points": [
+        [
+          636,
+          87.0
+        ],
+        [
+          636,
+          139.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "planner--orchestrator",
+      "source": "planner",
+      "target": "orchestrator",
+      "kind": "bus",
+      "d": "M443 162 L561 162",
+      "points": [
+        [
+          443.0,
+          162
+        ],
+        [
+          561.0,
+          162
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "orchestrator--research",
+      "source": "orchestrator",
+      "target": "research",
+      "kind": "bus",
+      "d": "M711 162 L829 162",
+      "points": [
+        [
+          711.0,
+          162
+        ],
+        [
+          829.0,
+          162
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "orchestrator--chatgpt",
+      "source": "orchestrator",
+      "target": "chatgpt",
+      "kind": "signal",
+      "d": "M614 185 L614 202 L605 211 L366 211 L357 220 L357 237",
+      "points": [
+        [
+          614.0,
+          185.0
+        ],
+        [
+          614.0,
+          211.0
+        ],
+        [
+          357.0,
+          211.0
+        ],
+        [
+          357.0,
+          237.0
+        ]
+      ],
+      "length": 309
+    },
+    {
+      "id": "orchestrator--claude",
+      "source": "orchestrator",
+      "target": "claude",
+      "kind": "signal",
+      "d": "M636 185 L636 237",
+      "points": [
+        [
+          636.0,
+          185.0
+        ],
+        [
+          636.0,
+          237.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "orchestrator--local-ai",
+      "source": "orchestrator",
+      "target": "local-ai",
+      "kind": "signal",
+      "d": "M658 185 L658 210 L667 219 L895 219 L904 228 L904 237",
+      "points": [
+        [
+          658.0,
+          185.0
+        ],
+        [
+          658.0,
+          219.0
+        ],
+        [
+          904,
+          219.0
+        ],
+        [
+          904,
+          237.0
+        ]
+      ],
+      "length": 298
+    },
+    {
+      "id": "research--chatgpt",
+      "source": "research",
+      "target": "chatgpt",
+      "kind": "signal",
+      "d": "M904 185 L904 194 L895 203 L388 203 L379 212 L379 237",
+      "points": [
+        [
+          904,
+          185.0
+        ],
+        [
+          904,
+          203.0
+        ],
+        [
+          379.0,
+          203.0
+        ],
+        [
+          379.0,
+          237.0
+        ]
+      ],
+      "length": 577
+    },
+    {
+      "id": "chatgpt--router",
+      "source": "chatgpt",
+      "target": "router",
+      "kind": "signal",
+      "d": "M368 283 L368 300 L377 309 L605 309 L614 318 L614 335",
+      "points": [
+        [
+          368,
+          283.0
+        ],
+        [
+          368,
+          309.0
+        ],
+        [
+          614.0,
+          309.0
+        ],
+        [
+          614.0,
+          335.0
+        ]
+      ],
+      "length": 298
+    },
+    {
+      "id": "claude--router",
+      "source": "claude",
+      "target": "router",
+      "kind": "signal",
+      "d": "M636 283 L636 335",
+      "points": [
+        [
+          636.0,
+          283.0
+        ],
+        [
+          636.0,
+          335.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "local-ai--router",
+      "source": "local-ai",
+      "target": "router",
+      "kind": "signal",
+      "d": "M904 283 L904 308 L895 317 L667 317 L658 326 L658 335",
+      "points": [
+        [
+          904,
+          283.0
+        ],
+        [
+          904,
+          317.0
+        ],
+        [
+          658.0,
+          317.0
+        ],
+        [
+          658.0,
+          335.0
+        ]
+      ],
+      "length": 298
+    },
+    {
+      "id": "local-ai--private-data",
+      "source": "local-ai",
+      "target": "private-data",
+      "kind": "data",
+      "d": "M979 260 L1097 260",
+      "points": [
+        [
+          979.0,
+          260
+        ],
+        [
+          1097.0,
+          260
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "private-data--embeddings",
+      "source": "private-data",
+      "target": "embeddings",
+      "kind": "data",
+      "d": "M1172 283 L1172 335",
+      "points": [
+        [
+          1172,
+          283.0
+        ],
+        [
+          1172,
+          335.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "embeddings--data",
+      "source": "embeddings",
+      "target": "data",
+      "kind": "data",
+      "d": "M1172 381 L1172 398 L1163 407 L924 407 L915 416 L915 433",
+      "points": [
+        [
+          1172,
+          381.0
+        ],
+        [
+          1172,
+          407.0
+        ],
+        [
+          915.0,
+          407.0
+        ],
+        [
+          915.0,
+          433.0
+        ]
+      ],
+      "length": 309
+    },
+    {
+      "id": "router--python",
+      "source": "router",
+      "target": "python",
+      "kind": "signal",
+      "d": "M603 381 L603 406 L594 415 L377 415 L368 424 L368 433",
+      "points": [
+        [
+          603.0,
+          381.0
+        ],
+        [
+          603.0,
+          415.0
+        ],
+        [
+          368,
+          415.0
+        ],
+        [
+          368,
+          433.0
+        ]
+      ],
+      "length": 287
+    },
+    {
+      "id": "router--web-api",
+      "source": "router",
+      "target": "web-api",
+      "kind": "signal",
+      "d": "M625 381 L625 433",
+      "points": [
+        [
+          625.0,
+          381.0
+        ],
+        [
+          625.0,
+          433.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "router--data",
+      "source": "router",
+      "target": "data",
+      "kind": "signal",
+      "d": "M647 381 L647 390 L656 399 L884 399 L893 408 L893 433",
+      "points": [
+        [
+          647.0,
+          381.0
+        ],
+        [
+          647.0,
+          399.0
+        ],
+        [
+          893.0,
+          399.0
+        ],
+        [
+          893.0,
+          433.0
+        ]
+      ],
+      "length": 298
+    },
+    {
+      "id": "router--github",
+      "source": "router",
+      "target": "github",
+      "kind": "signal",
+      "d": "M669 381 L669 414 L678 423 L1167 423 L1172 428 L1172 433",
+      "points": [
+        [
+          669.0,
+          381.0
+        ],
+        [
+          669.0,
+          423.0
+        ],
+        [
+          1172,
+          423.0
+        ],
+        [
+          1172,
+          433.0
+        ]
+      ],
+      "length": 555
+    },
+    {
+      "id": "orchestrator--design-agent",
+      "source": "orchestrator",
+      "target": "design-agent",
+      "kind": "agent-bus",
+      "d": "M581 139 L581 122 L572 113 L192.1 113 L183.1 122 L183.1 255.95 L179.05 260 L175 260",
+      "points": [
+        [
+          581.0,
+          139.0
+        ],
+        [
+          581.0,
+          113.0
+        ],
+        [
+          183.1,
+          113.0
+        ],
+        [
+          183.1,
+          260
+        ],
+        [
+          175.0,
+          260
+        ]
+      ],
+      "length": 579
+    },
+    {
+      "id": "orchestrator--frontend-agent",
+      "source": "orchestrator",
+      "target": "frontend-agent",
+      "kind": "agent-bus",
+      "d": "M581 139 L581 122 L572 113 L192.1 113 L183.1 122 L183.1 353.95 L179.05 358 L175 358",
+      "points": [
+        [
+          581.0,
+          139.0
+        ],
+        [
+          581.0,
+          113.0
+        ],
+        [
+          183.1,
+          113.0
+        ],
+        [
+          183.1,
+          358
+        ],
+        [
+          175.0,
+          358
+        ]
+      ],
+      "length": 677
+    },
+    {
+      "id": "orchestrator--backend-agent",
+      "source": "orchestrator",
+      "target": "backend-agent",
+      "kind": "agent-bus",
+      "d": "M581 139 L581 122 L572 113 L192.1 113 L183.1 122 L183.1 451.95 L179.05 456 L175 456",
+      "points": [
+        [
+          581.0,
+          139.0
+        ],
+        [
+          581.0,
+          113.0
+        ],
+        [
+          183.1,
+          113.0
+        ],
+        [
+          183.1,
+          456
+        ],
+        [
+          175.0,
+          456
+        ]
+      ],
+      "length": 775
+    },
+    {
+      "id": "orchestrator--test-agent",
+      "source": "orchestrator",
+      "target": "test-agent",
+      "kind": "agent-bus",
+      "d": "M581 139 L581 122 L572 113 L192.1 113 L183.1 122 L183.1 549.95 L179.05 554 L175 554",
+      "points": [
+        [
+          581.0,
+          139.0
+        ],
+        [
+          581.0,
+          113.0
+        ],
+        [
+          183.1,
+          113.0
+        ],
+        [
+          183.1,
+          554
+        ],
+        [
+          175.0,
+          554
+        ]
+      ],
+      "length": 873
+    },
+    {
+      "id": "orchestrator--review-agent",
+      "source": "orchestrator",
+      "target": "review-agent",
+      "kind": "agent-bus",
+      "d": "M581 139 L581 122 L572 113 L192.1 113 L183.1 122 L183.1 647.95 L179.05 652 L175 652",
+      "points": [
+        [
+          581.0,
+          139.0
+        ],
+        [
+          581.0,
+          113.0
+        ],
+        [
+          183.1,
+          113.0
+        ],
+        [
+          183.1,
+          652
+        ],
+        [
+          175.0,
+          652
+        ]
+      ],
+      "length": 971
+    },
+    {
+      "id": "python--web-api",
+      "source": "python",
+      "target": "web-api",
+      "kind": "data",
+      "d": "M443 456 L561 456",
+      "points": [
+        [
+          443.0,
+          456
+        ],
+        [
+          561.0,
+          456
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "web-api--data",
+      "source": "web-api",
+      "target": "data",
+      "kind": "data",
+      "d": "M711 456 L829 456",
+      "points": [
+        [
+          711.0,
+          456
+        ],
+        [
+          829.0,
+          456
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "python--automation",
+      "source": "python",
+      "target": "automation",
+      "kind": "signal",
+      "d": "M368 479 L368 531",
+      "points": [
+        [
+          368,
+          479.0
+        ],
+        [
+          368,
+          531.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "web-api--backend",
+      "source": "web-api",
+      "target": "backend",
+      "kind": "signal",
+      "d": "M636 479 L636 531",
+      "points": [
+        [
+          636,
+          479.0
+        ],
+        [
+          636,
+          531.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "data--database",
+      "source": "data",
+      "target": "database",
+      "kind": "data",
+      "d": "M904 479 L904 531",
+      "points": [
+        [
+          904,
+          479.0
+        ],
+        [
+          904,
+          531.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "backend--database",
+      "source": "backend",
+      "target": "database",
+      "kind": "data",
+      "d": "M711 554 L829 554",
+      "points": [
+        [
+          711.0,
+          554
+        ],
+        [
+          829.0,
+          554
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "automation--validation",
+      "source": "automation",
+      "target": "validation",
+      "kind": "signal",
+      "d": "M368 577 L368 594 L377 603 L616 603 L625 612 L625 629",
+      "points": [
+        [
+          368,
+          577.0
+        ],
+        [
+          368,
+          603.0
+        ],
+        [
+          625.0,
+          603.0
+        ],
+        [
+          625.0,
+          629.0
+        ]
+      ],
+      "length": 309
+    },
+    {
+      "id": "backend--validation",
+      "source": "backend",
+      "target": "validation",
+      "kind": "signal",
+      "d": "M647 577 L647 629",
+      "points": [
+        [
+          647.0,
+          577.0
+        ],
+        [
+          647.0,
+          629.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "database--human-review",
+      "source": "database",
+      "target": "human-review",
+      "kind": "signal",
+      "d": "M904 577 L904 629",
+      "points": [
+        [
+          904,
+          577.0
+        ],
+        [
+          904,
+          629.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "validation--human-review",
+      "source": "validation",
+      "target": "human-review",
+      "kind": "data",
+      "d": "M711 652 L829 652",
+      "points": [
+        [
+          711.0,
+          652
+        ],
+        [
+          829.0,
+          652
+        ]
+      ],
+      "length": 118
+    },
+    {
+      "id": "github--vercel",
+      "source": "github",
+      "target": "vercel",
+      "kind": "side",
+      "d": "M1172 479 L1172 741 L1163 750 L711 750",
+      "points": [
+        [
+          1172,
+          479.0
+        ],
+        [
+          1172,
+          750
+        ],
+        [
+          711.0,
+          750
+        ]
+      ],
+      "length": 732
+    },
+    {
+      "id": "validation--vercel",
+      "source": "validation",
+      "target": "vercel",
+      "kind": "signal",
+      "d": "M636 675 L636 727",
+      "points": [
+        [
+          636,
+          675.0
+        ],
+        [
+          636,
+          727.0
+        ]
+      ],
+      "length": 52
+    },
+    {
+      "id": "vercel--production",
+      "source": "vercel",
+      "target": "production",
+      "kind": "signal",
+      "d": "M636 773 L636 825",
+      "points": [
+        [
+          636,
+          773.0
+        ],
+        [
+          636,
+          825.0
+        ]
+      ],
+      "length": 52
+    }
+  ],
+  "focus": {
+    "intent": [
+      "human-review",
+      "intent",
+      "orchestrator",
+      "planner",
+      "production"
+    ],
+    "planner": [
+      "orchestrator",
+      "planner"
+    ],
+    "orchestrator": [
+      "backend-agent",
+      "chatgpt",
+      "claude",
+      "design-agent",
+      "frontend-agent",
+      "intent",
+      "local-ai",
+      "orchestrator",
+      "planner",
+      "research",
+      "review-agent",
+      "test-agent"
+    ],
+    "research": [
+      "chatgpt",
+      "orchestrator",
+      "research"
+    ],
+    "chatgpt": [
+      "chatgpt",
+      "orchestrator",
+      "research",
+      "router",
+      "validation",
+      "web-api"
+    ],
+    "claude": [
+      "backend-agent",
+      "claude",
+      "frontend-agent",
+      "github",
+      "orchestrator",
+      "planner",
+      "review-agent",
+      "router",
+      "test-agent",
+      "validation"
+    ],
+    "local-ai": [
+      "data",
+      "embeddings",
+      "local-ai",
+      "orchestrator",
+      "private-data",
+      "python",
+      "router"
+    ],
+    "private-data": [
+      "embeddings",
+      "local-ai",
+      "private-data"
+    ],
+    "router": [
+      "chatgpt",
+      "claude",
+      "data",
+      "github",
+      "local-ai",
+      "python",
+      "router",
+      "web-api"
+    ],
+    "embeddings": [
+      "data",
+      "embeddings",
+      "private-data"
+    ],
+    "design-agent": [
+      "design-agent",
+      "orchestrator"
+    ],
+    "frontend-agent": [
+      "frontend-agent",
+      "orchestrator"
+    ],
+    "backend-agent": [
+      "backend-agent",
+      "orchestrator"
+    ],
+    "test-agent": [
+      "orchestrator",
+      "test-agent"
+    ],
+    "review-agent": [
+      "orchestrator",
+      "review-agent"
+    ],
+    "python": [
+      "automation",
+      "backend",
+      "backend-agent",
+      "data",
+      "local-ai",
+      "python",
+      "router",
+      "test-agent",
+      "web-api"
+    ],
+    "web-api": [
+      "backend",
+      "data",
+      "python",
+      "router",
+      "web-api"
+    ],
+    "data": [
+      "data",
+      "database",
+      "embeddings",
+      "router",
+      "web-api"
+    ],
+    "github": [
+      "claude",
+      "github",
+      "production",
+      "review-agent",
+      "router",
+      "validation",
+      "vercel"
+    ],
+    "automation": [
+      "automation",
+      "python",
+      "validation"
+    ],
+    "backend": [
+      "backend",
+      "database",
+      "validation",
+      "web-api"
+    ],
+    "database": [
+      "backend",
+      "data",
+      "database",
+      "human-review"
+    ],
+    "validation": [
+      "automation",
+      "backend",
+      "human-review",
+      "validation",
+      "vercel"
+    ],
+    "human-review": [
+      "database",
+      "human-review",
+      "intent",
+      "validation",
+      "vercel"
+    ],
+    "vercel": [
+      "github",
+      "production",
+      "validation",
+      "vercel"
+    ],
+    "production": [
+      "production",
+      "vercel"
+    ]
+  },
+  "focusLinks": {
+    "python": [
+      [
+        "python",
+        "local-ai"
+      ],
+      [
+        "python",
+        "backend-agent"
+      ]
+    ],
+    "local-ai": [
+      [
+        "python",
+        "local-ai"
+      ]
+    ],
+    "claude": [
+      [
+        "claude",
+        "github"
+      ]
+    ]
+  },
+  "bus": {
+    "x": 183.1
+  }
+}

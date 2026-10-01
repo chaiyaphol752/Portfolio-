@@ -1,0 +1,22 @@
+.board text { pointer-events: none; user-select: none; }
+
+.node { cursor: pointer; outline: none; }
+.node .ring { opacity: 0; transition: opacity 0.15s; }
+.node:focus-visible .ring { opacity: 1; }
+.node .body { transition: stroke 0.2s, fill 0.2s; }
+.node:hover .body { fill: var(--color-night-3); }
+
+.dimmed { opacity: 0.22; transition: opacity 0.25s; }
+.lit { opacity: 1; transition: opacity 0.25s; }
+
+/* A short bright dash travelling along highlighted traces. Purely decorative. */
+.pulse {
+  stroke-dasharray: 10 26;
+  animation: trace 1.6s linear infinite;
+}
+@keyframes trace {
+  to { stroke-dashoffset: -36; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse { animation: none; stroke-dasharray: none; opacity: 0.55; }
+}

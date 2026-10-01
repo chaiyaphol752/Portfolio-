@@ -1,81 +1,68 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import { localizedPath } from "@/i18n/routing";
 import { common } from "@/content/common";
 import { homeContent } from "@/content/home";
 import { profile } from "@/config/profile";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { ExternalLink } from "@/components/ui/ExternalLink";
-import { BuildMark } from "./BuildMark";
-
-// German compounds ("Webentwicklung") are long; a slightly smaller fluid size prevents overflow at 360px.
-const headlineSize: Record<Locale, string> = {
-  en: "",
-  de: "text-[clamp(2.2rem,7.4vw,8rem)]",
-  th: "text-[clamp(2.6rem,8vw,8.5rem)]",
-};
+import { Availability } from "@/components/ui/Availability";
 
 export function HomeHero({ locale }: { locale: Locale }) {
-  const c = homeContent[locale];
+  const c = homeContent[locale].hero;
   const t = common[locale];
-  const links = [
-    { label: "GitHub", url: profile.links.github },
-    ...(profile.links.linkedin ? [{ label: "LinkedIn", url: profile.links.linkedin }] : []),
-    ...profile.links.freelance,
-  ];
 
   return (
-    <section className="container-page pb-[clamp(3rem,6vw,6rem)] pt-[clamp(2rem,5vw,4.5rem)]" aria-labelledby="home-title">
-      <div className="rise flex flex-wrap items-center justify-between gap-3 border-b border-ink pb-4">
-        <p className="eyebrow">
-          <span className="tabular text-ink">01</span> — {c.hero.eyebrow}
-        </p>
-        <p className="mono flex items-center gap-2 text-xs text-ink-2">
-          <span aria-hidden className={"size-2 rounded-full " + (profile.availability === "open" ? "bg-signal" : profile.availability === "limited" ? "bg-accent" : "bg-ink-3")} />
-          {t.footer.availability[profile.availability]}
+    <section className="container-page pb-[clamp(3rem,6vw,5.5rem)] pt-[clamp(1.75rem,4vw,3.5rem)]" aria-labelledby="home-title">
+      <div className="rise flex flex-wrap items-start justify-between gap-x-8 gap-y-3 border-b border-ink pb-4 text-sm">
+        <Availability t={t} services />
+        <p className="mono text-xs uppercase tracking-[0.12em] text-ink-3">
+          {profile.name} · {profile.location[locale]}
         </p>
       </div>
 
-      <h1
-        id="home-title"
-        className={`display rise mt-[clamp(2.5rem,7vw,6rem)] break-words ${headlineSize[locale]}`}
-        style={{ "--d": 1 } as React.CSSProperties}
-      >
-        <span className="block">{c.hero.lineA}</span>
-        <span className="block">
-          <span className="display-serif pr-[0.18em] text-accent-ink" aria-hidden>×</span>
-          <span className="display-serif text-[1.1em] leading-[0.85]">{c.hero.lineB}</span>
-        </span>
-        <span className="display-serif block text-[1.1em] leading-[0.95]">{c.hero.lineC}</span>
-      </h1>
-
-      <div className="mt-[clamp(2.5rem,6vw,5rem)] grid gap-12 lg:grid-cols-12 lg:items-end">
-        <div className="rise lg:col-span-6" style={{ "--d": 2 } as React.CSSProperties}>
-          <p className="lede">{c.hero.value}</p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <ButtonLink href={localizedPath(locale, "projects")}>{t.cta.viewWork}</ButtonLink>
-            <ButtonLink href={`${localizedPath(locale, "systems")}#contact`} variant="ghost">{t.hireMe}</ButtonLink>
-          </div>
-          <ul className="mono mt-9 flex flex-wrap gap-x-6 gap-y-2 text-xs uppercase tracking-wider text-ink-2">
-            {links.map((l) => (
-              <li key={l.url}>
-                <ExternalLink href={l.url} hint={t.externalLink} className="link-underline">{l.label}</ExternalLink>
-              </li>
-            ))}
-          </ul>
+      <div className="mt-[clamp(2.25rem,6vw,5rem)] grid gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-9">
+          <p className="mono rise mb-6 text-xs uppercase tracking-[0.14em] text-accent-ink" style={{ "--d": 1 } as React.CSSProperties}>
+            {c.role}
+          </p>
+          <h1
+            id="home-title"
+            className="display rise text-[clamp(2.7rem,8.6vw,8.75rem)]"
+            style={{ "--d": 1 } as React.CSSProperties}
+          >
+            <span className="block">{c.titleA}</span>
+            <span className="block text-ink-2">{c.titleB}</span>
+            <span className="display-serif block text-accent-ink">{c.titleAccent}</span>
+          </h1>
         </div>
-        <figure className="rise lg:col-span-5 lg:col-start-8" style={{ "--d": 3 } as React.CSSProperties}>
-          <BuildMark alt={c.visual.alt} nodes={c.visual.nodes} />
-          <figcaption className="eyebrow mt-4 max-w-[34ch]">{c.visual.caption}</figcaption>
-        </figure>
       </div>
 
-      <div className="mt-[clamp(3rem,7vw,6rem)]">
-        <h2 className="sr-only">{c.capabilitiesLabel}</h2>
-        <ul className="grid border-t border-ink sm:grid-cols-2 lg:grid-cols-3">
-          {c.capabilities.map((item) => (
-            <li key={item} className="flex items-center gap-3 border-b border-line py-4 pr-4">
+      <div className="mt-[clamp(2rem,4.5vw,4rem)] grid gap-10 lg:grid-cols-12 lg:items-end">
+        <p className="lede rise max-w-[52ch] lg:col-span-6" style={{ "--d": 2 } as React.CSSProperties}>
+          {c.lede}
+        </p>
+        <div className="rise flex flex-col gap-5 lg:col-span-5 lg:col-start-8 lg:items-end" style={{ "--d": 3 } as React.CSSProperties}>
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <ButtonLink href={localizedPath(locale, "projects")}>{t.cta.viewWork}</ButtonLink>
+            <ButtonLink href={localizedPath(locale, "contact")} variant="ghost">
+              {t.cta.startProject}
+            </ButtonLink>
+          </div>
+          <Link href={localizedPath(locale, "ai-native")} className="group inline-flex items-center gap-2 text-sm font-medium">
+            <span className="link-underline">{c.secondary}</span>
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-[clamp(3rem,6vw,5rem)] border-t border-ink pt-5">
+        <p className="eyebrow mb-4">{c.outcomesLabel}</p>
+        <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-4">
+          {c.outcomes.map((o) => (
+            <li key={o} className="flex items-center gap-3 border-b border-line py-3 text-[0.95rem] font-medium">
               <span aria-hidden className="size-1.5 shrink-0 bg-accent" />
-              <span className="text-[0.95rem] text-ink-2">{item}</span>
+              {o}
             </li>
           ))}
         </ul>

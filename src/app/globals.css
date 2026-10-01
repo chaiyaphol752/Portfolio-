@@ -23,6 +23,11 @@
   --color-night-line: #2c303a;
   --color-night-ink: #eceae3;
   --color-night-mute: #9b9ea9;
+  /* Status colours readable on night surfaces. */
+  --color-ok: #4fd18b;
+  --color-err: #ff8f73;
+  /* Copper-trace tone for circuit and blueprint drawings. */
+  --color-trace: #3a3e4a;
 
   --font-sans: var(--font-geist), var(--font-thai), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-serif), "Times New Roman", serif;
@@ -143,6 +148,20 @@ html[lang="th"] .display-serif { font-family: var(--font-sans); font-style: norm
   color: var(--color-night-ink);
 }
 .night .eyebrow { color: var(--color-night-mute); }
+
+/* ---------- Technical backgrounds (use sparingly: Systems, Lab, Command center) ---------- */
+.grid-paper {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(to right, rgb(16 17 20 / 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(16 17 20 / 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.grid-night {
+  background-color: var(--color-night);
+  background-image: radial-gradient(circle at 1px 1px, rgb(236 234 227 / 0.07) 1px, transparent 0);
+  background-size: 14px 14px;
+}
 
 /* ---------- Links and buttons ---------- */
 .btn {

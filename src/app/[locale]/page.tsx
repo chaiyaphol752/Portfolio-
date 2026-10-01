@@ -3,9 +3,13 @@ import { homeContent } from "@/content/home";
 import { buildMetadata } from "@/lib/seo";
 import { resolveLocale } from "@/lib/locale";
 import { profile } from "@/config/profile";
+import { common } from "@/content/common";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { HomeHero } from "@/components/pages/home/HomeHero";
-import { SiteMap } from "@/components/pages/home/SiteMap";
-import { PageFooterNav } from "@/components/ui/PageFooterNav";
+import { Services } from "@/components/pages/home/Services";
+import { AiTeaser } from "@/components/pages/home/AiTeaser";
+import { Process } from "@/components/pages/home/Process";
+import { WorkTeaser } from "@/components/pages/home/WorkTeaser";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -18,11 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function HomePage({ params }: Props) {
   const locale = await resolveLocale(params);
+  const c = homeContent[locale];
   return (
     <>
       <HomeHero locale={locale} />
-      <SiteMap locale={locale} />
-      <PageFooterNav locale={locale} current="home" />
+      <Services locale={locale} />
+      <AiTeaser locale={locale} />
+      <Process locale={locale} />
+      <WorkTeaser locale={locale} />
+      <CtaBand locale={locale} title={c.closing.title} body={c.closing.body} label={common[locale].cta.startProject} />
     </>
   );
 }

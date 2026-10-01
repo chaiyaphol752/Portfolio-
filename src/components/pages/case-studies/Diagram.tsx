@@ -1,5 +1,5 @@
-import { ArrowDown, ArrowRight } from "lucide-react";
-import type { DiagramContent, TreeNode } from "@/content/case-studies";
+import { ArrowDown, ArrowRight, ChevronRight } from "lucide-react";
+import type { DiagramContent, DiagramNode, TreeNode } from "@/content/case-studies";
 
 export type DiagramTone = "night" | "paper";
 
@@ -67,6 +67,7 @@ export function Diagram({ diagram, label, id, tone = "night", columns = 3 }: Pro
       </figcaption>
       {diagram.kind === "flow" && <Flow nodes={diagram.nodes} tone={tone} columns={columns} />}
       {diagram.kind === "layers" && <Layers nodes={diagram.nodes} tone={tone} />}
+      {diagram.kind === "branch" && <Branch before={diagram.before} branches={diagram.branches} after={diagram.after} tone={tone} />}
       {diagram.kind === "tree" && (
         <div className="overflow-x-auto pb-2" tabIndex={0} role="group" aria-labelledby={titleId}>
           <TreeView node={diagram.root} tone={tone} root />
@@ -142,5 +143,118 @@ function TreeView({ node, tone, root }: { node: TreeNode; tone: DiagramTone; roo
         </ul>
       )}
     </div>
+  );
+}
+
+/** Horizontal connector between two boxes in the wide branch layout. */
+function Link({ tone, arrow = true, side = "right" }: { tone: DiagramTone; arrow?: boolean; side?: "right" | "left" }) {
+  const c = tones[tone];
+  return (
+    <span aria-hidden className={`absolute top-1/2 flex w-[1.125rem] -translate-y-1/2 items-center ${side === "right" ? "left-full" : "right-full"} ${c.muted}`}>
+      <span className={`h-px flex-1 ${c.rule}`} />
+      {arrow && <ChevronRight className="-ml-2 size-3.5 shrink-0" />}
+    </span>
+  );
+}
+
+function BranchBox({ node, tone, emphasis }: { node: DiagramNode; tone: DiagramTone; emphasis?: boolean }) {
+  const c = tones[tone];
+  return (
+    <div className={`border px-4 py-3 ${c.box} ${emphasis ? "border-l-2 border-l-accent" : ""}`}>
+      <p className={`text-sm font-medium ${c.text}`}>{node.label}</p>
+      <p className={`mt-0.5 text-xs leading-snug ${c.muted}`}>{node.detail}</p>
+    </div>
+  );
+}
+
+/**
+ * Sequence → parallel branches → sequence. On wide screens the branches sit in one
+ * column joined by bus lines (like the circuit on the AI page); below that it becomes
+ * a vertical list with the parallel group indented.
+ */
+function Branch({ before, branches, after, tone }: { before: DiagramNode[]; branches: DiagramNode[]; after: DiagramNode[]; tone: DiagramTone }) {
+  const c = tones[tone];
+  const columns = `repeat(${before.length}, minmax(0, 1fr)) minmax(0, 1.2fr) repeat(${after.length}, minmax(0, 1fr))`;
+  return (
+    <>
+      <ol className="hidden items-center gap-x-9 lg:grid" style={{ gridTemplateColumns: columns }}>
+        {before.map((node, i) => (
+          <li key={node.label} className="relative">
+            <BranchBox node={node} tone={tone} />
+            {i < before.length - 1 ? (
+              <span aria-hidden className={`absolute left-full top-1/2 flex w-9 -translate-y-1/2 items-center ${c.muted}`}>
+                <span className={`h-px flex-1 ${c.rule}`} />
+                <ChevronRight className="-ml-2 size-3.5 shrink-0" />
+              </span>
+            ) : (
+              <Link tone={tone} arrow={false} />
+            )}
+          </li>
+        ))}
+        <li>
+          <ul className="flex flex-col gap-3">
+            {branches.map((node, i) => (
+              <li key={node.label} className="relative">
+                {/* Bus segments: each item draws the bus from the previous item's centre to its own. */}
+                {i > 0 && <span aria-hidden className={`absolute -left-[1.125rem] -top-3 h-[calc(50%+0.75rem)] w-px ${c.rule}`} />}
+                {i < branches.length - 1 && <span aria-hidden className={`absolute -left-[1.125rem] top-1/2 h-1/2 w-px ${c.rule}`} />}
+                {i > 0 && <span aria-hidden className={`absolute -right-[1.125rem] -top-3 h-[calc(50%+0.75rem)] w-px ${c.rule}`} />}
+                {i < branches.length - 1 && <span aria-hidden className={`absolute -right-[1.125rem] top-1/2 h-1/2 w-px ${c.rule}`} />}
+                <Link tone={tone} side="left" />
+                <BranchBox node={node} tone={tone} emphasis />
+                <Link tone={tone} arrow={false} />
+              </li>
+            ))}
+          </ul>
+        </li>
+        {after.map((node, i) => (
+          <li key={node.label} className="relative">
+            {i === 0 && <Link tone={tone} side="left" />}
+            <BranchBox node={node} tone={tone} />
+            {i < after.length - 1 && (
+              <span aria-hidden className={`absolute left-full top-1/2 flex w-9 -translate-y-1/2 items-center ${c.muted}`}>
+                <span className={`h-px flex-1 ${c.rule}`} />
+                <ChevronRight className="-ml-2 size-3.5 shrink-0" />
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+
+      <ol className="space-y-6 lg:hidden">
+        {before.map((node) => (
+          <li key={node.label} className="relative">
+            <BranchBox node={node} tone={tone} />
+            <span aria-hidden className={`absolute -bottom-5 left-5 ${c.muted}`}>
+              <ArrowDown className="size-4" />
+            </span>
+          </li>
+        ))}
+        <li className="relative">
+          <ul className={`space-y-2 border-l-2 pl-4 ${c.line}`}>
+            {branches.map((node) => (
+              <li key={node.label}>
+                <BranchBox node={node} tone={tone} emphasis />
+              </li>
+            ))}
+          </ul>
+          {after.length > 0 && (
+            <span aria-hidden className={`absolute -bottom-5 left-5 ${c.muted}`}>
+              <ArrowDown className="size-4" />
+            </span>
+          )}
+        </li>
+        {after.map((node, i) => (
+          <li key={node.label} className="relative">
+            <BranchBox node={node} tone={tone} />
+            {i < after.length - 1 && (
+              <span aria-hidden className={`absolute -bottom-5 left-5 ${c.muted}`}>
+                <ArrowDown className="size-4" />
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </>
   );
 }

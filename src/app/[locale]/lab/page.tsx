@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { resolveLocale } from "@/lib/locale";
 import { labContent } from "@/content/lab";
 import { buildMetadata } from "@/lib/seo";
-import { PageHero } from "@/components/ui/PageHero";
 import { CtaBand } from "@/components/ui/CtaBand";
-import { PageFooterNav } from "@/components/ui/PageFooterNav";
 import { LabWorkbench } from "@/components/pages/lab/LabWorkbench";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -19,29 +17,40 @@ export default async function LabPage({ params }: Props) {
   const t = labContent[locale];
   return (
     <>
-      <PageHero number={7} eyebrow={t.hero.eyebrow} title={t.hero.title} lede={t.hero.lede} complexityLabel={t.hero.complexity} />
-      <LabWorkbench t={t} />
-      <section className="border-t border-ink" aria-labelledby="principles-title">
-        <div className="container-page section grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="eyebrow mb-4">{t.principles.eyebrow}</p>
-            <h2 id="principles-title" className="h2">{t.principles.title}</h2>
+      {/* Compact app-style header: the tools are the page, not the intro. */}
+      <div className="grid-paper border-b border-line">
+        <div className="container-page pb-[clamp(2.5rem,5vw,4rem)] pt-[clamp(2rem,4vw,3.5rem)]">
+          <div className="flex flex-col gap-6 border-b border-ink pb-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="eyebrow mb-3">{t.hero.eyebrow}</p>
+              <h1 className="text-[clamp(2rem,4.4vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.035em]">{t.hero.title}</h1>
+            </div>
+            <p className="max-w-[46ch] text-ink-2 md:text-right">{t.hero.lede}</p>
           </div>
-          <ol className="lg:col-span-7">
-            {t.principles.items.map((item, i) => (
-              <li key={item.title} className="grid gap-2 border-t border-line py-6 sm:grid-cols-[5rem_1fr] first:border-t-0 first:pt-0">
-                <span className="mono tabular text-xs text-ink-3">0{i + 1}</span>
-                <div>
-                  <h3 className="h3">{item.title}</h3>
-                  <p className="body-copy mt-2">{item.body}</p>
-                </div>
-              </li>
+          <div className="mt-8">
+            <LabWorkbench t={t} />
+          </div>
+        </div>
+      </div>
+
+      <section aria-labelledby="principles-title" className="container-page py-[clamp(3rem,6vw,5rem)]">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <p className="eyebrow mb-3">{t.principles.eyebrow}</p>
+            <h2 id="principles-title" className="text-[1.5rem] font-medium leading-tight tracking-tight">{t.principles.title}</h2>
+          </div>
+          <dl className="grid gap-px border-y border-line bg-line sm:grid-cols-3 lg:col-span-9">
+            {t.principles.items.map((item) => (
+              <div key={item.title} className="bg-paper py-5 sm:px-5">
+                <dt className="mono text-[0.78rem] font-semibold uppercase tracking-wider">{item.title}</dt>
+                <dd className="mt-2 text-sm text-ink-2">{item.body}</dd>
+              </div>
             ))}
-          </ol>
+          </dl>
         </div>
       </section>
+
       <CtaBand locale={locale} label={t.cta.label} />
-      <PageFooterNav locale={locale} current="lab" />
     </>
   );
 }

@@ -1,0 +1,10 @@
+.pulse {
+  stroke-dasharray: 8 18;
+  animation: flow 1.4s linear infinite;
+}
+@keyframes flow {
+  to { stroke-dashoffset: -26; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse { animation: none; stroke-dasharray: none; opacity: 0.5; }
+}

@@ -2,19 +2,21 @@ import type { Localized } from "@/i18n/config";
 
 export const caseStepIds = [
   "problem",
-  "discovery",
   "constraints",
-  "ux",
+  "decision",
   "architecture",
   "implementation",
-  "testing",
-  "performance",
   "tradeoffs",
+  "testing",
+  "deployment",
   "future",
 ] as const;
 export type CaseStepId = (typeof caseStepIds)[number];
 
 export interface CaseSection {
+  /** One plain-language sentence for clients. */
+  client: string;
+  /** Technical detail for developers. */
   body: string;
   points: string[];
 }
@@ -24,1106 +26,1168 @@ export interface TreeNode {
   children?: { edge: string; node: TreeNode }[];
 }
 
+export interface DiagramNode {
+  label: string;
+  detail: string;
+}
+
 export type DiagramContent =
-  | { kind: "flow" | "layers"; title: string; caption: string; nodes: { label: string; detail: string }[] }
-  | { kind: "tree"; title: string; caption: string; root: TreeNode };
+  | { kind: "flow" | "layers"; title: string; caption: string; nodes: DiagramNode[] }
+  | { kind: "tree"; title: string; caption: string; root: TreeNode }
+  | { kind: "branch"; title: string; caption: string; before: DiagramNode[]; branches: DiagramNode[]; after: DiagramNode[] };
 
 export interface CaseContent {
   id: string;
   kind: "demo" | "concept";
+  /** Which service from the offer this case demonstrates. */
+  service: string;
   title: string;
   tagline: string;
-  status: string;
+  facts: { label: string; value: string }[];
   stack: string[];
   sections: Record<CaseStepId, CaseSection>;
-  /** Diagrams are attached to the step they illustrate. */
+  /** Diagrams are attached to the chapter they illustrate. */
   diagrams: Partial<Record<CaseStepId, DiagramContent>>;
 }
 
 export interface CaseStudiesContent {
   meta: { title: string; description: string };
-  hero: { eyebrow: string; titleLead: string; titleEmph: string; lede: string; complexityLabel: string };
+  hero: { eyebrow: string; title: string; titleEmph: string; lede: string };
   labels: {
-    index: string;
+    documents: string;
     kind: Record<CaseContent["kind"], string>;
     kindNote: Record<CaseContent["kind"], string>;
-    status: string;
+    service: string;
     stack: string;
     steps: Record<CaseStepId, string>;
     diagram: string;
+    forClients: string;
+    technical: string;
+    reading: { label: string; full: string; overview: string };
+    switcher: string;
+    chapters: string;
   };
   cases: CaseContent[];
-  cta: { label: string; title: string };
+  cta: { label: string; title: string; body: string };
 }
 
 const en: CaseStudiesContent = {
   meta: {
     title: "Case studies",
     description:
-      "Three detailed write-ups of the decisions, constraints and tradeoffs behind a build: this portfolio and two concept projects, clearly labeled.",
+      "How projects are reasoned, from problem to deployment: this portfolio's real architecture, plus a website-redesign concept and an AI-feature concept — clearly labelled.",
   },
   hero: {
     eyebrow: "Case studies",
-    titleLead: "Beyond the pixels:",
-    titleEmph: "how the work is reasoned.",
-    lede: "Three write-ups of the decisions, constraints and tradeoffs behind a build. One is this very site; two are concept projects, labeled as such.",
-    complexityLabel: "Complexity",
+    title: "Decisions,",
+    titleEmph: "documented.",
+    lede: "Each case runs from problem to deployment. Every chapter opens with one line for clients; the technical detail follows for developers.",
   },
   labels: {
-    index: "Case studies",
+    documents: "Documents",
     kind: { demo: "Technical demonstration", concept: "Concept project" },
     kindNote: {
-      demo: "Real, running software: the site you are reading.",
-      concept: "A design exercise. There is no real client and nothing was delivered.",
+      demo: "Real, running software — the site you are reading.",
+      concept: "A design exercise. No real client; nothing was delivered.",
     },
-    status: "Status",
+    service: "Service",
     stack: "Stack",
     steps: {
       problem: "Problem",
-      discovery: "Discovery",
       constraints: "Constraints",
-      ux: "UX decision",
+      decision: "Design decision",
       architecture: "Architecture",
       implementation: "Implementation",
-      testing: "Testing",
-      performance: "Performance",
       tradeoffs: "Tradeoffs",
+      testing: "Testing",
+      deployment: "Deployment",
       future: "Future improvements",
     },
     diagram: "Diagram",
+    forClients: "In short",
+    technical: "Technical detail",
+    reading: { label: "Reading mode", full: "Full detail", overview: "Client overview" },
+    switcher: "Choose a case",
+    chapters: "Chapters",
   },
   cases: [
     {
       id: "portfolio",
       kind: "demo",
-      title: "This portfolio, built as a product",
-      tagline: "A trilingual site with a real backend: what the architecture looks like, and why.",
-      status: "Live: you are reading it",
-      stack: ["Next.js App Router", "TypeScript (strict)", "Tailwind CSS", "Zod", "Neon Postgres", "Vercel"],
+      service: "Full-stack build, idea to production",
+      title: "This portfolio: a multilingual site with a real backend",
+      tagline: "Ten pages in three languages, a contact pipeline that sends real email, and a circuit diagram generated by Python — deployed on Vercel.",
+      facts: [
+        { label: "Status", value: "Live — you are reading it" },
+        { label: "Scope", value: "Design, frontend, backend, EN/DE/TH copy, deployment" },
+      ],
+      stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          body: "A portfolio has one job: make a stranger confident enough to get in touch. It also has to show engineering, and a page of screenshots shows very little of it.",
-          points: [],
-        },
-        discovery: {
-          body: "I listed what a client actually checks. Can they read it in their own language? Does it work on a phone? Does the contact form really reach me? Can they see the code behind it?",
-          points: [],
+          client: "A portfolio should prove the work, not just describe it — in the languages clients actually read.",
+          body: "Most developer portfolios are a list of logos and claims. This one had to let a visitor check the craft directly: real forms, real server code, a real deployment, readable in English, German and Thai.",
+          points: ["Show running software, not screenshots", "Make the offer clear on the first screen", "Keep every claim checkable — the source is public"],
         },
         constraints: {
-          body: "Fixed from the start:",
+          client: "Three languages, no paid CMS, and it must stay fast and maintainable by one person.",
+          body: "One developer maintains everything, so the architecture favours fewer moving parts over features. Copy lives in the repository; there is no runtime translation service and no database needed to render a page.",
           points: [
-            "Three languages (English, German, Thai) with no runtime translation service",
-            "The contact form must never claim success if nothing was delivered",
-            "No secrets in the client bundle or in the repository",
-            "Minimal client-side JavaScript; most pages should be plain prerendered HTML",
+            "Equal quality in three locales, including Thai line height and wrapping",
+            "No secrets in the browser; contact delivery stays server-side",
+            "Pages must still render if GitHub's API or the database is unavailable",
           ],
         },
-        ux: {
-          body: "Every page lives at a predictable, language-prefixed URL, and the language follows the visitor rather than the other way round. The order in which it is decided is deliberate.",
-          points: [],
+        decision: {
+          client: "Every language has its own address, so a link always opens in the right language.",
+          body: "The locale lives in the path (/en, /de, /th). A small proxy redirects unprefixed URLs using a remembered choice or the browser's language, and switching language keeps you on the same page.",
+          points: [
+            "Typed dictionaries: a missing German or Thai string fails the type check",
+            "Server Components by default; client code only where something is interactive",
+            "One set of design tokens; each page gets its own composition",
+          ],
         },
         architecture: {
-          body: "The site is server-first. Pages are React Server Components rendered at build time for each language, and only interactive islands ship JavaScript. The contact form is the one real request path.",
+          client: "Pages are pre-built and served from the edge; only the contact form and status check run on a server.",
+          body: "The Next.js App Router renders every page route statically at build time. The contact form posts to a Server Action, and /api/health is a Route Handler that reports safe, non-secret status.",
           points: [],
         },
         implementation: {
-          body: "Language dictionaries are typed TypeScript modules. One type defines the shape; the German and Thai versions must match it, so a missing translation fails the type check instead of shipping.",
+          client: "An enquiry is checked, protected against spam and delivered by email — or the form says honestly that it couldn't be.",
+          body: "The Server Action validates input with a Zod schema whose errors are stable codes, translated in the browser. A honeypot field and a per-visitor rate limit run before delivery. A delivery service then sends to every configured channel: Resend email with Reply-To set to the sender, plus optional PostgreSQL and webhook.",
           points: [
-            "A small proxy handles locale redirects",
-            "Validation rules live in one Zod schema shared by the server logic and the tests",
-            "Delivery is a thin layer with pluggable channels, so the database is optional",
-          ],
-        },
-        testing: {
-          body: "The logic that can quietly break is covered by automated tests: locale matching, path building, the validation schema, the rate limiter and delivery behavior.",
-          points: [
-            "With no delivery channel configured, the result is “unavailable”, never a fake success",
-            "Shared copy is checked for missing labels in every language",
-            "Lint, type check, tests and a production build run together through one check command",
-          ],
-        },
-        performance: {
-          body: "What is true by construction, rather than by measurement:",
-          points: [
-            "Every page in every language is prerendered to static HTML at build time",
-            "Fonts are self-hosted by the framework, with no third-party font request",
-            "Client JavaScript is limited to the menu, language switcher, command palette and the interactive sections",
-            "No translation requests at runtime",
+            "Success only when at least one channel accepted the message",
+            "Email content is HTML-escaped and subjects are stripped of line breaks",
+            "The AI circuit is generated by a Python script and committed as JSON and SVG, so production never runs Python",
           ],
         },
         tradeoffs: {
-          body: "Each of these was a choice, not an accident:",
+          client: "A few choices trade convenience for reliability and lower running cost.",
+          body: "Simplicity was preferred wherever the downside was acceptable for a portfolio, and each limit is documented rather than hidden.",
           points: [
-            "Copy lives in code: editing needs a commit, in exchange for type safety and no CMS to run",
-            "The in-memory rate limiter is per server instance, so it slows bursts but is not a global guarantee",
-            "The database is optional; without one the form relies on a webhook, and says so when neither exists",
+            "The in-memory rate limit applies per server instance — a brake on bursts, not a global guarantee",
+            "Copy in code means edits go through Git rather than a CMS",
+            "Visitor confirmation emails need a verified sending domain; until then, only the owner is notified",
           ],
         },
+        testing: {
+          client: "Automated checks run before anything goes live.",
+          body: "Unit tests cover locale routing, validation, rate limiting, email templates, delivery, the lab tools, the terminal and the generated circuit. Playwright scripts screenshot every page in every language at four screen sizes and flag console errors and horizontal overflow; a functional script exercises the real interactions.",
+          points: ["Type check, lint, tests and production build gate every release", "Accessibility audited with axe across all locales"],
+        },
+        deployment: {
+          client: "Pushing to the main branch publishes a new version, and any version can be rolled back.",
+          body: "The GitHub repository is connected to Vercel. Server-side variables — Resend key, recipient and sender — are set in Vercel and never committed. /api/health reports the deployed commit and which delivery channels are active.",
+          points: [],
+        },
         future: {
-          body: "If the site grows:",
-          points: [
-            "Move the rate limit to a shared store",
-            "Add an inbox view for stored submissions",
-            "Add an optional CMS layer that keeps the same typed content shape",
-          ],
+          client: "Next: confirmations for visitors and real project write-ups as client work becomes shareable.",
+          body: "The remaining improvements are operational rather than architectural.",
+          points: ["Verified sending domain for visitor confirmation emails", "A shared store for rate limiting across instances", "Real client work added as it becomes shareable"],
         },
       },
       diagrams: {
-        ux: {
+        decision: {
           kind: "tree",
           title: "Which language does a visitor see?",
-          caption: "The order of decisions in this site's proxy.",
+          caption: "Decided once, in the proxy, before any page renders.",
           root: {
-            label: "Request without a language prefix, e.g. /about",
+            label: "Does the URL start with /en, /de or /th?",
             children: [
-              { edge: "Prefix present (/de/…)", node: { label: "Serve that language" } },
+              { edge: "Yes", node: { label: "Render that locale" } },
               {
-                edge: "No prefix",
+                edge: "No",
                 node: {
-                  label: "Saved language cookie?",
+                  label: "Is a language remembered from an earlier visit?",
                   children: [
-                    { edge: "Yes", node: { label: "Redirect to the saved language" } },
-                    {
-                      edge: "No",
-                      node: {
-                        label: "Read the Accept-Language header",
-                        children: [
-                          { edge: "Supported language found", node: { label: "Redirect to it" } },
-                          { edge: "Nothing matches", node: { label: "Redirect to English" } },
-                        ],
-                      },
-                    },
+                    { edge: "Yes", node: { label: "Redirect to the remembered locale" } },
+                    { edge: "No", node: { label: "Redirect to the best match from the browser's language, else English" } },
                   ],
                 },
               },
             ],
           },
         },
-        architecture: {
-          kind: "flow",
-          title: "Life of a contact request",
-          caption: "From the form to an honest response.",
-          nodes: [
-            { label: "Browser", detail: "The form posts to a Server Action and works on server-rendered HTML." },
-            { label: "Server Action", detail: "Runs on Vercel and reads the raw form data." },
-            { label: "Zod validation", detail: "Returns stable error codes per field, translated in the browser." },
-            { label: "Spam and rate checks", detail: "A hidden honeypot field plus a per-visitor rate limit." },
-            { label: "Delivery", detail: "A Postgres row and/or a webhook; at least one must accept." },
-            { label: "Response", detail: "Success only if a channel accepted it; otherwise an honest error." },
-          ],
-        },
-      },
-    },
-    {
-      id: "booking",
-      kind: "concept",
-      title: "Appointment booking for a small studio",
-      tagline: "A concept for replacing chat-based scheduling with a flow that cannot double-book.",
-      status: "Design exercise, not built for a client",
-      stack: ["Next.js", "PostgreSQL", "Server Actions", "Zod", "Time-zone-aware scheduling"],
-      sections: {
-        problem: {
-          body: "Imagine a small studio, such as a physiotherapist or a photographer, that books clients through messages. Times get confused, slots are promised twice, and every change costs a conversation.",
-          points: [],
-        },
-        discovery: {
-          body: "Mapping the booking lifecycle shows where it breaks: choosing a time, confirming, rescheduling, cancelling. Most errors come from two people holding the same slot in their head.",
-          points: [],
-        },
-        constraints: {
-          body: "The rules any solution has to respect:",
-          points: [
-            "Bookings must never overlap, even when two people click at the same moment",
-            "Customers are mostly on phones and may be in a different time zone",
-            "Staff need to block time off without touching each booking",
-            "Personal data stays minimal: name and contact details only",
-          ],
-        },
-        ux: {
-          body: "Service first, then time. Duration depends on the service, so the calendar can show only slots that truly fit. Days with nothing available are disabled rather than hidden, so the customer understands why.",
-          points: [],
-        },
-        architecture: {
-          body: "Availability is computed on the server from working hours, existing bookings and time off. The database enforces the final rule: an exclusion constraint on time ranges makes an overlapping booking impossible, whatever the application does.",
-          points: [],
-        },
-        implementation: {
-          body: "Slot generation is a pure function: hours, duration and existing bookings in, free slots out. Keeping it free of framework code makes the tricky part easy to test.",
-          points: [
-            "Times are stored in UTC, with the studio's time zone kept alongside",
-            "Rescheduling is cancel-then-book inside one transaction",
-            "Staff time off is modeled as a booking of a special type",
-          ],
-        },
-        testing: {
-          body: "Tests concentrate on the rules that cost money when they are wrong:",
-          points: [
-            "Adjacent bookings are allowed; overlapping ones are not",
-            "Days on which the clocks change",
-            "Two simultaneous attempts on one slot: exactly one wins",
-            "Bookings that cross midnight",
-          ],
-        },
-        performance: {
-          body: "Because the server sends one day of slots at a time, payloads stay small however far ahead the calendar runs. The booking page can be mostly server-rendered, with the calendar as its only interactive island.",
-          points: [],
-        },
-        tradeoffs: {
-          body: "Three deliberate compromises:",
-          points: [
-            "Database-level constraints add a migration step but remove a whole class of race bugs",
-            "Offering alternatives after a conflict is more work than an error message, but it saves the customer effort",
-            "No customer accounts keeps friction low, at the cost of a manage-booking link sent by email",
-          ],
-        },
-        future: {
-          body: "Where this could go next:",
-          points: ["Calendar sync through an iCal feed", "Reminder messages to reduce no-shows", "Several staff members, each with their own hours"],
-        },
-      },
-      diagrams: {
-        ux: {
-          kind: "tree",
-          title: "The booking flow as decisions",
-          caption: "What the customer sees at each step.",
-          root: {
-            label: "Customer opens the booking page",
-            children: [
-              {
-                edge: "No service chosen",
-                node: { label: "Show services with their duration; no calendar yet" },
-              },
-              {
-                edge: "Service chosen",
-                node: {
-                  label: "Show days that still have room",
-                  children: [
-                    {
-                      edge: "Day chosen",
-                      node: {
-                        label: "Show only slots that fit the duration",
-                        children: [
-                          { edge: "Slot taken in the meantime", node: { label: "Offer the nearest alternatives; keep the typed details" } },
-                          { edge: "Slot still free", node: { label: "Confirm and send a summary" } },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-        architecture: {
-          kind: "flow",
-          title: "From day picker to confirmed booking",
-          caption: "The database has the final say.",
-          nodes: [
-            { label: "Customer picks a day", detail: "The browser sends only the service and the date." },
-            { label: "Availability query", detail: "The server derives free slots from hours, time off and bookings." },
-            { label: "Slot list", detail: "Only the chosen day is sent back to the browser." },
-            { label: "Booking action", detail: "Validates the input, then inserts inside a transaction." },
-            { label: "Database constraint", detail: "Overlapping time ranges are rejected by the database itself." },
-            { label: "Confirmation", detail: "Success, or alternative slots if the slot was just taken." },
-          ],
-        },
-      },
-    },
-    {
-      id: "multilingual",
-      kind: "concept",
-      title: "Multilingual website for a local guesthouse",
-      tagline: "A concept for keeping three languages accurate, fast and findable.",
-      status: "Design exercise, fictional business",
-      stack: ["Next.js", "TypeScript", "Locale-prefixed routing", "Structured data"],
-      sections: {
-        problem: {
-          body: "A fictional guesthouse welcomes guests who read Thai, English and German. Its old site is one English page with a translation plugin on top: prices drift between languages and search engines see a muddle.",
-          points: [],
-        },
-        discovery: {
-          body: "The facts (prices, hours, address) and the words (descriptions, tone) change at different speeds. Mixing them is what makes translations drift.",
-          points: [],
-        },
-        constraints: {
-          body: "What shaped the solution:",
-          points: [
-            "The owners are not developers and update prices often",
-            "Guests mostly arrive from search and from phones",
-            "A missing translation must be noticed before a guest sees it",
-            "Hosting cost should stay close to zero",
-          ],
-        },
-        ux: {
-          body: "Language is part of the address, so a link shows the same thing to everyone and search engines can index each version. A visible switcher keeps the current page instead of dropping guests on the home page.",
-          points: [],
-        },
-        architecture: {
-          body: "Facts and words live in separate layers. One typed data file owns prices and hours; each language owns only its wording and references the facts. The build assembles static pages per language.",
-          points: [],
-        },
-        implementation: {
-          body: "Content modules share one type. Money, dates and opening hours go through locale-aware formatters rather than hand-typed strings.",
-          points: [
-            "hreflang alternates generated for every page",
-            "Structured data for the business built from the facts layer",
-            "A switcher that preserves the page and remembers the choice",
-          ],
-        },
-        testing: {
-          body: "Checks target the ways multilingual sites usually rot:",
-          points: [
-            "A test asserts that every language defines every key",
-            "A price appears identically in all languages because it is rendered from one value",
-            "A link check over the generated routes",
-          ],
-        },
-        performance: {
-          body: "All pages are prerendered per language, so the server does no work per visit. There is no client-side translation, so guests download only the language they read.",
-          points: [],
-        },
-        tradeoffs: {
-          body: "The compromises worth naming:",
-          points: [
-            "Editing through code is a barrier for owners; a CMS removes it but adds cost and a second source of truth",
-            "Typed content forces a translation for every key, which slows new features but stops gaps",
-            "Three languages triple the copy review; a native-speaker review step belongs in the plan",
-          ],
-        },
-        future: {
-          body: "Next steps:",
-          points: ["A headless CMS with the same schema and draft previews", "A translation review checklist per release", "Online booking, reusing the booking concept"],
-        },
-      },
-      diagrams: {
         architecture: {
           kind: "layers",
-          title: "Facts and words, kept apart",
-          caption: "Each layer feeds the next.",
+          title: "Layers of the site",
+          caption: "Each layer has one job and can be tested on its own.",
           nodes: [
-            { label: "Facts", detail: "Prices, hours and address: one record, language-neutral." },
-            { label: "Copy per language", detail: "Descriptions and labels in Thai, English and German." },
-            { label: "Type check", detail: "The build fails if any language is missing a key." },
-            { label: "Static pages", detail: "One prerendered page per language and route." },
-            { label: "Search metadata", detail: "Language alternates and structured data from the same facts." },
-            { label: "CDN", detail: "Served from the edge as plain HTML." },
+            { label: "Browser", detail: "Server-rendered HTML; small client islands for menu, palette, terminal, form and lab tools." },
+            { label: "Proxy", detail: "src/proxy.ts redirects unprefixed URLs to a locale." },
+            { label: "App Router", detail: "Static pages under /[locale], typed dictionaries in src/content." },
+            { label: "Server Action · Route Handler", detail: "Contact submission and /api/health." },
+            { label: "Validation", detail: "Zod schema, honeypot and rate limit." },
+            { label: "Delivery", detail: "Resend email, optional PostgreSQL and webhook." },
+          ],
+        },
+        implementation: {
+          kind: "branch",
+          title: "Life of an enquiry",
+          caption: "Every configured channel is attempted; the visitor sees success only if one accepted it.",
+          before: [
+            { label: "Form", detail: "Client-side check with the same schema" },
+            { label: "Server Action", detail: "Runs only on the server" },
+            { label: "Guard", detail: "Zod · honeypot · rate limit" },
+          ],
+          branches: [
+            { label: "Resend email", detail: "To the owner, Reply-To the sender" },
+            { label: "PostgreSQL", detail: "Optional, when configured" },
+            { label: "Webhook", detail: "Optional, when configured" },
+          ],
+          after: [{ label: "Typed result", detail: "success · invalid · rate-limited · unavailable · error" }],
+        },
+        deployment: {
+          kind: "flow",
+          title: "From commit to production",
+          caption: "Generated artifacts are committed, so the build needs no Python.",
+          nodes: [
+            { label: "Generate", detail: "python3 scripts/generate_ai_circuit.py" },
+            { label: "Verify", detail: "Lint, types, tests, build" },
+            { label: "Push", detail: "main on GitHub" },
+            { label: "Build", detail: "Vercel builds and prerenders" },
+            { label: "Release", detail: "Production deployment" },
+            { label: "Check", detail: "/api/health and live QA" },
+          ],
+        },
+      },
+    },
+    {
+      id: "redesign",
+      kind: "concept",
+      service: "Website redesign",
+      title: "Redesigning an outdated small-business website",
+      tagline: "A concept for turning a slow, hard-to-edit site into a clear, fast one — without losing search visibility or existing links.",
+      facts: [
+        { label: "Status", value: "Concept — no client, not delivered" },
+        { label: "Scope", value: "Audit, content structure, design system, migration plan" },
+      ],
+      stack: ["Next.js", "TypeScript", "Headless CMS or Markdown", "Image optimisation", "Server Actions", "Redirect map"],
+      sections: {
+        problem: {
+          client: "Visitors can't find services or prices on a phone, and the owner can't update the site without help.",
+          body: "The typical starting point: a theme-based site that grew page by page, with services buried in long text, a contact form that only sometimes works, and slow, oversized images.",
+          points: ["No clear path from a service to an enquiry", "Content duplicated across pages and drifting apart", "Layouts that break on small screens"],
+        },
+        constraints: {
+          client: "Existing links and search visibility must survive, and the owner must be able to edit content afterwards.",
+          body: "A redesign that loses inbound links or rankings creates a new problem. The budget suits a small business, existing photography has to be reused, and editing has to work for someone who is not a developer.",
+          points: ["Every old URL keeps working or redirects", "Content editing without touching code", "Accessibility as a baseline, not an extra"],
+        },
+        decision: {
+          client: "Rebuild around what visitors want to do — understand a service, then ask about it — instead of copying the old menu.",
+          body: "The content is restructured first: one page per service with a consistent shape (what, for whom, how it works, price guidance, enquiry), then a small design system that every page reuses.",
+          points: ["Content model before visual design", "One enquiry path, reachable from every service", "Mobile layouts designed, not just stacked"],
+        },
+        architecture: {
+          client: "The new site is pre-built for speed, with content edited in a simple editor.",
+          body: "Pages are statically generated from a headless CMS (or Markdown in Git for very small sites). Images are resized at build time. The enquiry form posts to a server function that validates and emails the owner.",
+          points: [],
+        },
+        implementation: {
+          client: "The work happens in clear stages, each one reviewed before the next begins.",
+          body: "An audit inventories every URL and its traffic, then a content model and design tokens are agreed. Templates are built against real content, and a redirect map links every old URL to its new home before launch.",
+          points: ["Redirect map stored as data and checked automatically", "Templates built against real content, not placeholder text", "Form delivery tested end to end before launch"],
+        },
+        tradeoffs: {
+          client: "Some choices keep the site simpler to run, even if they rule out a few extras.",
+          body: "A headless CMS adds a service to maintain; Markdown in Git is cheaper but less friendly for non-developers. A custom design costs more than a theme but avoids fighting it later.",
+          points: ["No heavy animation in the hero: speed and clarity first", "Fewer, better pages rather than migrating everything", "CMS choice made per client, not by default"],
+        },
+        testing: {
+          client: "Before launch, every old link, form and page is checked automatically.",
+          body: "An automated test requests every URL in the redirect map and expects a permanent redirect to the right page. Pages are checked at several screen sizes, with an accessibility audit and a performance budget.",
+          points: ["Redirect map: every old URL resolves", "Form: validation, delivery and error states", "Accessibility and contrast checks on every template"],
+        },
+        deployment: {
+          client: "The owner reviews a private preview, then the new site replaces the old one with no downtime.",
+          body: "Every change gets a preview URL for review. Launch is a DNS switch to the new deployment, followed by watching 404 logs and search console for missed URLs.",
+          points: ["Preview deployments for approval", "Rollback is one click", "404 monitoring in the first weeks"],
+        },
+        future: {
+          client: "Once the foundation is solid, features can be added without another redesign.",
+          body: "A clean content model makes later additions incremental.",
+          points: ["Online booking or quotes", "A second language", "Analytics reviewed against the enquiry path"],
+        },
+      },
+      diagrams: {
+        decision: {
+          kind: "tree",
+          title: "Keep, merge or retire an old page?",
+          caption: "Applied to every URL found in the audit.",
+          root: {
+            label: "Does the page get traffic or inbound links?",
+            children: [
+              {
+                edge: "Yes",
+                node: {
+                  label: "Is its content still accurate?",
+                  children: [
+                    { edge: "Yes", node: { label: "Keep: rebuild on the new template, same or redirected URL" } },
+                    { edge: "No", node: { label: "Merge into the matching service page and redirect" } },
+                  ],
+                },
+              },
+              { edge: "No", node: { label: "Retire: redirect to the closest parent page" } },
+            ],
+          },
+        },
+        implementation: {
+          kind: "flow",
+          title: "Redesign process",
+          caption: "Each stage ends with something the owner can review.",
+          nodes: [
+            { label: "Audit", detail: "URLs, traffic, content, issues" },
+            { label: "Content model", detail: "Page types and fields" },
+            { label: "Design system", detail: "Type, colour, components" },
+            { label: "Templates", detail: "Built with real content" },
+            { label: "Migration", detail: "Content and redirect map" },
+            { label: "Launch", detail: "DNS switch and monitoring" },
+          ],
+        },
+      },
+    },
+    {
+      id: "ai-feature",
+      kind: "concept",
+      service: "Feature development · AI integration",
+      title: "Adding AI-drafted replies to an existing support tool",
+      tagline: "A concept for bringing AI into a product people already use: drafts, not autopilot, with a person approving every message.",
+      facts: [
+        { label: "Status", value: "Concept — no client, not delivered" },
+        { label: "Scope", value: "Feature design, AI architecture, rollout plan" },
+      ],
+      stack: ["React", "Node.js API", "PostgreSQL", "Python worker", "Embeddings · RAG", "Cloud + local models", "Feature flags"],
+      sections: {
+        problem: {
+          client: "A support team answers the same questions all day; AI could draft replies, but the existing tool has to keep working.",
+          body: "The product is an established helpdesk with a React frontend, a Node.js API and PostgreSQL. Agents retype similar answers from a knowledge base, and response quality depends on who is on shift.",
+          points: ["Repetitive answers take most of the time", "The knowledge base exists but is hard to search", "A rewrite is not an option"],
+        },
+        constraints: {
+          client: "Customer data must stay protected, costs must be predictable, and the feature must be easy to switch off.",
+          body: "Some customers' contracts require that their data never leaves the company's own servers. Model calls cost money per request, and the team needs a kill switch if anything goes wrong.",
+          points: ["Per-tenant privacy rules", "Budget caps on model usage", "Zero impact on the existing workflow when disabled"],
+        },
+        decision: {
+          client: "The AI drafts, a person decides. Nothing is sent without approval.",
+          body: "The feature suggests a reply with the knowledge-base sources it used, and the agent edits and sends it. The output is structured (draft, sources, confidence notes) so the UI can show where every claim came from.",
+          points: ["Draft, never auto-send", "Sources shown with every suggestion", "Rollout behind a feature flag per team"],
+        },
+        architecture: {
+          client: "A router sends each request to a cloud model or a private local model, depending on the customer's privacy rules.",
+          body: "A context builder retrieves relevant articles with embeddings search. A model router picks a cloud model (such as ChatGPT or Claude via their APIs) for standard tenants and a self-hosted model for privacy-restricted ones. Every draft passes validation before it reaches the UI.",
+          points: [],
+        },
+        implementation: {
+          client: "The feature slots into the existing product as a suggestion panel; nothing else changes for the team.",
+          body: "A Python worker ingests the knowledge base into an embeddings index. A new endpoint in the existing Node.js API builds context, calls the router and validates the structured response. The React app gains a suggestion panel beside the reply box; an audit log records every draft and edit.",
+          points: ["Structured output validated against a schema", "Personal data check before any cloud call", "Audit log of drafts, edits and approvals"],
+        },
+        tradeoffs: {
+          client: "Private local models protect data but may write slightly weaker drafts; that choice is made per customer.",
+          body: "Local models trade some quality and speed for data control. Retrieval keeps answers grounded but needs the index kept fresh. Caps keep costs predictable at the price of occasionally skipping a draft.",
+          points: ["Quality vs. privacy, chosen per tenant", "Freshness of the index vs. ingestion cost", "Skip a draft rather than exceed a budget"],
+        },
+        testing: {
+          client: "Drafts are checked against real past questions before any team sees them.",
+          body: "An evaluation set of anonymised past tickets compares drafts with the answers that were actually sent. Schema and safety checks run on every response, and failure paths fall back to the normal workflow.",
+          points: ["Evaluation set from anonymised history", "Schema, personal-data and length checks", "Graceful fallback: no draft, no disruption"],
+        },
+        deployment: {
+          client: "It starts invisible, then opt-in, then default — and can be switched off instantly.",
+          body: "Shadow mode first: drafts are generated and logged but not shown. Then opt-in for one team, then default on. A feature flag doubles as the kill switch.",
+          points: ["Shadow mode → opt-in → default", "Per-team feature flags", "Kill switch without a redeploy"],
+        },
+        future: {
+          client: "The same pipeline can later tag, summarise and route tickets.",
+          body: "With retrieval, routing and validation in place, related features reuse the pipeline.",
+          points: ["Automatic tagging and routing", "Thread summaries for handovers", "Learning from agents' edits"],
+        },
+      },
+      diagrams: {
+        architecture: {
+          kind: "branch",
+          title: "Draft pipeline",
+          caption: "The router chooses the model per tenant; validation and a person stand between the model and the customer.",
+          before: [
+            { label: "Ticket", detail: "Incoming question" },
+            { label: "Context", detail: "Embeddings search over the knowledge base" },
+            { label: "Router", detail: "Privacy rules · budget · availability" },
+          ],
+          branches: [
+            { label: "Cloud model", detail: "ChatGPT or Claude via API" },
+            { label: "Local model", detail: "Self-hosted, data stays in-house" },
+          ],
+          after: [
+            { label: "Validation", detail: "Schema · personal data · length" },
+            { label: "Human approval", detail: "Agent edits and sends" },
+          ],
+        },
+        deployment: {
+          kind: "flow",
+          title: "Rollout",
+          caption: "Each step can be reversed with a flag.",
+          nodes: [
+            { label: "Shadow", detail: "Drafts logged, not shown" },
+            { label: "Evaluate", detail: "Compare with sent answers" },
+            { label: "Opt-in", detail: "One team, feedback loop" },
+            { label: "Default", detail: "On for all teams" },
           ],
         },
       },
     },
   ],
-  cta: { label: "Discuss a project", title: "Want this kind of thinking on your project?" },
+  cta: {
+    label: "Discuss your project",
+    title: "Redesign, new feature or AI workflow?",
+    body: "Describe where you are now and where you want to be. You'll get a clear reply about scope, approach and next steps.",
+  },
 };
 
 const de: CaseStudiesContent = {
   meta: {
     title: "Fallstudien",
     description:
-      "Drei ausführliche Fallstudien zu Entscheidungen, Randbedingungen und Abwägungen hinter einem Projekt: dieses Portfolio und zwei Konzeptprojekte, klar gekennzeichnet.",
+      "Wie Projekte durchdacht werden, vom Problem bis zum Deployment: die echte Architektur dieses Portfolios, dazu ein Redesign-Konzept und ein KI-Feature-Konzept – klar gekennzeichnet.",
   },
   hero: {
     eyebrow: "Fallstudien",
-    titleLead: "Mehr als Pixel:",
-    titleEmph: "wie die Arbeit durchdacht ist.",
-    lede: "Drei Fallstudien zu Entscheidungen, Randbedingungen und Abwägungen hinter einem Projekt. Eine ist genau diese Website, zwei sind Konzeptprojekte und als solche gekennzeichnet.",
-    complexityLabel: "Komplexität",
+    title: "Entscheidungen,",
+    titleEmph: "dokumentiert.",
+    lede: "Jeder Fall führt vom Problem bis zum Deployment. Jedes Kapitel beginnt mit einem Satz für Auftraggebende; danach folgen die technischen Details.",
   },
   labels: {
-    index: "Fallstudien",
+    documents: "Dokumente",
     kind: { demo: "Technische Demonstration", concept: "Konzeptprojekt" },
     kindNote: {
-      demo: "Echte, laufende Software: die Website, die du gerade liest.",
-      concept: "Eine Designübung. Es gibt keine echte Kundschaft und nichts wurde ausgeliefert.",
+      demo: "Echte, laufende Software – die Website, die du gerade liest.",
+      concept: "Eine Entwurfsübung. Kein echter Auftrag, nichts wurde ausgeliefert.",
     },
-    status: "Status",
+    service: "Leistung",
     stack: "Stack",
     steps: {
       problem: "Problem",
-      discovery: "Erkundung",
-      constraints: "Randbedingungen",
-      ux: "UX-Entscheidung",
+      constraints: "Rahmenbedingungen",
+      decision: "Gestaltungsentscheidung",
       architecture: "Architektur",
       implementation: "Umsetzung",
-      testing: "Tests",
-      performance: "Performance",
       tradeoffs: "Abwägungen",
+      testing: "Tests",
+      deployment: "Deployment",
       future: "Nächste Schritte",
     },
     diagram: "Diagramm",
+    forClients: "Kurz gesagt",
+    technical: "Technische Details",
+    reading: { label: "Lesemodus", full: "Alle Details", overview: "Überblick" },
+    switcher: "Fall auswählen",
+    chapters: "Kapitel",
   },
   cases: [
     {
       id: "portfolio",
       kind: "demo",
-      title: "Dieses Portfolio, gebaut wie ein Produkt",
-      tagline: "Eine dreisprachige Website mit echtem Backend: wie die Architektur aussieht und warum.",
-      status: "Live: Du liest sie gerade",
-      stack: ["Next.js App Router", "TypeScript (strict)", "Tailwind CSS", "Zod", "Neon Postgres", "Vercel"],
+      service: "Full-Stack-Entwicklung, von der Idee bis zum Livegang",
+      title: "Dieses Portfolio: eine mehrsprachige Website mit echtem Backend",
+      tagline: "Zehn Seiten in drei Sprachen, eine Kontaktstrecke, die echte E-Mails verschickt, und ein Schaltplan, den Python erzeugt – deployt auf Vercel.",
+      facts: [
+        { label: "Status", value: "Live – du liest sie gerade" },
+        { label: "Umfang", value: "Design, Frontend, Backend, Texte in EN/DE/TH, Deployment" },
+      ],
+      stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          body: "Ein Portfolio hat eine Aufgabe: Fremde so zu überzeugen, dass sie Kontakt aufnehmen. Es muss außerdem Ingenieurarbeit zeigen, und eine Seite voller Screenshots zeigt davon sehr wenig.",
-          points: [],
-        },
-        discovery: {
-          body: "Ich habe aufgelistet, was Auftraggebende tatsächlich prüfen. Lässt es sich in der eigenen Sprache lesen? Funktioniert es auf dem Smartphone? Kommt das Kontaktformular wirklich bei mir an? Ist der Code dahinter einsehbar?",
-          points: [],
+          client: "Ein Portfolio sollte die Arbeit belegen, nicht nur beschreiben – in den Sprachen, die Kundschaft wirklich liest.",
+          body: "Die meisten Entwickler-Portfolios sind eine Liste aus Logos und Behauptungen. Hier sollte man das Handwerk direkt prüfen können: echte Formulare, echter Servercode, ein echtes Deployment, lesbar auf Englisch, Deutsch und Thai.",
+          points: ["Laufende Software statt Screenshots", "Das Angebot auf dem ersten Bildschirm klar machen", "Jede Aussage überprüfbar – der Quellcode ist öffentlich"],
         },
         constraints: {
-          body: "Von Anfang an festgelegt:",
+          client: "Drei Sprachen, kein kostenpflichtiges CMS, und alles muss schnell und von einer Person wartbar bleiben.",
+          body: "Eine Person pflegt alles, deshalb zählen wenige bewegliche Teile mehr als viele Features. Texte liegen im Repository; es gibt keinen Übersetzungsdienst zur Laufzeit und keine Datenbank, die zum Rendern nötig wäre.",
           points: [
-            "Drei Sprachen (Englisch, Deutsch, Thai) ohne Übersetzungsdienst zur Laufzeit",
-            "Das Kontaktformular meldet nie Erfolg, wenn nichts zugestellt wurde",
-            "Keine Secrets im Client-Bundle oder im Repository",
-            "Minimales JavaScript im Browser; die meisten Seiten sollen vorab erzeugtes HTML sein",
+            "Gleiche Qualität in drei Sprachen, inklusive Zeilenhöhe und Umbruch für Thai",
+            "Keine Secrets im Browser; die Zustellung bleibt serverseitig",
+            "Seiten rendern auch, wenn die GitHub-API oder die Datenbank ausfällt",
           ],
         },
-        ux: {
-          body: "Jede Seite hat eine vorhersehbare Adresse mit Sprachpräfix, und die Sprache folgt den Besuchenden, nicht umgekehrt. Die Reihenfolge der Entscheidung ist bewusst gewählt.",
-          points: [],
+        decision: {
+          client: "Jede Sprache hat ihre eigene Adresse, damit ein Link immer in der richtigen Sprache öffnet.",
+          body: "Die Sprache steht im Pfad (/en, /de, /th). Ein kleiner Proxy leitet URLs ohne Präfix anhand der gespeicherten Wahl oder der Browsersprache weiter, und ein Sprachwechsel behält die aktuelle Seite bei.",
+          points: [
+            "Typisierte Wörterbücher: Fehlt ein deutscher oder thailändischer Text, schlägt der Typecheck fehl",
+            "Standardmäßig Server Components; Client-Code nur, wo etwas interaktiv ist",
+            "Ein Satz Design-Tokens; jede Seite hat ihre eigene Komposition",
+          ],
         },
         architecture: {
-          body: "Die Website ist Server-first. Seiten sind React Server Components, die pro Sprache beim Build erzeugt werden; nur interaktive Inseln liefern JavaScript aus. Das Kontaktformular ist der einzige echte Anfragepfad.",
+          client: "Die Seiten sind vorgerendert und kommen vom Edge; nur Kontaktformular und Statusprüfung laufen auf einem Server.",
+          body: "Der Next.js App Router rendert alle Seitenrouten beim Build statisch. Das Kontaktformular sendet an eine Server Action, und /api/health ist ein Route Handler, der unkritische Statusdaten liefert.",
           points: [],
         },
         implementation: {
-          body: "Die Sprachwörterbücher sind typisierte TypeScript-Module. Ein Typ legt die Struktur fest; die deutsche und die thailändische Fassung müssen ihm entsprechen, sodass eine fehlende Übersetzung den Typcheck bricht, statt auszuliefern.",
+          client: "Eine Anfrage wird geprüft, gegen Spam geschützt und per E-Mail zugestellt – oder das Formular sagt ehrlich, dass es nicht geklappt hat.",
+          body: "Die Server Action prüft die Eingaben mit einem Zod-Schema, dessen Fehler stabile Codes sind und im Browser übersetzt werden. Vor der Zustellung laufen ein Honeypot-Feld und ein Rate Limit pro Besuch. Ein Zustelldienst sendet dann an jeden konfigurierten Kanal: E-Mail über Resend mit Reply-To auf die absendende Person, dazu optional PostgreSQL und ein Webhook.",
           points: [
-            "Ein kleiner Proxy übernimmt die Weiterleitung nach Sprache",
-            "Die Validierungsregeln stehen in einem Zod-Schema, das Serverlogik und Tests gemeinsam nutzen",
-            "Die Zustellung ist eine dünne Schicht mit austauschbaren Kanälen, die Datenbank ist also optional",
-          ],
-        },
-        testing: {
-          body: "Die Logik, die unbemerkt brechen kann, ist durch automatische Tests abgedeckt: Spracherkennung, Pfadbildung, Validierungsschema, Ratenbegrenzung und Zustellverhalten.",
-          points: [
-            "Ohne konfigurierten Zustellkanal lautet das Ergebnis „nicht verfügbar“, nie ein vorgetäuschter Erfolg",
-            "Gemeinsame Texte werden auf fehlende Bezeichnungen in jeder Sprache geprüft",
-            "Lint, Typcheck, Tests und Produktions-Build laufen gemeinsam über einen einzigen Check-Befehl",
-          ],
-        },
-        performance: {
-          body: "Was durch den Aufbau feststeht, nicht durch Messung:",
-          points: [
-            "Jede Seite in jeder Sprache wird beim Build als statisches HTML vorgerendert",
-            "Schriften werden vom Framework selbst gehostet, ohne Anfrage an Drittanbieter",
-            "JavaScript im Browser beschränkt sich auf Menü, Sprachwechsel, Befehlspalette und die interaktiven Bereiche",
-            "Keine Übersetzungsanfragen zur Laufzeit",
+            "Erfolg nur, wenn mindestens ein Kanal die Nachricht angenommen hat",
+            "E-Mail-Inhalte werden HTML-escaped, Betreffzeilen von Zeilenumbrüchen bereinigt",
+            "Der KI-Schaltplan wird von einem Python-Skript erzeugt und als JSON und SVG eingecheckt – in Produktion läuft kein Python",
           ],
         },
         tradeoffs: {
-          body: "Jeder dieser Punkte war eine Entscheidung, kein Zufall:",
+          client: "Einige Entscheidungen tauschen Bequemlichkeit gegen Zuverlässigkeit und niedrige Betriebskosten.",
+          body: "Wo der Nachteil für ein Portfolio vertretbar war, hatte Einfachheit Vorrang – und jede Grenze ist dokumentiert statt versteckt.",
           points: [
-            "Texte liegen im Code: Änderungen brauchen einen Commit, dafür gibt es Typsicherheit und kein CMS zu betreiben",
-            "Die Ratenbegrenzung im Arbeitsspeicher gilt pro Serverinstanz, bremst also Schübe, ist aber keine globale Garantie",
-            "Die Datenbank ist optional; ohne sie verlässt sich das Formular auf einen Webhook und sagt es offen, wenn keins von beidem vorhanden ist",
+            "Das Rate Limit im Speicher gilt pro Serverinstanz – eine Bremse für Spitzen, keine globale Garantie",
+            "Texte im Code bedeuten: Änderungen laufen über Git statt über ein CMS",
+            "Bestätigungsmails an Besuchende brauchen eine verifizierte Absenderdomain; bis dahin geht die Benachrichtigung nur an mich",
           ],
         },
+        testing: {
+          client: "Automatische Prüfungen laufen, bevor etwas live geht.",
+          body: "Unit-Tests decken Sprachrouting, Validierung, Rate Limit, E-Mail-Vorlagen, Zustellung, die Labor-Tools, das Terminal und den generierten Schaltplan ab. Playwright-Skripte fotografieren jede Seite in jeder Sprache in vier Bildschirmgrößen und melden Konsolenfehler und horizontales Überlaufen; ein Funktionsskript testet die echten Interaktionen.",
+          points: ["Typecheck, Lint, Tests und Produktions-Build vor jedem Release", "Barrierefreiheit mit axe in allen Sprachen geprüft"],
+        },
+        deployment: {
+          client: "Ein Push auf den main-Branch veröffentlicht eine neue Version, und jede Version lässt sich zurückrollen.",
+          body: "Das GitHub-Repository ist mit Vercel verbunden. Serverseitige Variablen – Resend-Key, Empfänger und Absender – liegen in Vercel und werden nie eingecheckt. /api/health zeigt den deployten Commit und die aktiven Zustellkanäle.",
+          points: [],
+        },
         future: {
-          body: "Wenn die Website wächst:",
-          points: [
-            "Die Ratenbegrenzung in einen gemeinsamen Speicher verlagern",
-            "Eine Posteingangsansicht für gespeicherte Anfragen ergänzen",
-            "Eine optionale CMS-Schicht mit derselben typisierten Inhaltsstruktur hinzufügen",
-          ],
+          client: "Als Nächstes: Bestätigungen für Besuchende und echte Projektberichte, sobald Kundenarbeit gezeigt werden darf.",
+          body: "Die offenen Verbesserungen betreffen den Betrieb, nicht die Architektur.",
+          points: ["Verifizierte Absenderdomain für Bestätigungsmails", "Gemeinsamer Speicher für das Rate Limit über Instanzen hinweg", "Echte Kundenprojekte, sobald sie gezeigt werden dürfen"],
         },
       },
       diagrams: {
-        ux: {
+        decision: {
           kind: "tree",
-          title: "Welche Sprache bekommt eine besuchende Person zu sehen?",
-          caption: "Die Reihenfolge der Entscheidungen im Proxy dieser Website.",
+          title: "Welche Sprache sieht ein Besuch?",
+          caption: "Einmal im Proxy entschieden, bevor eine Seite rendert.",
           root: {
-            label: "Anfrage ohne Sprachpräfix, z. B. /about",
+            label: "Beginnt die URL mit /en, /de oder /th?",
             children: [
-              { edge: "Präfix vorhanden (/de/…)", node: { label: "Diese Sprache ausliefern" } },
+              { edge: "Ja", node: { label: "Diese Sprache rendern" } },
               {
-                edge: "Kein Präfix",
+                edge: "Nein",
                 node: {
-                  label: "Gespeichertes Sprach-Cookie?",
+                  label: "Ist eine Sprache aus einem früheren Besuch gespeichert?",
                   children: [
                     { edge: "Ja", node: { label: "Zur gespeicherten Sprache weiterleiten" } },
-                    {
-                      edge: "Nein",
-                      node: {
-                        label: "Accept-Language-Header auslesen",
-                        children: [
-                          { edge: "Unterstützte Sprache gefunden", node: { label: "Dorthin weiterleiten" } },
-                          { edge: "Nichts passt", node: { label: "Auf Englisch weiterleiten" } },
-                        ],
-                      },
-                    },
+                    { edge: "Nein", node: { label: "Zur besten Übereinstimmung mit der Browsersprache weiterleiten, sonst Englisch" } },
                   ],
                 },
               },
             ],
           },
         },
-        architecture: {
-          kind: "flow",
-          title: "Der Weg einer Kontaktanfrage",
-          caption: "Vom Formular bis zur ehrlichen Antwort.",
-          nodes: [
-            { label: "Browser", detail: "Das Formular sendet an eine Server Action und funktioniert mit serverseitig erzeugtem HTML." },
-            { label: "Server Action", detail: "Läuft auf Vercel und liest die rohen Formulardaten." },
-            { label: "Zod-Validierung", detail: "Liefert stabile Fehlercodes pro Feld, die im Browser übersetzt werden." },
-            { label: "Spam- und Ratenprüfung", detail: "Ein verstecktes Honeypot-Feld plus Ratenbegrenzung pro Person." },
-            { label: "Zustellung", detail: "Eine Postgres-Zeile und/oder ein Webhook; mindestens einer muss annehmen." },
-            { label: "Antwort", detail: "Erfolg nur, wenn ein Kanal angenommen hat; sonst ein ehrlicher Fehler." },
-          ],
-        },
-      },
-    },
-    {
-      id: "booking",
-      kind: "concept",
-      title: "Terminbuchung für ein kleines Studio",
-      tagline: "Ein Konzept, das Terminabsprachen per Chat durch einen Ablauf ersetzt, der keine Doppelbuchung zulässt.",
-      status: "Designübung, nicht für Kundschaft gebaut",
-      stack: ["Next.js", "PostgreSQL", "Server Actions", "Zod", "Zeitzonenbewusste Terminlogik"],
-      sections: {
-        problem: {
-          body: "Stell dir ein kleines Studio vor, etwa eine Physiotherapie oder ein Fotostudio, das Termine per Nachricht vergibt. Uhrzeiten werden verwechselt, Termine doppelt zugesagt, und jede Änderung kostet ein Gespräch.",
-          points: [],
-        },
-        discovery: {
-          body: "Der Buchungsablauf zeigt, wo es hakt: Zeit wählen, bestätigen, verschieben, absagen. Die meisten Fehler entstehen, weil zwei Personen denselben Termin im Kopf haben.",
-          points: [],
-        },
-        constraints: {
-          body: "Die Regeln, die jede Lösung einhalten muss:",
-          points: [
-            "Buchungen dürfen sich nie überschneiden, auch wenn zwei Personen im selben Moment klicken",
-            "Kundschaft nutzt überwiegend das Smartphone und befindet sich womöglich in einer anderen Zeitzone",
-            "Mitarbeitende müssen Zeit blockieren können, ohne einzelne Buchungen anzufassen",
-            "Personenbezogene Daten bleiben minimal: nur Name und Kontaktdaten",
-          ],
-        },
-        ux: {
-          body: "Erst die Leistung, dann die Zeit. Die Dauer hängt von der Leistung ab, daher zeigt der Kalender nur Termine, die wirklich passen. Tage ohne Verfügbarkeit sind deaktiviert statt versteckt, damit klar ist, warum.",
-          points: [],
-        },
-        architecture: {
-          body: "Die Verfügbarkeit wird auf dem Server aus Arbeitszeiten, bestehenden Buchungen und Abwesenheiten berechnet. Die letzte Regel setzt die Datenbank durch: Eine Exclusion-Constraint auf Zeiträumen macht eine überlappende Buchung unmöglich, egal was die Anwendung tut.",
-          points: [],
-        },
-        implementation: {
-          body: "Die Terminberechnung ist eine reine Funktion: Zeiten, Dauer und bestehende Buchungen hinein, freie Termine heraus. Ohne Framework-Code lässt sich der knifflige Teil leicht testen.",
-          points: [
-            "Zeiten werden in UTC gespeichert, die Zeitzone des Studios liegt daneben",
-            "Verschieben heißt absagen und neu buchen in einer Transaktion",
-            "Abwesenheiten des Teams werden als Buchung eines besonderen Typs modelliert",
-          ],
-        },
-        testing: {
-          body: "Die Tests konzentrieren sich auf Regeln, die bei Fehlern Geld kosten:",
-          points: [
-            "Direkt aufeinanderfolgende Buchungen sind erlaubt, überlappende nicht",
-            "Tage mit Zeitumstellung",
-            "Zwei gleichzeitige Versuche auf einen Termin: genau einer gewinnt",
-            "Buchungen über Mitternacht hinaus",
-          ],
-        },
-        performance: {
-          body: "Da der Server immer nur die Termine eines Tages sendet, bleiben die Datenmengen klein, egal wie weit der Kalender reicht. Die Buchungsseite kann größtenteils serverseitig erzeugt werden, der Kalender ist die einzige interaktive Insel.",
-          points: [],
-        },
-        tradeoffs: {
-          body: "Drei bewusste Kompromisse:",
-          points: [
-            "Constraints in der Datenbank erfordern eine Migration, beseitigen aber eine ganze Klasse von Race-Condition-Fehlern",
-            "Alternativen nach einem Konflikt anzubieten ist aufwendiger als eine Fehlermeldung, erspart der Kundschaft aber Mühe",
-            "Ohne Kundenkonto bleibt die Hürde niedrig, dafür gibt es einen Link zur Buchungsverwaltung per E-Mail",
-          ],
-        },
-        future: {
-          body: "Wohin es weitergehen könnte:",
-          points: ["Kalenderabgleich über einen iCal-Feed", "Erinnerungsnachrichten gegen Nichterscheinen", "Mehrere Teammitglieder mit eigenen Arbeitszeiten"],
-        },
-      },
-      diagrams: {
-        ux: {
-          kind: "tree",
-          title: "Der Buchungsablauf als Entscheidungen",
-          caption: "Was die Kundschaft in jedem Schritt sieht.",
-          root: {
-            label: "Kundschaft öffnet die Buchungsseite",
-            children: [
-              { edge: "Keine Leistung gewählt", node: { label: "Leistungen mit Dauer zeigen; noch kein Kalender" } },
-              {
-                edge: "Leistung gewählt",
-                node: {
-                  label: "Tage mit freien Plätzen zeigen",
-                  children: [
-                    {
-                      edge: "Tag gewählt",
-                      node: {
-                        label: "Nur Termine zeigen, die zur Dauer passen",
-                        children: [
-                          { edge: "Termin inzwischen vergeben", node: { label: "Nächste Alternativen anbieten; Eingaben behalten" } },
-                          { edge: "Termin weiterhin frei", node: { label: "Bestätigen und Zusammenfassung senden" } },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-        architecture: {
-          kind: "flow",
-          title: "Von der Tagesauswahl zur bestätigten Buchung",
-          caption: "Die Datenbank hat das letzte Wort.",
-          nodes: [
-            { label: "Kundschaft wählt einen Tag", detail: "Der Browser sendet nur Leistung und Datum." },
-            { label: "Verfügbarkeitsabfrage", detail: "Der Server leitet freie Termine aus Zeiten, Abwesenheiten und Buchungen ab." },
-            { label: "Terminliste", detail: "Nur der gewählte Tag geht zurück an den Browser." },
-            { label: "Buchungsaktion", detail: "Prüft die Eingaben und fügt dann in einer Transaktion ein." },
-            { label: "Datenbank-Constraint", detail: "Überlappende Zeiträume weist die Datenbank selbst ab." },
-            { label: "Bestätigung", detail: "Erfolg oder alternative Termine, falls der Termin gerade vergeben wurde." },
-          ],
-        },
-      },
-    },
-    {
-      id: "multilingual",
-      kind: "concept",
-      title: "Mehrsprachige Website für eine lokale Pension",
-      tagline: "Ein Konzept, das drei Sprachen korrekt, schnell und auffindbar hält.",
-      status: "Designübung, fiktives Unternehmen",
-      stack: ["Next.js", "TypeScript", "Routing mit Sprachpräfix", "Strukturierte Daten"],
-      sections: {
-        problem: {
-          body: "Eine fiktive Pension begrüßt Gäste, die Thai, Englisch und Deutsch lesen. Die alte Website ist eine englische Seite mit einem Übersetzungs-Plugin darüber: Preise weichen zwischen den Sprachen ab, und Suchmaschinen sehen ein Durcheinander.",
-          points: [],
-        },
-        discovery: {
-          body: "Fakten (Preise, Zeiten, Adresse) und Worte (Beschreibungen, Tonfall) ändern sich unterschiedlich schnell. Sie zu vermischen lässt Übersetzungen auseinanderlaufen.",
-          points: [],
-        },
-        constraints: {
-          body: "Was die Lösung geprägt hat:",
-          points: [
-            "Die Betreibenden sind keine Entwickelnden und ändern Preise oft",
-            "Gäste kommen meist über die Suche und per Smartphone",
-            "Eine fehlende Übersetzung muss auffallen, bevor ein Gast sie sieht",
-            "Die Hostingkosten sollen nahe null bleiben",
-          ],
-        },
-        ux: {
-          body: "Die Sprache gehört zur Adresse, sodass ein Link für alle dasselbe zeigt und Suchmaschinen jede Fassung indexieren können. Ein sichtbarer Sprachwechsel bleibt auf der aktuellen Seite, statt Gäste auf der Startseite abzusetzen.",
-          points: [],
-        },
-        architecture: {
-          body: "Fakten und Worte liegen in getrennten Schichten. Eine typisierte Datendatei besitzt Preise und Zeiten; jede Sprache besitzt nur ihre Formulierungen und verweist auf die Fakten. Der Build erzeugt pro Sprache statische Seiten.",
-          points: [],
-        },
-        implementation: {
-          body: "Die Inhaltsmodule teilen sich einen Typ. Geld, Datum und Öffnungszeiten laufen über sprachsensible Formatierer statt über von Hand getippte Texte.",
-          points: [
-            "hreflang-Alternativen für jede Seite erzeugt",
-            "Strukturierte Daten zum Unternehmen aus der Faktenschicht gebildet",
-            "Ein Sprachwechsel, der die Seite beibehält und die Wahl merkt",
-          ],
-        },
-        testing: {
-          body: "Die Prüfungen zielen darauf, wie mehrsprachige Websites üblicherweise verrotten:",
-          points: [
-            "Ein Test stellt sicher, dass jede Sprache jeden Schlüssel definiert",
-            "Ein Preis erscheint in allen Sprachen identisch, weil er aus einem einzigen Wert gerendert wird",
-            "Ein Linkcheck über die erzeugten Routen",
-          ],
-        },
-        performance: {
-          body: "Alle Seiten werden pro Sprache vorgerendert, der Server leistet also pro Besuch keine Arbeit. Es gibt keine Übersetzung im Browser, Gäste laden nur die Sprache, die sie lesen.",
-          points: [],
-        },
-        tradeoffs: {
-          body: "Die Kompromisse, die man benennen sollte:",
-          points: [
-            "Änderungen per Code sind für die Betreibenden eine Hürde; ein CMS beseitigt sie, bringt aber Kosten und eine zweite Quelle der Wahrheit",
-            "Typisierte Inhalte erzwingen eine Übersetzung für jeden Schlüssel, was neue Funktionen bremst, aber Lücken verhindert",
-            "Drei Sprachen verdreifachen die Textprüfung; eine Prüfung durch Personen mit der jeweiligen Muttersprache gehört in den Plan",
-          ],
-        },
-        future: {
-          body: "Nächste Schritte:",
-          points: ["Ein Headless-CMS mit demselben Schema und Entwurfsvorschau", "Eine Checkliste zur Übersetzungsprüfung pro Release", "Online-Buchung auf Basis des Buchungskonzepts"],
-        },
-      },
-      diagrams: {
         architecture: {
           kind: "layers",
-          title: "Fakten und Worte, getrennt gehalten",
-          caption: "Jede Schicht speist die nächste.",
+          title: "Schichten der Website",
+          caption: "Jede Schicht hat eine Aufgabe und lässt sich einzeln testen.",
           nodes: [
-            { label: "Fakten", detail: "Preise, Zeiten und Adresse: ein Datensatz, sprachneutral." },
-            { label: "Texte pro Sprache", detail: "Beschreibungen und Bezeichnungen auf Thai, Englisch und Deutsch." },
-            { label: "Typcheck", detail: "Der Build schlägt fehl, wenn einer Sprache ein Schlüssel fehlt." },
-            { label: "Statische Seiten", detail: "Eine vorgerenderte Seite pro Sprache und Route." },
-            { label: "Such-Metadaten", detail: "Sprachalternativen und strukturierte Daten aus denselben Fakten." },
-            { label: "CDN", detail: "Als reines HTML vom Edge ausgeliefert." },
+            { label: "Browser", detail: "Serverseitig gerendertes HTML; kleine Client-Inseln für Menü, Palette, Terminal, Formular und Labor-Tools." },
+            { label: "Proxy", detail: "src/proxy.ts leitet URLs ohne Präfix zu einer Sprache weiter." },
+            { label: "App Router", detail: "Statische Seiten unter /[locale], typisierte Wörterbücher in src/content." },
+            { label: "Server Action · Route Handler", detail: "Kontaktanfrage und /api/health." },
+            { label: "Validierung", detail: "Zod-Schema, Honeypot und Rate Limit." },
+            { label: "Zustellung", detail: "E-Mail über Resend, optional PostgreSQL und Webhook." },
+          ],
+        },
+        implementation: {
+          kind: "branch",
+          title: "Der Weg einer Anfrage",
+          caption: "Jeder konfigurierte Kanal wird versucht; Erfolg gibt es nur, wenn einer angenommen hat.",
+          before: [
+            { label: "Formular", detail: "Prüfung im Browser mit demselben Schema" },
+            { label: "Server Action", detail: "Läuft nur auf dem Server" },
+            { label: "Schutz", detail: "Zod · Honeypot · Rate Limit" },
+          ],
+          branches: [
+            { label: "E-Mail (Resend)", detail: "An mich, Reply-To an die absendende Person" },
+            { label: "PostgreSQL", detail: "Optional, falls konfiguriert" },
+            { label: "Webhook", detail: "Optional, falls konfiguriert" },
+          ],
+          after: [{ label: "Typisiertes Ergebnis", detail: "success · invalid · rate-limited · unavailable · error" }],
+        },
+        deployment: {
+          kind: "flow",
+          title: "Vom Commit in die Produktion",
+          caption: "Generierte Artefakte sind eingecheckt, der Build braucht also kein Python.",
+          nodes: [
+            { label: "Erzeugen", detail: "python3 scripts/generate_ai_circuit.py" },
+            { label: "Prüfen", detail: "Lint, Typen, Tests, Build" },
+            { label: "Pushen", detail: "main auf GitHub" },
+            { label: "Bauen", detail: "Vercel baut und rendert vor" },
+            { label: "Veröffentlichen", detail: "Produktions-Deployment" },
+            { label: "Kontrollieren", detail: "/api/health und Live-QA" },
+          ],
+        },
+      },
+    },
+    {
+      id: "redesign",
+      kind: "concept",
+      service: "Website-Redesign",
+      title: "Redesign einer veralteten Website für ein kleines Unternehmen",
+      tagline: "Ein Konzept, wie aus einer langsamen, schwer pflegbaren Website eine klare, schnelle wird – ohne Sichtbarkeit in Suchmaschinen oder bestehende Links zu verlieren.",
+      facts: [
+        { label: "Status", value: "Konzept – kein Auftrag, nicht ausgeliefert" },
+        { label: "Umfang", value: "Audit, Inhaltsstruktur, Designsystem, Migrationsplan" },
+      ],
+      stack: ["Next.js", "TypeScript", "Headless CMS oder Markdown", "Bildoptimierung", "Server Actions", "Redirect-Map"],
+      sections: {
+        problem: {
+          client: "Auf dem Handy findet man weder Leistungen noch Preise, und Änderungen gehen nur mit fremder Hilfe.",
+          body: "Der typische Ausgangspunkt: eine Theme-Website, die Seite für Seite gewachsen ist, Leistungen in langen Texten versteckt, ein Kontaktformular, das nur manchmal funktioniert, und langsame, übergroße Bilder.",
+          points: ["Kein klarer Weg von einer Leistung zur Anfrage", "Doppelte Inhalte, die auseinanderlaufen", "Layouts, die auf kleinen Bildschirmen brechen"],
+        },
+        constraints: {
+          client: "Bestehende Links und die Sichtbarkeit in Suchmaschinen müssen erhalten bleiben, und Inhalte sollen danach selbst pflegbar sein.",
+          body: "Ein Redesign, das eingehende Links oder Rankings verliert, schafft ein neues Problem. Das Budget passt zu einem kleinen Betrieb, vorhandene Fotos werden weiterverwendet, und die Pflege muss ohne Entwicklungskenntnisse gehen.",
+          points: ["Jede alte URL funktioniert weiter oder leitet um", "Inhalte pflegen, ohne Code anzufassen", "Barrierefreiheit als Grundlage, nicht als Extra"],
+        },
+        decision: {
+          client: "Neu aufgebaut wird um das, was Besuchende tun wollen – eine Leistung verstehen und anfragen –, statt das alte Menü zu kopieren.",
+          body: "Zuerst wird der Inhalt neu strukturiert: eine Seite pro Leistung mit gleicher Gliederung (was, für wen, Ablauf, Preisrahmen, Anfrage), danach ein kleines Designsystem, das jede Seite nutzt.",
+          points: ["Inhaltsmodell vor visuellem Design", "Ein Anfrageweg, von jeder Leistung aus erreichbar", "Mobile Layouts gestaltet, nicht nur gestapelt"],
+        },
+        architecture: {
+          client: "Die neue Website ist für Geschwindigkeit vorgerendert, Inhalte werden in einem einfachen Editor gepflegt.",
+          body: "Seiten werden statisch aus einem Headless CMS erzeugt (bei sehr kleinen Websites aus Markdown in Git). Bilder werden beim Build skaliert. Das Anfrageformular sendet an eine Serverfunktion, die prüft und den Betrieb per E-Mail informiert.",
+          points: [],
+        },
+        implementation: {
+          client: "Die Arbeit läuft in klaren Etappen, jede wird abgenommen, bevor die nächste beginnt.",
+          body: "Ein Audit erfasst jede URL samt Zugriffen, danach werden Inhaltsmodell und Design-Tokens festgelegt. Templates entstehen mit echten Inhalten, und vor dem Livegang verbindet eine Redirect-Map jede alte URL mit ihrem neuen Ziel.",
+          points: ["Redirect-Map als Daten gespeichert und automatisch geprüft", "Templates mit echten Inhalten statt Platzhaltertext", "Formularzustellung vor dem Livegang komplett getestet"],
+        },
+        tradeoffs: {
+          client: "Manche Entscheidungen halten den Betrieb einfacher, auch wenn dafür ein paar Extras wegfallen.",
+          body: "Ein Headless CMS ist ein zusätzlicher Dienst; Markdown in Git ist günstiger, aber weniger freundlich für Laien. Ein eigenes Design kostet mehr als ein Theme, erspart aber spätere Kämpfe damit.",
+          points: ["Keine schwere Animation im Hero: Tempo und Klarheit zuerst", "Weniger, bessere Seiten statt alles zu migrieren", "CMS-Wahl pro Auftrag, nicht aus Gewohnheit"],
+        },
+        testing: {
+          client: "Vor dem Livegang werden alle alten Links, Formulare und Seiten automatisch geprüft.",
+          body: "Ein automatischer Test ruft jede URL der Redirect-Map auf und erwartet eine dauerhafte Weiterleitung auf die richtige Seite. Seiten werden in mehreren Bildschirmgrößen geprüft, mit Barrierefreiheits-Audit und Performance-Budget.",
+          points: ["Redirect-Map: jede alte URL löst auf", "Formular: Validierung, Zustellung und Fehlerzustände", "Barrierefreiheit und Kontrast auf jedem Template"],
+        },
+        deployment: {
+          client: "Der Betrieb prüft eine private Vorschau, dann ersetzt die neue Website die alte ohne Ausfallzeit.",
+          body: "Jede Änderung bekommt eine Vorschau-URL zur Abnahme. Der Livegang ist ein DNS-Wechsel auf das neue Deployment, danach werden 404-Logs und die Search Console auf vergessene URLs beobachtet.",
+          points: ["Vorschau-Deployments zur Abnahme", "Rollback mit einem Klick", "404-Monitoring in den ersten Wochen"],
+        },
+        future: {
+          client: "Steht das Fundament, lassen sich Funktionen ohne neues Redesign ergänzen.",
+          body: "Ein sauberes Inhaltsmodell macht spätere Erweiterungen schrittweise möglich.",
+          points: ["Onlinebuchung oder Angebotsanfrage", "Eine zweite Sprache", "Analytics entlang des Anfragewegs auswerten"],
+        },
+      },
+      diagrams: {
+        decision: {
+          kind: "tree",
+          title: "Alte Seite behalten, zusammenführen oder aufgeben?",
+          caption: "Angewendet auf jede URL aus dem Audit.",
+          root: {
+            label: "Hat die Seite Zugriffe oder eingehende Links?",
+            children: [
+              {
+                edge: "Ja",
+                node: {
+                  label: "Ist der Inhalt noch korrekt?",
+                  children: [
+                    { edge: "Ja", node: { label: "Behalten: auf neuem Template, gleiche oder umgeleitete URL" } },
+                    { edge: "Nein", node: { label: "In die passende Leistungsseite übernehmen und umleiten" } },
+                  ],
+                },
+              },
+              { edge: "Nein", node: { label: "Aufgeben: auf die nächste übergeordnete Seite umleiten" } },
+            ],
+          },
+        },
+        implementation: {
+          kind: "flow",
+          title: "Ablauf des Redesigns",
+          caption: "Jede Etappe endet mit etwas, das der Betrieb prüfen kann.",
+          nodes: [
+            { label: "Audit", detail: "URLs, Zugriffe, Inhalte, Probleme" },
+            { label: "Inhaltsmodell", detail: "Seitentypen und Felder" },
+            { label: "Designsystem", detail: "Schrift, Farbe, Komponenten" },
+            { label: "Templates", detail: "Mit echten Inhalten gebaut" },
+            { label: "Migration", detail: "Inhalte und Redirect-Map" },
+            { label: "Livegang", detail: "DNS-Wechsel und Monitoring" },
+          ],
+        },
+      },
+    },
+    {
+      id: "ai-feature",
+      kind: "concept",
+      service: "Feature-Entwicklung · KI-Integration",
+      title: "KI-Antwortentwürfe für ein bestehendes Support-Tool",
+      tagline: "Ein Konzept, wie KI in ein Produkt kommt, das schon im Einsatz ist: Entwürfe statt Autopilot, und jede Nachricht gibt ein Mensch frei.",
+      facts: [
+        { label: "Status", value: "Konzept – kein Auftrag, nicht ausgeliefert" },
+        { label: "Umfang", value: "Feature-Design, KI-Architektur, Rollout-Plan" },
+      ],
+      stack: ["React", "Node.js-API", "PostgreSQL", "Python-Worker", "Embeddings · RAG", "Cloud- und lokale Modelle", "Feature Flags"],
+      sections: {
+        problem: {
+          client: "Ein Support-Team beantwortet ständig dieselben Fragen; KI könnte Antworten vorschreiben, aber das bestehende Tool muss weiterlaufen.",
+          body: "Das Produkt ist ein etablierter Helpdesk mit React-Frontend, Node.js-API und PostgreSQL. Das Team tippt ähnliche Antworten aus einer Wissensdatenbank neu, und die Qualität hängt davon ab, wer gerade Dienst hat.",
+          points: ["Wiederkehrende Antworten kosten die meiste Zeit", "Die Wissensdatenbank existiert, ist aber schwer durchsuchbar", "Ein Neubau kommt nicht infrage"],
+        },
+        constraints: {
+          client: "Kundendaten müssen geschützt, Kosten planbar und das Feature leicht abschaltbar sein.",
+          body: "Manche Kundenverträge verlangen, dass ihre Daten die eigenen Server nie verlassen. Modellaufrufe kosten pro Anfrage Geld, und das Team braucht einen Notschalter, falls etwas schiefgeht.",
+          points: ["Datenschutzregeln pro Mandant", "Budgetgrenzen für Modellnutzung", "Kein Einfluss auf den bestehenden Ablauf, wenn deaktiviert"],
+        },
+        decision: {
+          client: "Die KI entwirft, ein Mensch entscheidet. Nichts wird ohne Freigabe verschickt.",
+          body: "Das Feature schlägt eine Antwort samt verwendeter Quellen aus der Wissensdatenbank vor; das Team bearbeitet und versendet sie. Die Ausgabe ist strukturiert (Entwurf, Quellen, Hinweise zur Sicherheit), damit die Oberfläche zeigen kann, woher jede Aussage stammt.",
+          points: ["Entwerfen, nie automatisch senden", "Quellen bei jedem Vorschlag sichtbar", "Rollout per Feature Flag pro Team"],
+        },
+        architecture: {
+          client: "Ein Router schickt jede Anfrage an ein Cloud-Modell oder ein privates lokales Modell – je nach Datenschutzregeln der Kundschaft.",
+          body: "Ein Context Builder holt passende Artikel per Embeddings-Suche. Ein Model Router wählt für Standard-Mandanten ein Cloud-Modell (etwa ChatGPT oder Claude über deren APIs) und für datenschutzsensible ein selbst gehostetes Modell. Jeder Entwurf wird validiert, bevor er die Oberfläche erreicht.",
+          points: [],
+        },
+        implementation: {
+          client: "Das Feature fügt sich als Vorschlagsbereich ins bestehende Produkt ein; sonst ändert sich für das Team nichts.",
+          body: "Ein Python-Worker überführt die Wissensdatenbank in einen Embeddings-Index. Ein neuer Endpunkt in der bestehenden Node.js-API baut den Kontext, ruft den Router auf und validiert die strukturierte Antwort. Die React-App bekommt einen Vorschlagsbereich neben dem Antwortfeld; ein Audit-Log hält jeden Entwurf und jede Änderung fest.",
+          points: ["Strukturierte Ausgabe gegen ein Schema validiert", "Prüfung auf personenbezogene Daten vor jedem Cloud-Aufruf", "Audit-Log für Entwürfe, Änderungen und Freigaben"],
+        },
+        tradeoffs: {
+          client: "Private lokale Modelle schützen Daten, schreiben aber eventuell etwas schwächere Entwürfe; das wird pro Kunde entschieden.",
+          body: "Lokale Modelle tauschen etwas Qualität und Tempo gegen Datenhoheit. Retrieval hält Antworten faktennah, braucht aber einen aktuellen Index. Budgetgrenzen halten Kosten planbar, dafür fällt gelegentlich ein Entwurf aus.",
+          points: ["Qualität gegen Datenschutz, pro Mandant gewählt", "Aktualität des Index gegen Aufwand der Aufnahme", "Lieber kein Entwurf als ein überschrittenes Budget"],
+        },
+        testing: {
+          client: "Entwürfe werden an echten früheren Fragen geprüft, bevor ein Team sie sieht.",
+          body: "Ein Evaluierungsset aus anonymisierten alten Tickets vergleicht Entwürfe mit den tatsächlich gesendeten Antworten. Schema- und Sicherheitsprüfungen laufen bei jeder Antwort, und Fehlerpfade fallen auf den normalen Ablauf zurück.",
+          points: ["Evaluierungsset aus anonymisierter Historie", "Prüfung von Schema, personenbezogenen Daten und Länge", "Sanfter Rückfall: kein Entwurf, keine Störung"],
+        },
+        deployment: {
+          client: "Erst unsichtbar, dann freiwillig, dann Standard – und jederzeit sofort abschaltbar.",
+          body: "Zuerst Schattenbetrieb: Entwürfe entstehen und werden protokolliert, aber nicht angezeigt. Dann freiwillig für ein Team, dann standardmäßig an. Das Feature Flag ist zugleich der Notschalter.",
+          points: ["Schattenbetrieb → freiwillig → Standard", "Feature Flags pro Team", "Notschalter ohne neues Deployment"],
+        },
+        future: {
+          client: "Dieselbe Pipeline kann später Tickets taggen, zusammenfassen und zuweisen.",
+          body: "Sind Retrieval, Routing und Validierung vorhanden, nutzen verwandte Features die Pipeline mit.",
+          points: ["Automatisches Taggen und Zuweisen", "Zusammenfassungen für Übergaben", "Lernen aus den Änderungen des Teams"],
+        },
+      },
+      diagrams: {
+        architecture: {
+          kind: "branch",
+          title: "Entwurfs-Pipeline",
+          caption: "Der Router wählt das Modell pro Mandant; zwischen Modell und Kundschaft stehen Validierung und ein Mensch.",
+          before: [
+            { label: "Ticket", detail: "Eingehende Frage" },
+            { label: "Kontext", detail: "Embeddings-Suche in der Wissensdatenbank" },
+            { label: "Router", detail: "Datenschutz · Budget · Verfügbarkeit" },
+          ],
+          branches: [
+            { label: "Cloud-Modell", detail: "ChatGPT oder Claude per API" },
+            { label: "Lokales Modell", detail: "Selbst gehostet, Daten bleiben im Haus" },
+          ],
+          after: [
+            { label: "Validierung", detail: "Schema · personenbezogene Daten · Länge" },
+            { label: "Freigabe", detail: "Das Team bearbeitet und sendet" },
+          ],
+        },
+        deployment: {
+          kind: "flow",
+          title: "Rollout",
+          caption: "Jeder Schritt lässt sich per Flag zurücknehmen.",
+          nodes: [
+            { label: "Schatten", detail: "Entwürfe protokolliert, nicht angezeigt" },
+            { label: "Auswerten", detail: "Mit gesendeten Antworten vergleichen" },
+            { label: "Freiwillig", detail: "Ein Team, Feedback-Schleife" },
+            { label: "Standard", detail: "Für alle Teams an" },
           ],
         },
       },
     },
   ],
-  cta: { label: "Projekt besprechen", title: "Soll dieses Denken auch in dein Projekt fließen?" },
+  cta: {
+    label: "Projekt besprechen",
+    title: "Redesign, neues Feature oder KI-Workflow?",
+    body: "Beschreib kurz, wo du stehst und wo du hinwillst. Du bekommst eine klare Antwort zu Umfang, Vorgehen und nächsten Schritten.",
+  },
 };
 
 const th: CaseStudiesContent = {
   meta: {
     title: "กรณีศึกษา",
-    description: "กรณีศึกษาเชิงลึกสามเรื่องเกี่ยวกับการตัดสินใจ ข้อจำกัด และข้อแลกเปลี่ยนเบื้องหลังงานที่สร้าง ได้แก่พอร์ตโฟลิโอนี้และโปรเจกต์แนวคิดอีกสองเรื่อง ระบุไว้ชัดเจน",
+    description:
+      "เบื้องหลังการคิดโปรเจกต์ตั้งแต่ปัญหาจนถึง Deploy: สถาปัตยกรรมจริงของพอร์ตโฟลิโอนี้ พร้อมโปรเจกต์แนวคิดด้าน Website Redesign และการเพิ่มฟีเจอร์ AI ซึ่งระบุไว้ชัดเจน",
   },
   hero: {
     eyebrow: "กรณีศึกษา",
-    titleLead: "มากกว่าแค่ภาพที่เห็น:",
-    titleEmph: "เบื้องหลังวิธีคิดของงาน",
-    lede: "สามเรื่องเล่าเกี่ยวกับการตัดสินใจ ข้อจำกัด และข้อแลกเปลี่ยนเบื้องหลังงานที่สร้าง เรื่องหนึ่งคือเว็บไซต์นี้เอง อีกสองเรื่องเป็นโปรเจกต์แนวคิด และระบุไว้ตามนั้น",
-    complexityLabel: "ความซับซ้อน",
+    title: "ทุกการตัดสินใจ",
+    titleEmph: "มีที่มาที่ไป",
+    lede: "แต่ละกรณีเล่าตั้งแต่ปัญหาจนถึง Deploy ทุกบทเริ่มด้วยสรุปหนึ่งประโยคสำหรับลูกค้า ตามด้วยรายละเอียดเชิงเทคนิคสำหรับนักพัฒนา",
   },
   labels: {
-    index: "กรณีศึกษา",
+    documents: "เอกสาร",
     kind: { demo: "งานสาธิตทางเทคนิค", concept: "โปรเจกต์แนวคิด" },
     kindNote: {
-      demo: "ซอฟต์แวร์ที่ทำงานจริง คือเว็บไซต์ที่กำลังอ่านอยู่นี้",
-      concept: "แบบฝึกด้านการออกแบบ ไม่มีลูกค้าจริงและไม่ได้ส่งมอบงานใด ๆ",
+      demo: "ซอฟต์แวร์ที่ใช้งานจริง คือเว็บไซต์ที่คุณกำลังอ่านอยู่",
+      concept: "แบบฝึกการออกแบบ ไม่มีลูกค้าจริงและไม่ได้ส่งมอบงาน",
     },
-    status: "สถานะ",
-    stack: "สแตก",
+    service: "บริการ",
+    stack: "Stack",
     steps: {
-      problem: "โจทย์",
-      discovery: "การสำรวจ",
+      problem: "ปัญหา",
       constraints: "ข้อจำกัด",
-      ux: "การตัดสินใจด้าน UX",
+      decision: "การตัดสินใจด้านการออกแบบ",
       architecture: "สถาปัตยกรรม",
-      implementation: "การลงมือทำ",
+      implementation: "การพัฒนา",
+      tradeoffs: "สิ่งที่ต้องแลก",
       testing: "การทดสอบ",
-      performance: "ประสิทธิภาพ",
-      tradeoffs: "ข้อแลกเปลี่ยน",
-      future: "สิ่งที่ปรับปรุงต่อ",
+      deployment: "Deployment",
+      future: "สิ่งที่จะพัฒนาต่อ",
     },
     diagram: "แผนภาพ",
+    forClients: "สรุปสั้น ๆ",
+    technical: "รายละเอียดทางเทคนิค",
+    reading: { label: "โหมดการอ่าน", full: "รายละเอียดทั้งหมด", overview: "ภาพรวมสำหรับลูกค้า" },
+    switcher: "เลือกกรณีศึกษา",
+    chapters: "บท",
   },
   cases: [
     {
       id: "portfolio",
       kind: "demo",
-      title: "พอร์ตโฟลิโอนี้ ในฐานะผลิตภัณฑ์",
-      tagline: "เว็บไซต์สามภาษาที่มีแบ็กเอนด์จริง สถาปัตยกรรมเป็นอย่างไรและทำไมจึงออกแบบแบบนี้",
-      status: "ใช้งานจริง: เว็บไซต์ที่กำลังอ่านอยู่นี้",
-      stack: ["Next.js App Router", "TypeScript (strict)", "Tailwind CSS", "Zod", "Neon Postgres", "Vercel"],
+      service: "Full-stack ตั้งแต่ไอเดียจนขึ้นระบบจริง",
+      title: "พอร์ตโฟลิโอนี้: เว็บไซต์หลายภาษาที่มี Backend จริง",
+      tagline: "สิบหน้าในสามภาษา ระบบติดต่อที่ส่งอีเมลจริง และแผนผังวงจรที่สร้างด้วย Python ทั้งหมด Deploy บน Vercel",
+      facts: [
+        { label: "สถานะ", value: "ใช้งานจริง คือเว็บที่คุณกำลังอ่าน" },
+        { label: "ขอบเขต", value: "ออกแบบ Frontend Backend เนื้อหา EN/DE/TH และ Deploy" },
+      ],
+      stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          body: "พอร์ตโฟลิโอมีหน้าที่หลักข้อเดียว คือทำให้คนแปลกหน้ามั่นใจพอที่จะติดต่อมา และยังต้องแสดงฝีมือทางวิศวกรรมด้วย ซึ่งหน้าเว็บที่มีแต่ภาพหน้าจอแสดงได้น้อยมาก",
-          points: [],
-        },
-        discovery: {
-          body: "เริ่มจากรายการสิ่งที่ลูกค้าตรวจดูจริง ๆ อ่านได้ในภาษาของตัวเองไหม ใช้บนมือถือได้ดีไหม แบบฟอร์มติดต่อส่งถึงผู้รับจริงไหม และดูโค้ดเบื้องหลังได้หรือเปล่า",
-          points: [],
+          client: "พอร์ตโฟลิโอควรพิสูจน์ฝีมือได้จริง ไม่ใช่แค่บรรยาย และต้องอ่านได้ในภาษาที่ลูกค้าใช้",
+          body: "พอร์ตโฟลิโอนักพัฒนาส่วนใหญ่เป็นแค่รายการโลโก้และคำอ้าง เว็บนี้ต้องให้ผู้เข้าชมตรวจฝีมือได้เอง ทั้งฟอร์มจริง โค้ดฝั่งเซิร์ฟเวอร์จริง และการ Deploy จริง อ่านได้ทั้งภาษาอังกฤษ เยอรมัน และไทย",
+          points: ["แสดงซอฟต์แวร์ที่ทำงานจริง ไม่ใช่ภาพหน้าจอ", "บอกบริการให้ชัดตั้งแต่หน้าจอแรก", "ทุกข้อความตรวจสอบได้ เพราะซอร์สโค้ดเปิดสาธารณะ"],
         },
         constraints: {
-          body: "เงื่อนไขที่กำหนดไว้ตั้งแต่ต้น:",
+          client: "สามภาษา ไม่ใช้ CMS แบบเสียเงิน และต้องเร็วและดูแลได้ด้วยคนเดียว",
+          body: "ดูแลทั้งหมดโดยนักพัฒนาคนเดียว สถาปัตยกรรมจึงเน้นชิ้นส่วนน้อยมากกว่าฟีเจอร์เยอะ เนื้อหาอยู่ใน Repository ไม่มีบริการแปลขณะรันไทม์ และไม่ต้องใช้ฐานข้อมูลเพื่อแสดงหน้าเว็บ",
           points: [
-            "รองรับสามภาษา (อังกฤษ เยอรมัน ไทย) โดยไม่พึ่งบริการแปลภาษาขณะใช้งาน",
-            "แบบฟอร์มติดต่อต้องไม่แจ้งว่าสำเร็จ หากยังไม่มีช่องทางใดรับข้อความไว้",
-            "ไม่มีความลับในโค้ดฝั่งไคลเอนต์หรือในรีโพซิทอรี",
-            "ใช้ JavaScript ฝั่งไคลเอนต์ให้น้อยที่สุด หน้าส่วนใหญ่ควรเป็น HTML ที่สร้างไว้ล่วงหน้า",
+            "คุณภาพเท่ากันทั้งสามภาษา รวมถึงระยะบรรทัดและการตัดคำภาษาไทย",
+            "ไม่มี Secret ในเบราว์เซอร์ การส่งข้อความทำฝั่งเซิร์ฟเวอร์เท่านั้น",
+            "หน้าเว็บยังแสดงได้แม้ GitHub API หรือฐานข้อมูลล่ม",
           ],
         },
-        ux: {
-          body: "ทุกหน้าเข้าถึงได้ผ่าน URL ที่คาดเดาได้และมีรหัสภาษานำหน้า ภาษาจะตามผู้เข้าชม ไม่ใช่ให้ผู้เข้าชมต้องตามภาษา ลำดับการตัดสินใจถูกกำหนดไว้อย่างตั้งใจ",
-          points: [],
+        decision: {
+          client: "ทุกภาษามีที่อยู่ของตัวเอง ลิงก์จึงเปิดในภาษาที่ถูกต้องเสมอ",
+          body: "ภาษาอยู่ใน Path (/en, /de, /th) มี Proxy ขนาดเล็กคอยพา URL ที่ไม่มี Prefix ไปยังภาษาที่เคยเลือกไว้หรือภาษาของเบราว์เซอร์ และเมื่อเปลี่ยนภาษาจะยังอยู่หน้าเดิม",
+          points: [
+            "Dictionary แบบมีชนิดข้อมูล ถ้าขาดข้อความภาษาเยอรมันหรือไทย Type check จะไม่ผ่าน",
+            "ใช้ Server Components เป็นค่าเริ่มต้น โค้ดฝั่ง Client เฉพาะส่วนที่โต้ตอบได้",
+            "ใช้ Design Token ชุดเดียว แต่ละหน้ามีการจัดวางของตัวเอง",
+          ],
         },
         architecture: {
-          body: "เว็บไซต์เน้นฝั่งเซิร์ฟเวอร์เป็นหลัก หน้าต่าง ๆ เป็น React Server Components ที่สร้างตอนบิลด์แยกตามภาษา และมีเพียงส่วนที่โต้ตอบได้เท่านั้นที่ส่ง JavaScript ไปยังเบราว์เซอร์ แบบฟอร์มติดต่อคือเส้นทางคำขอจริงเพียงเส้นเดียว",
+          client: "หน้าเว็บถูกสร้างไว้ล่วงหน้าและส่งจาก Edge มีเพียงฟอร์มติดต่อกับการเช็กสถานะที่ทำงานบนเซิร์ฟเวอร์",
+          body: "Next.js App Router เรนเดอร์ทุกหน้าแบบ Static ตอน Build ฟอร์มติดต่อส่งไปที่ Server Action ส่วน /api/health เป็น Route Handler ที่รายงานสถานะซึ่งไม่ใช่ข้อมูลลับ",
           points: [],
         },
         implementation: {
-          body: "พจนานุกรมภาษาเป็นโมดูล TypeScript ที่กำหนดชนิดข้อมูลไว้ ชนิดเดียวกำหนดโครงสร้าง ส่วนฉบับเยอรมันและไทยต้องตรงตามนั้น หากขาดคำแปลจะไม่ผ่านการตรวจชนิดข้อมูล แทนที่จะหลุดขึ้นระบบจริง",
+          client: "ข้อความที่ส่งมาจะถูกตรวจสอบ กันสแปม และส่งเป็นอีเมล หากส่งไม่ได้ ฟอร์มจะบอกตรง ๆ",
+          body: "Server Action ตรวจข้อมูลด้วย Zod Schema ที่คืนค่า Error เป็นรหัสคงที่และแปลในเบราว์เซอร์ ก่อนส่งจะผ่าน Honeypot และ Rate Limit ต่อผู้ใช้ จากนั้นบริการส่งข้อความจะส่งไปทุกช่องทางที่ตั้งค่าไว้ ได้แก่ อีเมลผ่าน Resend ที่ตั้ง Reply-To เป็นผู้ส่ง และ PostgreSQL หรือ Webhook หากเปิดใช้",
           points: [
-            "พร็อกซีขนาดเล็กจัดการการเปลี่ยนเส้นทางตามภาษา",
-            "กฎการตรวจสอบข้อมูลอยู่ในสคีมา Zod ตัวเดียว ใช้ร่วมกันทั้งตรรกะฝั่งเซิร์ฟเวอร์และการทดสอบ",
-            "การส่งข้อความเป็นชั้นบาง ๆ ที่เสียบช่องทางต่าง ๆ ได้ ฐานข้อมูลจึงเป็นทางเลือก",
-          ],
-        },
-        testing: {
-          body: "ตรรกะที่อาจพังเงียบ ๆ มีการทดสอบอัตโนมัติครอบคลุม ได้แก่ การจับคู่ภาษา การสร้างพาธ สคีมาตรวจสอบข้อมูล ตัวจำกัดอัตรา และพฤติกรรมการส่งข้อความ",
-          points: [
-            "เมื่อไม่ได้ตั้งค่าช่องทางส่งข้อความ ผลลัพธ์คือ “ใช้งานไม่ได้” ไม่ใช่ความสำเร็จปลอม",
-            "ตรวจข้อความส่วนกลางว่าไม่ขาดป้ายกำกับในทุกภาษา",
-            "ลินต์ ตรวจชนิดข้อมูล ทดสอบ และบิลด์จริง รันพร้อมกันผ่านคำสั่งตรวจสอบเดียว",
-          ],
-        },
-        performance: {
-          body: "สิ่งที่เป็นจริงโดยโครงสร้าง ไม่ใช่จากการวัดผล:",
-          points: [
-            "ทุกหน้าในทุกภาษาถูกสร้างเป็น HTML แบบสถิตไว้ล่วงหน้าตอนบิลด์",
-            "ฟอนต์ถูกโฮสต์เองโดยเฟรมเวิร์ก ไม่มีคำขอไปยังบริการฟอนต์ของบุคคลที่สาม",
-            "JavaScript ฝั่งไคลเอนต์จำกัดอยู่ที่เมนู ตัวสลับภาษา พาเลตคำสั่ง และส่วนที่โต้ตอบได้",
-            "ไม่มีคำขอแปลภาษาขณะใช้งาน",
+            "นับว่าสำเร็จเมื่อมีอย่างน้อยหนึ่งช่องทางรับข้อความได้",
+            "เนื้อหาอีเมลถูก Escape HTML และตัดการขึ้นบรรทัดใหม่ออกจากหัวเรื่อง",
+            "วงจร AI สร้างด้วยสคริปต์ Python แล้ว Commit เป็น JSON และ SVG ระบบจริงจึงไม่ต้องรัน Python",
           ],
         },
         tradeoffs: {
-          body: "ทุกข้อเป็นการเลือก ไม่ใช่เรื่องบังเอิญ:",
+          client: "บางการตัดสินใจแลกความสะดวกกับความเสถียรและค่าใช้จ่ายที่ต่ำ",
+          body: "เลือกความเรียบง่ายเมื่อข้อเสียยอมรับได้สำหรับพอร์ตโฟลิโอ และบันทึกข้อจำกัดทุกข้อไว้อย่างเปิดเผย",
           points: [
-            "ข้อความอยู่ในโค้ด การแก้ไขต้องคอมมิต แลกกับความปลอดภัยของชนิดข้อมูลและไม่ต้องดูแล CMS",
-            "ตัวจำกัดอัตราในหน่วยความจำทำงานแยกตามอินสแตนซ์ของเซิร์ฟเวอร์ ช่วยชะลอการส่งรัว ๆ แต่ไม่ใช่การรับประกันระดับทั้งระบบ",
-            "ฐานข้อมูลเป็นทางเลือก หากไม่มีจะใช้เว็บฮุก และแจ้งตรง ๆ เมื่อไม่มีทั้งสองอย่าง",
+            "Rate Limit ในหน่วยความจำมีผลต่อเซิร์ฟเวอร์แต่ละตัว ใช้ชะลอการยิงถี่ ๆ แต่ไม่ใช่การรับประกันทั้งระบบ",
+            "เนื้อหาอยู่ในโค้ด การแก้ไขจึงผ่าน Git แทน CMS",
+            "อีเมลยืนยันถึงผู้เข้าชมต้องใช้โดเมนผู้ส่งที่ยืนยันแล้ว ระหว่างนี้แจ้งเตือนเฉพาะเจ้าของเว็บ",
           ],
         },
+        testing: {
+          client: "ทุกอย่างผ่านการตรวจอัตโนมัติก่อนขึ้นระบบจริง",
+          body: "Unit test ครอบคลุมการจัดการภาษา การตรวจข้อมูล Rate Limit เทมเพลตอีเมล การส่งข้อความ เครื่องมือใน Lab Terminal และวงจรที่สร้างขึ้น สคริปต์ Playwright ถ่ายภาพทุกหน้าในทุกภาษาที่สี่ขนาดหน้าจอ แจ้ง Console Error และการล้นแนวนอน และมีสคริปต์ทดสอบการใช้งานจริง",
+          points: ["Type check, Lint, Test และ Production Build ก่อนทุก Release", "ตรวจ Accessibility ด้วย axe ครบทุกภาษา"],
+        },
+        deployment: {
+          client: "Push ขึ้น main ก็เผยแพร่เวอร์ชันใหม่ได้ทันที และย้อนกลับได้ทุกเวอร์ชัน",
+          body: "Repository บน GitHub เชื่อมกับ Vercel ตัวแปรฝั่งเซิร์ฟเวอร์อย่าง Resend Key ผู้รับ และผู้ส่ง ตั้งไว้ใน Vercel และไม่เคยถูก Commit ส่วน /api/health แสดง Commit ที่ Deploy อยู่และช่องทางส่งข้อความที่เปิดใช้",
+          points: [],
+        },
         future: {
-          body: "หากเว็บไซต์เติบโตขึ้น:",
-          points: [
-            "ย้ายตัวจำกัดอัตราไปไว้ที่พื้นที่เก็บข้อมูลร่วม",
-            "เพิ่มหน้ากล่องข้อความสำหรับดูรายการที่บันทึกไว้",
-            "เพิ่มชั้น CMS แบบเลือกได้ โดยคงโครงสร้างเนื้อหาที่กำหนดชนิดไว้เหมือนเดิม",
-          ],
+          client: "ขั้นต่อไป: อีเมลยืนยันถึงผู้เข้าชม และกรณีศึกษาจากงานลูกค้าจริงเมื่อเปิดเผยได้",
+          body: "สิ่งที่เหลือเป็นเรื่องการดูแลระบบ ไม่ใช่สถาปัตยกรรม",
+          points: ["โดเมนผู้ส่งที่ยืนยันแล้วสำหรับอีเมลยืนยัน", "ที่เก็บข้อมูลกลางสำหรับ Rate Limit ข้ามเซิร์ฟเวอร์", "เพิ่มงานลูกค้าจริงเมื่อเปิดเผยได้"],
         },
       },
       diagrams: {
-        ux: {
+        decision: {
           kind: "tree",
-          title: "ผู้เข้าชมจะเห็นภาษาใด",
-          caption: "ลำดับการตัดสินใจในพร็อกซีของเว็บไซต์นี้",
+          title: "ผู้เข้าชมจะเห็นภาษาไหน",
+          caption: "ตัดสินครั้งเดียวที่ Proxy ก่อนหน้าเว็บจะเรนเดอร์",
           root: {
-            label: "คำขอที่ไม่มีรหัสภาษา เช่น /about",
+            label: "URL ขึ้นต้นด้วย /en, /de หรือ /th หรือไม่",
             children: [
-              { edge: "มีรหัสภาษา (/de/…)", node: { label: "แสดงภาษานั้น" } },
+              { edge: "ใช่", node: { label: "แสดงภาษานั้น" } },
               {
-                edge: "ไม่มีรหัสภาษา",
+                edge: "ไม่",
                 node: {
-                  label: "มีคุกกี้ภาษาที่บันทึกไว้หรือไม่",
+                  label: "เคยเลือกภาษาไว้จากการเข้าชมครั้งก่อนหรือไม่",
                   children: [
-                    { edge: "มี", node: { label: "เปลี่ยนเส้นทางไปภาษาที่บันทึกไว้" } },
-                    {
-                      edge: "ไม่มี",
-                      node: {
-                        label: "อ่านส่วนหัว Accept-Language",
-                        children: [
-                          { edge: "พบภาษาที่รองรับ", node: { label: "เปลี่ยนเส้นทางไปภาษานั้น" } },
-                          { edge: "ไม่ตรงกับภาษาใดเลย", node: { label: "เปลี่ยนเส้นทางไปภาษาอังกฤษ" } },
-                        ],
-                      },
-                    },
+                    { edge: "ใช่", node: { label: "พาไปยังภาษาที่เคยเลือก" } },
+                    { edge: "ไม่", node: { label: "พาไปยังภาษาที่ตรงกับเบราว์เซอร์ที่สุด ถ้าไม่มีใช้ภาษาอังกฤษ" } },
                   ],
                 },
               },
             ],
           },
         },
-        architecture: {
-          kind: "flow",
-          title: "เส้นทางของคำขอติดต่อ",
-          caption: "จากแบบฟอร์มสู่คำตอบที่ตรงไปตรงมา",
-          nodes: [
-            { label: "เบราว์เซอร์", detail: "แบบฟอร์มส่งไปยัง Server Action และทำงานได้กับ HTML ที่เรนเดอร์จากเซิร์ฟเวอร์" },
-            { label: "Server Action", detail: "ทำงานบน Vercel และอ่านข้อมูลดิบจากแบบฟอร์ม" },
-            { label: "ตรวจสอบด้วย Zod", detail: "ส่งรหัสข้อผิดพลาดที่คงที่ต่อแต่ละช่อง แล้วแปลเป็นภาษาในเบราว์เซอร์" },
-            { label: "ตรวจสแปมและอัตราการส่ง", detail: "ช่องล่อบอตที่ซ่อนอยู่ และตัวจำกัดอัตราต่อผู้เข้าชม" },
-            { label: "การส่งข้อความ", detail: "แถวในฐานข้อมูล Postgres และ/หรือเว็บฮุก ต้องมีอย่างน้อยหนึ่งช่องทางที่รับไว้" },
-            { label: "การตอบกลับ", detail: "แจ้งสำเร็จเมื่อมีช่องทางรับไว้แล้วเท่านั้น ไม่เช่นนั้นแจ้งข้อผิดพลาดตามจริง" },
-          ],
-        },
-      },
-    },
-    {
-      id: "booking",
-      kind: "concept",
-      title: "ระบบนัดหมายสำหรับสตูดิโอขนาดเล็ก",
-      tagline: "แนวคิดที่แทนการนัดผ่านแชตด้วยขั้นตอนที่จองซ้ำไม่ได้",
-      status: "แบบฝึกการออกแบบ ไม่ได้สร้างให้ลูกค้ารายใด",
-      stack: ["Next.js", "PostgreSQL", "Server Actions", "Zod", "การจัดตารางที่รองรับเขตเวลา"],
-      sections: {
-        problem: {
-          body: "ลองนึกถึงสตูดิโอเล็ก ๆ เช่น คลินิกกายภาพบำบัดหรือช่างภาพ ที่รับนัดผ่านข้อความ เวลาสับสน คิวถูกรับปากซ้ำ และการเปลี่ยนแต่ละครั้งต้องเสียเวลาคุยกันใหม่",
-          points: [],
-        },
-        discovery: {
-          body: "เมื่อไล่ดูวงจรการนัดหมาย จะเห็นจุดที่พัง ได้แก่ เลือกเวลา ยืนยัน เลื่อน และยกเลิก ข้อผิดพลาดส่วนใหญ่เกิดจากสองคนจำคิวเดียวกันไว้ในหัว",
-          points: [],
-        },
-        constraints: {
-          body: "กฎที่ทุกแนวทางต้องรักษาไว้:",
-          points: [
-            "การจองต้องไม่ทับซ้อนกัน แม้สองคนกดพร้อมกันในเสี้ยววินาทีเดียวกัน",
-            "ลูกค้าส่วนใหญ่ใช้มือถือ และอาจอยู่คนละเขตเวลา",
-            "ทีมงานต้องบล็อกเวลาว่างได้โดยไม่ต้องแตะการจองทีละรายการ",
-            "เก็บข้อมูลส่วนบุคคลให้น้อยที่สุด เฉพาะชื่อและช่องทางติดต่อ",
-          ],
-        },
-        ux: {
-          body: "เลือกบริการก่อน แล้วค่อยเลือกเวลา เพราะระยะเวลาขึ้นกับบริการ ปฏิทินจึงแสดงเฉพาะช่วงเวลาที่ใช้ได้จริง วันที่ไม่มีคิวว่างจะถูกปิดไว้แทนที่จะซ่อน ลูกค้าจะได้เข้าใจเหตุผล",
-          points: [],
-        },
-        architecture: {
-          body: "ความพร้อมให้บริการคำนวณบนเซิร์ฟเวอร์จากเวลาทำงาน การจองที่มีอยู่ และเวลาหยุด กฎข้อสุดท้ายให้ฐานข้อมูลบังคับใช้ ข้อจำกัดแบบ exclusion บนช่วงเวลาทำให้การจองที่ทับซ้อนเป็นไปไม่ได้ ไม่ว่าแอปพลิเคชันจะทำอะไร",
-          points: [],
-        },
-        implementation: {
-          body: "การสร้างช่วงเวลาว่างเป็นฟังก์ชันบริสุทธิ์ ใส่เวลาทำการ ระยะเวลา และการจองที่มีอยู่เข้าไป แล้วได้ช่วงเวลาว่างออกมา การไม่ผูกกับโค้ดของเฟรมเวิร์กทำให้ส่วนที่ยากทดสอบได้ง่าย",
-          points: [
-            "เก็บเวลาเป็น UTC และเก็บเขตเวลาของสตูดิโอไว้คู่กัน",
-            "การเลื่อนนัดคือยกเลิกแล้วจองใหม่ภายในทรานแซกชันเดียว",
-            "เวลาหยุดของทีมงานถูกจำลองเป็นการจองชนิดพิเศษ",
-          ],
-        },
-        testing: {
-          body: "การทดสอบเน้นกฎที่ผิดแล้วเสียหายจริง:",
-          points: [
-            "การจองที่ต่อเนื่องกันพอดีทำได้ แต่ทับซ้อนไม่ได้",
-            "วันที่มีการปรับเวลานาฬิกา",
-            "สองคำขอพร้อมกันต่อคิวเดียว สำเร็จได้เพียงหนึ่งราย",
-            "การจองที่คร่อมเที่ยงคืน",
-          ],
-        },
-        performance: {
-          body: "เซิร์ฟเวอร์ส่งช่วงเวลาทีละหนึ่งวัน ข้อมูลที่ส่งจึงเล็กเสมอ ไม่ว่าปฏิทินจะไกลแค่ไหน หน้าจองเรนเดอร์จากเซิร์ฟเวอร์ได้เป็นส่วนใหญ่ โดยปฏิทินเป็นส่วนโต้ตอบเพียงส่วนเดียว",
-          points: [],
-        },
-        tradeoffs: {
-          body: "การยอมแลกสามข้อที่ตั้งใจ:",
-          points: [
-            "ข้อจำกัดระดับฐานข้อมูลเพิ่มขั้นตอนการย้ายโครงสร้าง แต่ขจัดบั๊กการแย่งคิวไปทั้งกลุ่ม",
-            "เสนอทางเลือกหลังเกิดการชนกันใช้แรงมากกว่าข้อความแจ้งข้อผิดพลาด แต่ช่วยลดภาระของลูกค้า",
-            "ไม่บังคับมีบัญชีลูกค้าทำให้ใช้งานง่าย แต่ต้องส่งลิงก์จัดการการจองทางอีเมลแทน",
-          ],
-        },
-        future: {
-          body: "ต่อยอดได้ในอนาคต:",
-          points: ["ซิงก์ปฏิทินผ่านฟีด iCal", "ส่งข้อความเตือนเพื่อลดการไม่มาตามนัด", "รองรับทีมงานหลายคน แต่ละคนมีเวลาทำงานของตนเอง"],
-        },
-      },
-      diagrams: {
-        ux: {
-          kind: "tree",
-          title: "ขั้นตอนการจองในรูปแบบการตัดสินใจ",
-          caption: "สิ่งที่ลูกค้าเห็นในแต่ละขั้น",
-          root: {
-            label: "ลูกค้าเปิดหน้าจอง",
-            children: [
-              { edge: "ยังไม่ได้เลือกบริการ", node: { label: "แสดงบริการพร้อมระยะเวลา ยังไม่แสดงปฏิทิน" } },
-              {
-                edge: "เลือกบริการแล้ว",
-                node: {
-                  label: "แสดงวันที่ยังมีคิวว่าง",
-                  children: [
-                    {
-                      edge: "เลือกวันแล้ว",
-                      node: {
-                        label: "แสดงเฉพาะช่วงเวลาที่พอดีกับระยะเวลา",
-                        children: [
-                          { edge: "คิวถูกจองไประหว่างนั้น", node: { label: "เสนอทางเลือกใกล้เคียง และคงข้อมูลที่กรอกไว้" } },
-                          { edge: "คิวยังว่างอยู่", node: { label: "ยืนยันและส่งสรุปให้" } },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-        architecture: {
-          kind: "flow",
-          title: "จากการเลือกวันถึงการจองที่ยืนยันแล้ว",
-          caption: "ฐานข้อมูลเป็นผู้ตัดสินขั้นสุดท้าย",
-          nodes: [
-            { label: "ลูกค้าเลือกวัน", detail: "เบราว์เซอร์ส่งเฉพาะบริการและวันที่" },
-            { label: "สอบถามความพร้อม", detail: "เซิร์ฟเวอร์หาช่วงเวลาว่างจากเวลาทำการ เวลาหยุด และการจอง" },
-            { label: "รายการช่วงเวลา", detail: "ส่งกลับไปยังเบราว์เซอร์เฉพาะวันที่เลือก" },
-            { label: "การดำเนินการจอง", detail: "ตรวจสอบข้อมูล แล้วบันทึกภายในทรานแซกชัน" },
-            { label: "ข้อจำกัดของฐานข้อมูล", detail: "ช่วงเวลาที่ทับซ้อนถูกฐานข้อมูลปฏิเสธเอง" },
-            { label: "การยืนยัน", detail: "สำเร็จ หรือเสนอช่วงเวลาอื่นหากคิวเพิ่งถูกจองไป" },
-          ],
-        },
-      },
-    },
-    {
-      id: "multilingual",
-      kind: "concept",
-      title: "เว็บไซต์หลายภาษาสำหรับเกสต์เฮาส์ท้องถิ่น",
-      tagline: "แนวคิดที่ทำให้สามภาษาถูกต้อง รวดเร็ว และค้นเจอได้",
-      status: "แบบฝึกการออกแบบ ธุรกิจสมมติ",
-      stack: ["Next.js", "TypeScript", "การกำหนดเส้นทางด้วยรหัสภาษา", "ข้อมูลเชิงโครงสร้าง"],
-      sections: {
-        problem: {
-          body: "เกสต์เฮาส์สมมติแห่งหนึ่งต้อนรับแขกที่อ่านภาษาไทย อังกฤษ และเยอรมัน เว็บไซต์เดิมเป็นหน้าภาษาอังกฤษหน้าเดียวที่ครอบด้วยปลั๊กอินแปลภาษา ราคาในแต่ละภาษาไม่ตรงกัน และเสิร์ชเอนจินเห็นเป็นเรื่องสับสน",
-          points: [],
-        },
-        discovery: {
-          body: "ข้อเท็จจริง (ราคา เวลา ที่อยู่) กับถ้อยคำ (คำอธิบาย น้ำเสียง) เปลี่ยนแปลงด้วยความเร็วต่างกัน การปนกันคือสาเหตุที่คำแปลค่อย ๆ เพี้ยน",
-          points: [],
-        },
-        constraints: {
-          body: "สิ่งที่กำหนดแนวทางแก้:",
-          points: [
-            "เจ้าของไม่ใช่นักพัฒนา และแก้ราคาบ่อย",
-            "แขกส่วนใหญ่มาจากการค้นหาและใช้มือถือ",
-            "ต้องรู้ให้ได้ว่าขาดคำแปลก่อนที่แขกจะเห็น",
-            "ค่าโฮสติ้งควรใกล้ศูนย์",
-          ],
-        },
-        ux: {
-          body: "ภาษาเป็นส่วนหนึ่งของที่อยู่ ลิงก์เดียวกันจึงแสดงผลเหมือนกันสำหรับทุกคน และเสิร์ชเอนจินจัดทำดัชนีได้ทุกฉบับ ตัวสลับภาษาที่มองเห็นได้จะคงหน้าปัจจุบันไว้ แทนที่จะพาแขกกลับไปหน้าแรก",
-          points: [],
-        },
-        architecture: {
-          body: "ข้อเท็จจริงและถ้อยคำอยู่คนละชั้น ไฟล์ข้อมูลที่กำหนดชนิดไว้ไฟล์เดียวเป็นเจ้าของราคาและเวลา แต่ละภาษาดูแลเฉพาะถ้อยคำของตนและอ้างอิงถึงข้อเท็จจริงนั้น ตอนบิลด์จะประกอบเป็นหน้าสถิตแยกตามภาษา",
-          points: [],
-        },
-        implementation: {
-          body: "โมดูลเนื้อหาใช้ชนิดข้อมูลร่วมกัน เงิน วันที่ และเวลาเปิดทำการผ่านตัวจัดรูปแบบที่รองรับภาษา ไม่ใช่ข้อความที่พิมพ์เอง",
-          points: [
-            "สร้างลิงก์ทางเลือก hreflang ให้ทุกหน้า",
-            "สร้างข้อมูลเชิงโครงสร้างของธุรกิจจากชั้นข้อเท็จจริง",
-            "ตัวสลับภาษาที่คงหน้าเดิมและจำตัวเลือกไว้",
-          ],
-        },
-        testing: {
-          body: "การตรวจมุ่งไปที่จุดที่เว็บไซต์หลายภาษามักเสื่อมสภาพ:",
-          points: [
-            "มีการทดสอบยืนยันว่าทุกภาษากำหนดครบทุกคีย์",
-            "ราคาแสดงตรงกันในทุกภาษา เพราะเรนเดอร์จากค่าเดียว",
-            "ตรวจลิงก์ทั่วทุกเส้นทางที่สร้างขึ้น",
-          ],
-        },
-        performance: {
-          body: "ทุกหน้าถูกสร้างไว้ล่วงหน้าแยกตามภาษา เซิร์ฟเวอร์จึงไม่ต้องทำงานต่อการเข้าชมแต่ละครั้ง ไม่มีการแปลฝั่งเบราว์เซอร์ แขกจึงโหลดเฉพาะภาษาที่อ่าน",
-          points: [],
-        },
-        tradeoffs: {
-          body: "ข้อแลกเปลี่ยนที่ควรพูดตรง ๆ:",
-          points: [
-            "การแก้ไขผ่านโค้ดเป็นอุปสรรคสำหรับเจ้าของ CMS แก้ได้แต่เพิ่มค่าใช้จ่ายและแหล่งข้อมูลที่สอง",
-            "เนื้อหาที่กำหนดชนิดบังคับให้มีคำแปลครบทุกคีย์ ทำให้เพิ่มฟีเจอร์ช้าลง แต่กันช่องโหว่ได้",
-            "สามภาษาทำให้งานตรวจข้อความเพิ่มเป็นสามเท่า จึงควรมีขั้นตอนให้เจ้าของภาษาตรวจในแผน",
-          ],
-        },
-        future: {
-          body: "ขั้นต่อไป:",
-          points: ["Headless CMS ที่ใช้สคีมาเดิมและมีตัวอย่างฉบับร่าง", "รายการตรวจคำแปลทุกครั้งที่ปล่อยเวอร์ชัน", "จองออนไลน์ โดยนำแนวคิดระบบนัดหมายมาใช้ต่อ"],
-        },
-      },
-      diagrams: {
         architecture: {
           kind: "layers",
-          title: "แยกข้อเท็จจริงออกจากถ้อยคำ",
-          caption: "แต่ละชั้นป้อนข้อมูลให้ชั้นถัดไป",
+          title: "ชั้นของเว็บไซต์",
+          caption: "แต่ละชั้นมีหน้าที่เดียวและทดสอบแยกได้",
           nodes: [
-            { label: "ข้อเท็จจริง", detail: "ราคา เวลา และที่อยู่ เป็นระเบียนเดียวที่ไม่ผูกกับภาษา" },
-            { label: "ข้อความแต่ละภาษา", detail: "คำอธิบายและป้ายกำกับเป็นภาษาไทย อังกฤษ และเยอรมัน" },
-            { label: "ตรวจชนิดข้อมูล", detail: "บิลด์จะล้มเหลวหากภาษาใดขาดคีย์" },
-            { label: "หน้าสถิต", detail: "หนึ่งหน้าที่สร้างไว้ล่วงหน้าต่อภาษาและเส้นทาง" },
-            { label: "เมทาดาทาสำหรับการค้นหา", detail: "ลิงก์ทางเลือกของภาษาและข้อมูลเชิงโครงสร้างจากข้อเท็จจริงชุดเดียวกัน" },
-            { label: "CDN", detail: "ให้บริการจากเอดจ์เป็น HTML ธรรมดา" },
+            { label: "Browser", detail: "HTML ที่เรนเดอร์จากเซิร์ฟเวอร์ มี Client Component เล็ก ๆ สำหรับเมนู Palette Terminal ฟอร์ม และ Lab" },
+            { label: "Proxy", detail: "src/proxy.ts พา URL ที่ไม่มี Prefix ไปยังภาษาที่เหมาะสม" },
+            { label: "App Router", detail: "หน้า Static ใต้ /[locale] และ Dictionary แบบมีชนิดข้อมูลใน src/content" },
+            { label: "Server Action · Route Handler", detail: "รับข้อความติดต่อและ /api/health" },
+            { label: "Validation", detail: "Zod Schema, Honeypot และ Rate Limit" },
+            { label: "การส่งข้อความ", detail: "อีเมลผ่าน Resend และ PostgreSQL หรือ Webhook หากเปิดใช้" },
+          ],
+        },
+        implementation: {
+          kind: "branch",
+          title: "เส้นทางของข้อความติดต่อ",
+          caption: "ลองส่งทุกช่องทางที่ตั้งค่าไว้ ผู้เข้าชมจะเห็นว่าสำเร็จก็ต่อเมื่อมีช่องทางรับได้",
+          before: [
+            { label: "ฟอร์ม", detail: "ตรวจในเบราว์เซอร์ด้วย Schema เดียวกัน" },
+            { label: "Server Action", detail: "ทำงานบนเซิร์ฟเวอร์เท่านั้น" },
+            { label: "ด่านป้องกัน", detail: "Zod · Honeypot · Rate Limit" },
+          ],
+          branches: [
+            { label: "อีเมล (Resend)", detail: "ถึงเจ้าของเว็บ Reply-To เป็นผู้ส่ง" },
+            { label: "PostgreSQL", detail: "เมื่อเปิดใช้" },
+            { label: "Webhook", detail: "เมื่อเปิดใช้" },
+          ],
+          after: [{ label: "ผลลัพธ์แบบมีชนิด", detail: "success · invalid · rate-limited · unavailable · error" }],
+        },
+        deployment: {
+          kind: "flow",
+          title: "จาก Commit สู่ระบบจริง",
+          caption: "ไฟล์ที่สร้างขึ้นถูก Commit ไว้แล้ว การ Build จึงไม่ต้องใช้ Python",
+          nodes: [
+            { label: "Generate", detail: "python3 scripts/generate_ai_circuit.py" },
+            { label: "ตรวจสอบ", detail: "Lint, Types, Tests, Build" },
+            { label: "Push", detail: "main บน GitHub" },
+            { label: "Build", detail: "Vercel Build และ Prerender" },
+            { label: "Release", detail: "Production Deployment" },
+            { label: "เช็ก", detail: "/api/health และ QA บนระบบจริง" },
+          ],
+        },
+      },
+    },
+    {
+      id: "redesign",
+      kind: "concept",
+      service: "Website Redesign",
+      title: "Redesign เว็บไซต์เก่าของธุรกิจขนาดเล็ก",
+      tagline: "แนวคิดการเปลี่ยนเว็บที่ช้าและแก้ยาก ให้เป็นเว็บที่ชัดเจนและเร็ว โดยไม่เสียอันดับการค้นหาหรือลิงก์เดิม",
+      facts: [
+        { label: "สถานะ", value: "แนวคิด ไม่มีลูกค้าจริง ไม่ได้ส่งมอบ" },
+        { label: "ขอบเขต", value: "Audit โครงสร้างเนื้อหา Design System และแผนย้ายระบบ" },
+      ],
+      stack: ["Next.js", "TypeScript", "Headless CMS หรือ Markdown", "Image optimisation", "Server Actions", "Redirect map"],
+      sections: {
+        problem: {
+          client: "เปิดบนมือถือแล้วหาบริการหรือราคาไม่เจอ และเจ้าของแก้เว็บเองไม่ได้",
+          body: "จุดเริ่มต้นที่พบบ่อย: เว็บจาก Theme ที่เพิ่มหน้าไปเรื่อย ๆ บริการซ่อนอยู่ในข้อความยาว ฟอร์มติดต่อใช้ได้บ้างไม่ได้บ้าง และรูปภาพใหญ่จนโหลดช้า",
+          points: ["ไม่มีเส้นทางชัดเจนจากบริการไปสู่การติดต่อ", "เนื้อหาซ้ำกันหลายหน้าและเริ่มไม่ตรงกัน", "เลย์เอาต์พังบนจอเล็ก"],
+        },
+        constraints: {
+          client: "ลิงก์เดิมและอันดับการค้นหาต้องอยู่ครบ และเจ้าของต้องแก้เนื้อหาเองได้หลังส่งมอบ",
+          body: "Redesign ที่ทำให้ลิงก์หรืออันดับหายเท่ากับสร้างปัญหาใหม่ งบประมาณเหมาะกับธุรกิจขนาดเล็ก ต้องใช้รูปถ่ายเดิม และการแก้เนื้อหาต้องทำได้โดยไม่ต้องเป็นนักพัฒนา",
+          points: ["URL เดิมทุกอันยังใช้ได้หรือ Redirect ไปหน้าใหม่", "แก้เนื้อหาได้โดยไม่แตะโค้ด", "Accessibility เป็นพื้นฐาน ไม่ใช่ของเสริม"],
+        },
+        decision: {
+          client: "สร้างใหม่โดยยึดสิ่งที่ผู้เข้าชมต้องการทำ คือเข้าใจบริการแล้วติดต่อ แทนที่จะลอกเมนูเดิม",
+          body: "เริ่มจากจัดโครงสร้างเนื้อหาใหม่ บริการละหนึ่งหน้าในรูปแบบเดียวกัน (คืออะไร เหมาะกับใคร ขั้นตอน ช่วงราคา และการติดต่อ) แล้วจึงสร้าง Design System ขนาดเล็กที่ทุกหน้าใช้ร่วมกัน",
+          points: ["วาง Content Model ก่อนออกแบบหน้าตา", "เส้นทางติดต่อเดียว เข้าถึงได้จากทุกบริการ", "ออกแบบเลย์เอาต์มือถือโดยเฉพาะ ไม่ใช่แค่เรียงต่อกัน"],
+        },
+        architecture: {
+          client: "เว็บใหม่สร้างไว้ล่วงหน้าเพื่อความเร็ว และแก้เนื้อหาผ่านหน้าจอแก้ไขที่ใช้ง่าย",
+          body: "หน้าเว็บสร้างแบบ Static จาก Headless CMS (หรือ Markdown ใน Git สำหรับเว็บเล็กมาก) รูปภาพถูกปรับขนาดตอน Build ฟอร์มติดต่อส่งไปยังฟังก์ชันฝั่งเซิร์ฟเวอร์ที่ตรวจข้อมูลและส่งอีเมลถึงเจ้าของ",
+          points: [],
+        },
+        implementation: {
+          client: "งานแบ่งเป็นขั้นชัดเจน ตรวจรับทีละขั้นก่อนเริ่มขั้นต่อไป",
+          body: "เริ่มจาก Audit ทุก URL พร้อมจำนวนผู้เข้าชม แล้วตกลง Content Model และ Design Token สร้าง Template ด้วยเนื้อหาจริง และก่อนขึ้นระบบมี Redirect Map เชื่อม URL เดิมทุกอันไปยังหน้าใหม่",
+          points: ["Redirect Map เก็บเป็นข้อมูลและตรวจอัตโนมัติ", "สร้าง Template ด้วยเนื้อหาจริง ไม่ใช่ข้อความตัวอย่าง", "ทดสอบการส่งฟอร์มครบทั้งเส้นทางก่อนขึ้นระบบ"],
+        },
+        tradeoffs: {
+          client: "บางการตัดสินใจทำให้ดูแลง่ายขึ้น แม้จะตัดของเสริมบางอย่างออก",
+          body: "Headless CMS เพิ่มบริการที่ต้องดูแล ส่วน Markdown ใน Git ถูกกว่าแต่ใช้ยากสำหรับคนทั่วไป การออกแบบเฉพาะมีค่าใช้จ่ายมากกว่า Theme แต่ไม่ต้องฝืนข้อจำกัดของ Theme ภายหลัง",
+          points: ["ไม่มีแอนิเมชันหนัก ๆ ใน Hero ความเร็วและความชัดเจนมาก่อน", "หน้าน้อยลงแต่ดีขึ้น แทนการย้ายทุกอย่าง", "เลือก CMS ตามลูกค้าแต่ละราย ไม่ใช่ตามความเคยชิน"],
+        },
+        testing: {
+          client: "ก่อนขึ้นระบบ ลิงก์เดิม ฟอร์ม และทุกหน้าจะถูกตรวจอัตโนมัติ",
+          body: "การทดสอบอัตโนมัติเรียกทุก URL ใน Redirect Map และต้องได้ Redirect ถาวรไปหน้าที่ถูกต้อง ตรวจหน้าเว็บหลายขนาดหน้าจอ พร้อม Audit ด้าน Accessibility และ Performance Budget",
+          points: ["Redirect Map: URL เดิมทุกอันไปถึงปลายทาง", "ฟอร์ม: การตรวจข้อมูล การส่ง และสถานะผิดพลาด", "ตรวจ Accessibility และ Contrast ทุก Template"],
+        },
+        deployment: {
+          client: "เจ้าของตรวจผ่านลิงก์พรีวิวส่วนตัว จากนั้นเว็บใหม่แทนที่เว็บเดิมโดยไม่มีช่วงล่ม",
+          body: "ทุกการแก้ไขมี Preview URL ให้ตรวจรับ การขึ้นระบบคือการสลับ DNS ไปยัง Deployment ใหม่ แล้วเฝ้าดู Log 404 และ Search Console เพื่อหา URL ที่ตกหล่น",
+          points: ["Preview Deployment สำหรับตรวจรับ", "ย้อนกลับได้ในคลิกเดียว", "เฝ้าดู 404 ในช่วงสัปดาห์แรก"],
+        },
+        future: {
+          client: "เมื่อฐานแน่นแล้ว เพิ่มฟีเจอร์ได้โดยไม่ต้อง Redesign ใหม่",
+          body: "Content Model ที่สะอาดทำให้ต่อยอดทีละส่วนได้",
+          points: ["จองหรือขอใบเสนอราคาออนไลน์", "เพิ่มภาษาที่สอง", "วิเคราะห์ Analytics ตามเส้นทางการติดต่อ"],
+        },
+      },
+      diagrams: {
+        decision: {
+          kind: "tree",
+          title: "หน้าเดิม เก็บไว้ รวม หรือเลิกใช้",
+          caption: "ใช้กับทุก URL ที่พบใน Audit",
+          root: {
+            label: "หน้านี้มีผู้เข้าชมหรือลิงก์จากที่อื่นหรือไม่",
+            children: [
+              {
+                edge: "มี",
+                node: {
+                  label: "เนื้อหายังถูกต้องอยู่หรือไม่",
+                  children: [
+                    { edge: "ใช่", node: { label: "เก็บไว้: สร้างใหม่บน Template ใช้ URL เดิมหรือ Redirect" } },
+                    { edge: "ไม่", node: { label: "รวมเข้ากับหน้าบริการที่ตรงกันแล้ว Redirect" } },
+                  ],
+                },
+              },
+              { edge: "ไม่มี", node: { label: "เลิกใช้: Redirect ไปหน้าหลักที่ใกล้ที่สุด" } },
+            ],
+          },
+        },
+        implementation: {
+          kind: "flow",
+          title: "ขั้นตอน Redesign",
+          caption: "ทุกขั้นจบด้วยสิ่งที่เจ้าของตรวจรับได้",
+          nodes: [
+            { label: "Audit", detail: "URL ผู้เข้าชม เนื้อหา และปัญหา" },
+            { label: "Content Model", detail: "ประเภทหน้าและฟิลด์" },
+            { label: "Design System", detail: "ตัวอักษร สี และคอมโพเนนต์" },
+            { label: "Template", detail: "สร้างด้วยเนื้อหาจริง" },
+            { label: "ย้ายระบบ", detail: "เนื้อหาและ Redirect Map" },
+            { label: "ขึ้นระบบ", detail: "สลับ DNS และเฝ้าดู" },
+          ],
+        },
+      },
+    },
+    {
+      id: "ai-feature",
+      kind: "concept",
+      service: "พัฒนาฟีเจอร์ · AI Integration",
+      title: "เพิ่มร่างคำตอบด้วย AI ให้ระบบ Support ที่ใช้อยู่แล้ว",
+      tagline: "แนวคิดการนำ AI เข้าสู่ผลิตภัณฑ์ที่มีคนใช้งานอยู่ AI ช่วยร่าง ไม่ได้ทำงานแทนอัตโนมัติ และทุกข้อความต้องมีคนอนุมัติ",
+      facts: [
+        { label: "สถานะ", value: "แนวคิด ไม่มีลูกค้าจริง ไม่ได้ส่งมอบ" },
+        { label: "ขอบเขต", value: "ออกแบบฟีเจอร์ สถาปัตยกรรม AI และแผน Rollout" },
+      ],
+      stack: ["React", "Node.js API", "PostgreSQL", "Python worker", "Embeddings · RAG", "Cloud + Local models", "Feature flags"],
+      sections: {
+        problem: {
+          client: "ทีม Support ตอบคำถามเดิม ๆ ทั้งวัน AI ช่วยร่างคำตอบได้ แต่ระบบเดิมต้องทำงานต่อไปได้",
+          body: "ผลิตภัณฑ์เป็นระบบ Helpdesk ที่ใช้งานมานาน มี Frontend เป็น React, API เป็น Node.js และ PostgreSQL ทีมต้องพิมพ์คำตอบคล้าย ๆ เดิมจาก Knowledge Base และคุณภาพขึ้นอยู่กับว่าใครเข้ากะ",
+          points: ["คำตอบซ้ำ ๆ กินเวลามากที่สุด", "มี Knowledge Base แต่ค้นหายาก", "สร้างระบบใหม่ทั้งหมดไม่ใช่ทางเลือก"],
+        },
+        constraints: {
+          client: "ข้อมูลลูกค้าต้องปลอดภัย ค่าใช้จ่ายต้องคาดการณ์ได้ และปิดฟีเจอร์ได้ง่าย",
+          body: "สัญญาของลูกค้าบางรายกำหนดว่าข้อมูลต้องไม่ออกนอกเซิร์ฟเวอร์ของบริษัท การเรียกโมเดลมีค่าใช้จ่ายต่อครั้ง และทีมต้องมีสวิตช์ปิดฉุกเฉินหากเกิดปัญหา",
+          points: ["กฎความเป็นส่วนตัวแยกตามลูกค้าแต่ละราย", "เพดานงบสำหรับการใช้โมเดล", "เมื่อปิดใช้ ระบบเดิมต้องไม่ได้รับผลกระทบ"],
+        },
+        decision: {
+          client: "AI ร่าง คนตัดสินใจ ไม่มีข้อความใดถูกส่งโดยไม่ผ่านการอนุมัติ",
+          body: "ฟีเจอร์เสนอร่างคำตอบพร้อมแหล่งอ้างอิงจาก Knowledge Base ที่ใช้ ทีมแก้ไขแล้วจึงส่ง Output เป็นแบบมีโครงสร้าง (ร่างคำตอบ แหล่งอ้างอิง และข้อสังเกต) เพื่อให้หน้าจอแสดงที่มาของทุกข้อความได้",
+          points: ["ร่างเท่านั้น ไม่ส่งอัตโนมัติ", "แสดงแหล่งอ้างอิงกับทุกคำแนะนำ", "Rollout ผ่าน Feature Flag แยกตามทีม"],
+        },
+        architecture: {
+          client: "Router จะส่งแต่ละคำขอไปยังโมเดลบน Cloud หรือโมเดล Local ส่วนตัว ตามกฎความเป็นส่วนตัวของลูกค้า",
+          body: "Context Builder ดึงบทความที่เกี่ยวข้องด้วย Embeddings Search ส่วน Model Router เลือกโมเดลบน Cloud (เช่น ChatGPT หรือ Claude ผ่าน API) สำหรับลูกค้าทั่วไป และโมเดลที่โฮสต์เองสำหรับลูกค้าที่จำกัดเรื่องข้อมูล ทุกร่างต้องผ่าน Validation ก่อนแสดงบนหน้าจอ",
+          points: [],
+        },
+        implementation: {
+          client: "ฟีเจอร์เข้ามาเป็นแผงคำแนะนำในระบบเดิม การทำงานส่วนอื่นของทีมไม่เปลี่ยน",
+          body: "Python Worker นำ Knowledge Base เข้า Embeddings Index เพิ่ม Endpoint ใหม่ใน Node.js API เดิมเพื่อสร้าง Context เรียก Router และตรวจ Response แบบมีโครงสร้าง แอป React มีแผงคำแนะนำข้างช่องตอบ และมี Audit Log บันทึกทุกร่างและการแก้ไข",
+          points: ["ตรวจ Output แบบมีโครงสร้างกับ Schema", "ตรวจข้อมูลส่วนบุคคลก่อนเรียก Cloud ทุกครั้ง", "Audit Log ของร่าง การแก้ไข และการอนุมัติ"],
+        },
+        tradeoffs: {
+          client: "โมเดล Local ปกป้องข้อมูลได้ดีกว่า แต่ร่างอาจด้อยกว่าเล็กน้อย จึงเลือกตามลูกค้าแต่ละราย",
+          body: "โมเดล Local แลกคุณภาพและความเร็วบางส่วนกับการควบคุมข้อมูล Retrieval ทำให้คำตอบอิงข้อเท็จจริงแต่ต้องอัปเดต Index สม่ำเสมอ เพดานงบทำให้ค่าใช้จ่ายคาดการณ์ได้ แม้บางครั้งต้องข้ามการร่าง",
+          points: ["คุณภาพกับความเป็นส่วนตัว เลือกตามลูกค้า", "ความสดใหม่ของ Index กับต้นทุนการนำเข้า", "ข้ามการร่างดีกว่าใช้งบเกิน"],
+        },
+        testing: {
+          client: "ทดสอบร่างกับคำถามจริงในอดีตก่อนให้ทีมใดเห็น",
+          body: "ชุดประเมินจาก Ticket เก่าที่ลบข้อมูลระบุตัวตนแล้ว ใช้เทียบร่างกับคำตอบที่ส่งจริง ทุก Response ผ่านการตรวจ Schema และความปลอดภัย หากผิดพลาดจะกลับไปใช้ขั้นตอนปกติ",
+          points: ["ชุดประเมินจากประวัติที่ลบข้อมูลระบุตัวตนแล้ว", "ตรวจ Schema ข้อมูลส่วนบุคคล และความยาว", "Fallback อย่างนุ่มนวล ไม่มีร่างก็ไม่กระทบงาน"],
+        },
+        deployment: {
+          client: "เริ่มแบบมองไม่เห็น แล้วเปิดให้เลือกใช้ จากนั้นเป็นค่าเริ่มต้น และปิดได้ทันทีทุกเมื่อ",
+          body: "เริ่มด้วย Shadow Mode สร้างร่างและบันทึกไว้แต่ไม่แสดง จากนั้นเปิดให้ทีมเดียวเลือกใช้ แล้วจึงเปิดเป็นค่าเริ่มต้น Feature Flag ทำหน้าที่เป็นสวิตช์ปิดฉุกเฉินด้วย",
+          points: ["Shadow → Opt-in → Default", "Feature Flag แยกตามทีม", "ปิดฉุกเฉินได้โดยไม่ต้อง Deploy ใหม่"],
+        },
+        future: {
+          client: "Pipeline เดียวกันนำไปติดแท็ก สรุป และกระจาย Ticket ได้ในอนาคต",
+          body: "เมื่อมี Retrieval, Routing และ Validation แล้ว ฟีเจอร์ใกล้เคียงก็ใช้ Pipeline เดิมต่อได้",
+          points: ["ติดแท็กและกระจายงานอัตโนมัติ", "สรุปบทสนทนาสำหรับส่งต่องาน", "เรียนรู้จากการแก้ไขของทีม"],
+        },
+      },
+      diagrams: {
+        architecture: {
+          kind: "branch",
+          title: "Pipeline การร่างคำตอบ",
+          caption: "Router เลือกโมเดลตามลูกค้าแต่ละราย ระหว่างโมเดลกับลูกค้ามี Validation และคนคั่นอยู่เสมอ",
+          before: [
+            { label: "Ticket", detail: "คำถามที่เข้ามา" },
+            { label: "Context", detail: "Embeddings Search ใน Knowledge Base" },
+            { label: "Router", detail: "ความเป็นส่วนตัว · งบ · ความพร้อมใช้งาน" },
+          ],
+          branches: [
+            { label: "Cloud model", detail: "ChatGPT หรือ Claude ผ่าน API" },
+            { label: "Local model", detail: "โฮสต์เอง ข้อมูลอยู่ในองค์กร" },
+          ],
+          after: [
+            { label: "Validation", detail: "Schema · ข้อมูลส่วนบุคคล · ความยาว" },
+            { label: "คนอนุมัติ", detail: "ทีมแก้ไขแล้วส่ง" },
+          ],
+        },
+        deployment: {
+          kind: "flow",
+          title: "Rollout",
+          caption: "ทุกขั้นย้อนกลับได้ด้วย Flag",
+          nodes: [
+            { label: "Shadow", detail: "บันทึกร่าง ไม่แสดง" },
+            { label: "ประเมิน", detail: "เทียบกับคำตอบที่ส่งจริง" },
+            { label: "Opt-in", detail: "ทีมเดียว พร้อมรับ Feedback" },
+            { label: "Default", detail: "เปิดให้ทุกทีม" },
           ],
         },
       },
     },
   ],
-  cta: { label: "ปรึกษาโปรเจกต์", title: "อยากได้วิธีคิดแบบนี้ในโปรเจกต์ของคุณไหม" },
+  cta: {
+    label: "คุยเรื่องโปรเจกต์ของคุณ",
+    title: "Redesign ฟีเจอร์ใหม่ หรือ AI Workflow",
+    body: "เล่าสั้น ๆ ว่าตอนนี้อยู่ตรงไหนและอยากไปถึงไหน แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และขั้นตอนถัดไป",
+  },
 };
 
 export const caseStudiesContent: Localized<CaseStudiesContent> = { en, de, th };

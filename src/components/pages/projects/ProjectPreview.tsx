@@ -1,17 +1,18 @@
+import { clsx } from "clsx";
 import type { PreviewVariant } from "./data";
 
 /**
- * Decorative, CSS-only mock-ups of each concept's interface (desktop + phone).
- * Purely illustrative, so everything inside is aria-hidden and the figure carries the caption.
+ * Illustrative, CSS-only mock-ups of each project's interface. Everything inside is
+ * aria-hidden; the figure caption says what it is. The flagship uses the real
+ * Python-generated circuit instead of a mock.
  */
 
-const bar = (w: string, h = "0.4rem", cls = "bg-ink/15") => (
-  <span className={`block shrink-0 rounded-full ${cls}`} style={{ width: w, height: h }} />
-);
+const bar = (w: string, h = "0.4rem", cls = "bg-ink/15") => <span className={`block shrink-0 rounded-full ${cls}`} style={{ width: w, height: h }} />;
 
 function Screen({ variant, compact }: { variant: PreviewVariant; compact: boolean }) {
   switch (variant) {
     case "table":
+      // Helpdesk with AI-suggested categories awaiting confirmation.
       return (
         <div className="flex h-full">
           {!compact && (
@@ -24,55 +25,19 @@ function Screen({ variant, compact }: { variant: PreviewVariant; compact: boolea
           )}
           <div className="flex flex-1 flex-col gap-2 p-3">
             {bar("40%", "0.6rem", "bg-ink")}
-            {(compact ? [0, 1, 2, 3, 4] : [0, 1, 2, 3, 4, 5]).map((i) => (
+            {[0, 1, 2, 3, 4].map((i) => (
               <div key={i} className="flex items-center gap-2 border-t border-ink/10 pt-2">
                 <span className={`size-2 shrink-0 rounded-full ${i % 3 === 0 ? "bg-accent" : i % 3 === 1 ? "bg-signal" : "bg-ink-3"}`} />
-                {bar(compact ? "55%" : `${38 + ((i * 13) % 30)}%`)}
-                {!compact && <span className="ml-auto">{bar("2.2rem", "0.9rem", "bg-paper-3")}</span>}
+                {bar(compact ? "45%" : `${34 + ((i * 13) % 26)}%`)}
+                <span className="ml-auto flex items-center gap-1">
+                  <span className={`mono rounded-sm border px-1 text-[0.5rem] leading-[0.9rem] ${i === 1 ? "border-accent bg-accent-soft text-accent-ink" : "border-ink/20 text-ink-3"}`}>AI</span>
+                  {!compact && bar("2rem", "0.9rem", i === 1 ? "bg-ink" : "bg-paper-3")}
+                </span>
               </div>
             ))}
           </div>
         </div>
       );
-    case "site":
-      return (
-        <div className={`flex h-full gap-3 p-4 ${compact ? "flex-col" : ""}`}>
-          <div className="flex flex-1 flex-col justify-center gap-2">
-            {bar("85%", compact ? "0.7rem" : "1.1rem", "bg-ink")}
-            {bar("60%", compact ? "0.7rem" : "1.1rem", "bg-ink")}
-            <span className="my-1" />
-            {bar("90%")}
-            {bar("70%")}
-            <span className="mt-2 block h-5 w-20 rounded-full bg-accent" />
-          </div>
-          <div className={`relative overflow-hidden rounded-t-full bg-paper-3 ${compact ? "h-[38%]" : "w-[42%]"}`}>
-            <span className="absolute left-1/2 top-[38%] size-[38%] -translate-x-1/2 rounded-full bg-accent-soft" />
-            <span className="absolute inset-x-[22%] bottom-0 h-[30%] rounded-t-full bg-ink/70" />
-          </div>
-        </div>
-      );
-    case "chart": {
-      const heights = [38, 52, 44, 66, 58, 80, 62, 90, 72, 84, 60, 96];
-      return (
-        <div className="flex h-full flex-col gap-3 p-3">
-          <div className={`grid gap-2 ${compact ? "grid-cols-2" : "grid-cols-3"}`}>
-            {[0, 1, compact ? null : 2].map((i) =>
-              i === null ? null : (
-                <div key={i} className="rounded border border-ink/15 p-2">
-                  {bar("50%")}
-                  <span className="mt-2 block">{bar("70%", "0.8rem", i === 1 ? "bg-accent" : "bg-ink")}</span>
-                </div>
-              ),
-            )}
-          </div>
-          <div className="flex flex-1 items-end gap-1 border-b border-ink/30 pb-0.5">
-            {(compact ? heights.slice(0, 8) : heights).map((h, i) => (
-              <span key={i} className={`flex-1 rounded-t-sm ${i === 7 ? "bg-accent" : "bg-ink/70"}`} style={{ height: `${h}%` }} />
-            ))}
-          </div>
-        </div>
-      );
-    }
     case "shop":
       return (
         <div className="flex h-full flex-col gap-3 p-3">
@@ -80,11 +45,12 @@ function Screen({ variant, compact }: { variant: PreviewVariant; compact: boolea
             {bar("28%", "0.7rem", "bg-ink")}
             {bar("1.4rem", "0.7rem", "bg-accent")}
           </div>
+          {!compact && bar("55%", "1.1rem", "bg-ink")}
           <div className={`grid flex-1 gap-2 ${compact ? "grid-cols-2" : "grid-cols-4"}`}>
-            {(compact ? [0, 1, 2, 3] : [0, 1, 2, 3]).map((i) => (
+            {[0, 1, 2, 3].map((i) => (
               <div key={i} className="flex flex-col gap-1.5">
-                <span className="relative block flex-1 overflow-hidden rounded bg-paper-3">
-                  <span className={`absolute left-1/2 top-1/2 size-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full ${i % 2 ? "bg-accent-soft" : "bg-ink/20"}`} />
+                <span className="relative block flex-1 overflow-hidden rounded-sm bg-paper-3">
+                  <span className={`absolute inset-x-[25%] bottom-0 top-[22%] rounded-t-full ${i % 2 ? "bg-accent-soft" : "bg-ink/20"}`} />
                 </span>
                 {bar("70%")}
                 {bar("35%", "0.4rem", "bg-ink")}
@@ -93,101 +59,242 @@ function Screen({ variant, compact }: { variant: PreviewVariant; compact: boolea
           </div>
         </div>
       );
-    case "flow": {
-      const steps = compact ? 5 : 7;
+    case "chat":
+      // Documentation page with an assistant panel citing its sources.
       return (
-        <div className={`flex h-full items-center justify-center gap-0 p-4 ${compact ? "flex-col" : ""}`}>
-          {Array.from({ length: steps }).map((_, i) => (
-            <div key={i} className={`flex items-center ${compact ? "flex-col" : ""}`}>
-              {i > 0 && <span className={compact ? "h-3 w-px bg-ink/30" : "h-px w-4 bg-ink/30 sm:w-7"} />}
-              <span
-                className={`block ${i === Math.floor(steps / 2) + 1 ? "size-5 rotate-45 bg-accent" : i % 2 ? "size-5 rounded-full border-2 border-ink bg-paper" : "size-5 rounded-full bg-ink"}`}
-              />
+        <div className="flex h-full">
+          {!compact && (
+            <div className="flex flex-1 flex-col gap-2 p-4">
+              {bar("50%", "0.8rem", "bg-ink")}
+              {bar("92%")}
+              {bar("85%")}
+              <span className="my-1 block rounded-sm border-l-2 border-accent bg-accent-soft/60 py-1.5 pl-2">{bar("70%", "0.35rem", "bg-ink/40")}</span>
+              {bar("88%")}
+              {bar("60%")}
             </div>
-          ))}
+          )}
+          <div className={clsx("flex flex-col gap-2 bg-paper-2 p-3", compact ? "w-full" : "w-[42%] border-l border-ink/20")}>
+            {bar("40%", "0.5rem", "bg-ink")}
+            <span className="ml-auto block w-[70%] rounded-md bg-ink p-1.5">{bar("80%", "0.35rem", "bg-paper/70")}</span>
+            <span className="block w-[85%] rounded-md border border-ink/15 bg-paper p-1.5">
+              {bar("90%", "0.35rem")}
+              <span className="mt-1 block">{bar("60%", "0.35rem")}</span>
+              <span className="mono mt-1.5 inline-block rounded-sm border border-accent px-1 text-[0.5rem] text-accent-ink">[1] [2]</span>
+            </span>
+            <span className="mt-auto block h-5 rounded-full border border-ink/30 bg-paper" />
+          </div>
         </div>
       );
-    }
     case "calendar":
       return (
         <div className="flex h-full flex-col gap-2 p-3">
-          {bar("35%", "0.6rem", "bg-ink")}
+          <div className="flex items-center justify-between">
+            {bar("35%", "0.6rem", "bg-ink")}
+            <span className="block size-3 rounded-full bg-accent" />
+          </div>
           <div className="grid flex-1 grid-cols-7 gap-1">
             {Array.from({ length: compact ? 21 : 35 }).map((_, i) => (
-              <span
-                key={i}
-                className={`rounded-sm ${i % 9 === 4 ? "bg-accent" : i % 4 === 0 ? "bg-ink/70" : i % 3 === 0 ? "bg-accent-soft" : "bg-paper-3"}`}
-              />
+              <span key={i} className={`rounded-sm ${i === 11 ? "bg-accent" : i % 4 === 0 ? "bg-ink/70" : i % 3 === 0 ? "bg-accent-soft" : "bg-paper-3"}`} />
             ))}
           </div>
         </div>
       );
-    case "code":
+    case "pipeline":
+      // Terminal-style log of a scheduled Python run (illustrative).
+      return (
+        <div className="night mono flex h-full flex-col justify-center gap-1.5 p-4 text-[0.55rem] leading-tight sm:text-[0.62rem]">
+          {[
+            ["$", "python ledger_run.py --batch today", "text-night-ink"],
+            ["→", "read invoice PDFs", "text-night-mute"],
+            ["→", "rules first · model fallback", "text-night-mute"],
+            ["✓", "entries validated", "text-ok"],
+            ["…", "awaiting human approval", "text-accent"],
+          ].map(([p, line, cls]) => (
+            <p key={line} className={cls}>
+              <span className="mr-2 text-night-mute">{p}</span>
+              {line}
+            </p>
+          ))}
+        </div>
+      );
+    case "search":
+      // Local document search: query, grounded answer, retrieved passages.
+      return (
+        <div className="flex h-full flex-col gap-2 p-3">
+          <div className="flex items-center gap-2">
+            <span className="block h-5 flex-1 rounded-full border border-ink/40 bg-paper" />
+            <span className="mono rounded-sm bg-signal px-1 text-[0.5rem] leading-[0.9rem] text-white">LOCAL</span>
+          </div>
+          <div className={clsx("grid flex-1 gap-2", compact ? "grid-cols-1" : "grid-cols-[1.2fr_1fr]")}>
+            <div className="flex flex-col gap-1.5 rounded-sm border border-ink/15 p-2">
+              {bar("80%", "0.45rem", "bg-ink")}
+              {bar("95%")}
+              {bar("90%")}
+              {bar("70%")}
+            </div>
+            {!compact && (
+              <div className="flex flex-col gap-1.5">
+                {[0, 1, 2].map((i) => (
+                  <span key={i} className="block rounded-sm border-l-2 border-signal bg-paper-2 p-1.5">
+                    {bar(`${60 + i * 10}%`, "0.35rem", "bg-ink/40")}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    case "agents":
+      // Parallel agent lanes converging on a human review gate.
       return (
         <div className="night flex h-full flex-col justify-center gap-2 p-4">
-          {[
-            ["30%", 0, "bg-accent"],
-            ["55%", 1, "bg-night-ink/60"],
-            ["42%", 1, "bg-signal"],
-            ["65%", 2, "bg-night-ink/60"],
-            ["38%", 2, "bg-night-mute"],
-            ["48%", 1, "bg-signal"],
-            ["20%", 0, "bg-accent"],
-          ]
-            .slice(0, compact ? 6 : 7)
-            .map(([w, indent, cls], i) => (
-              <span key={i} style={{ marginLeft: `${Number(indent) * 0.9}rem` }}>
-                {bar(String(w), "0.4rem", String(cls))}
-              </span>
-            ))}
-        </div>
-      );
-    case "portfolio":
-      return (
-        <div className="flex h-full flex-col justify-between p-4">
-          <div className="flex items-center gap-1">
-            {Array.from({ length: 9 }).map((_, i) => (
-              <span key={i} className={`h-1 flex-1 ${i < 5 ? "bg-ink" : "bg-paper-3"}`} />
-            ))}
-          </div>
-          <div className="flex flex-col gap-2">
-            {bar("88%", compact ? "0.8rem" : "1.4rem", "bg-ink")}
-            {bar("62%", compact ? "0.8rem" : "1.4rem", "bg-accent")}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="block h-5 w-16 rounded-full bg-ink" />
-            <span className="block h-5 w-16 rounded-full border border-ink" />
+          {["DESIGN", "FRONTEND", "BACKEND", "TEST"].slice(0, compact ? 3 : 4).map((lane, i) => (
+            <div key={lane} className="flex items-center gap-2">
+              <span className="mono w-14 shrink-0 text-[0.5rem] text-night-mute">{lane}</span>
+              <span className="h-px flex-1 bg-night-line" />
+              <span className="block h-2 rounded-full bg-night-ink/70" style={{ width: `${18 + i * 7}%` }} />
+              <span className="h-px w-4 bg-accent" />
+            </div>
+          ))}
+          <div className="mt-1 flex items-center justify-end gap-2">
+            <span className="mono text-[0.5rem] text-night-mute">CI</span>
+            <span className="mono rounded-sm border border-accent px-1.5 text-[0.5rem] leading-[0.9rem] text-accent">HUMAN REVIEW</span>
           </div>
         </div>
       );
+    case "before-after":
+    case "circuit":
+      return null;
   }
 }
 
-export function ProjectPreview({ name, variant, label, note }: { name: string; variant: PreviewVariant; label: string; note: string }) {
+/** A dated layout used as the "before" state in the redesign preview. */
+function DatedSite() {
+  return (
+    <div className="flex h-full flex-col gap-1.5 bg-[#e9e6f4] p-2">
+      <div className="flex items-center gap-1 bg-[#4a4a8a] p-1">
+        {bar("20%", "0.4rem", "bg-white/80")}
+        <span className="ml-auto flex gap-1">
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} className="block h-1 w-3 bg-white/60" />
+          ))}
+        </span>
+      </div>
+      <div className="flex flex-1 gap-1.5">
+        <div className="flex w-[30%] flex-col gap-1 bg-white/60 p-1">
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <span key={i} className="block h-1 bg-[#4a4a8a]/40" />
+          ))}
+        </div>
+        <div className="flex flex-1 flex-col gap-1">
+          <span className="block h-[40%] bg-[#b9b3d6]" />
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} className="block h-1 bg-ink/25" style={{ width: `${95 - i * 9}%` }} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ModernSite() {
+  return (
+    <div className="flex h-full gap-3 p-3 sm:p-4">
+      <div className="flex flex-1 flex-col justify-center gap-1.5">
+        {bar("85%", "0.7rem", "bg-ink")}
+        {bar("60%", "0.7rem", "bg-ink")}
+        <span className="my-0.5" />
+        {bar("90%")}
+        {bar("70%")}
+        <span className="mt-1.5 block h-3 w-12 rounded-full bg-accent" />
+      </div>
+      <div className="relative w-[40%] overflow-hidden rounded-t-full bg-paper-3">
+        <span className="absolute left-1/2 top-[34%] size-[40%] -translate-x-1/2 rounded-full bg-accent-soft" />
+        <span className="absolute inset-x-[22%] bottom-0 h-[30%] rounded-t-full bg-ink/70" />
+      </div>
+    </div>
+  );
+}
+
+function Browser({ host, children, dark }: { host: string; children: React.ReactNode; dark?: boolean }) {
+  return (
+    <div className={clsx("overflow-hidden rounded-md border", dark ? "border-night-line bg-night" : "border-ink bg-paper")}>
+      <div className={clsx("flex items-center gap-1.5 border-b px-3 py-2", dark ? "border-night-line bg-night-2" : "border-ink/30 bg-paper-2")}>
+        {[0, 1, 2].map((i) => (
+          <span key={i} className={clsx("size-2 rounded-full", dark ? "bg-night-line" : "bg-ink/25")} />
+        ))}
+        <span className={clsx("mono ml-2 truncate rounded-sm px-2 py-0.5 text-[0.62rem]", dark ? "bg-night text-night-mute" : "bg-paper text-ink-3")}>{host}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+interface Props {
+  name: string;
+  variant: PreviewVariant;
+  caption: string;
+  labels: { before: string; after: string };
+  /** Hide the phone frame, e.g. in narrow layouts. */
+  phone?: boolean;
+}
+
+export function ProjectPreview({ name, variant, caption, labels, phone = true }: Props) {
   const host = `${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.example`;
+
+  if (variant === "circuit") {
+    return (
+      <figure>
+        <Browser host="/generated/ai-circuit.svg" dark>
+          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG generated by scripts/generate_ai_circuit.py */}
+          <img src="/generated/ai-circuit.svg" alt="" width={1272} height={912} loading="lazy" className="block h-auto w-full" />
+        </Browser>
+        <figcaption className="eyebrow mt-3">{caption}</figcaption>
+      </figure>
+    );
+  }
+
+  if (variant === "before-after") {
+    const panes = [
+      { label: labels.before, screen: <DatedSite />, cls: "text-ink-3" },
+      { label: labels.after, screen: <ModernSite />, cls: "text-accent-ink" },
+    ];
+    return (
+      <figure>
+        <div className="grid grid-cols-2 gap-3">
+          {panes.map((p) => (
+            <div key={p.label}>
+              <p className={clsx("mono mb-2 text-[0.68rem] uppercase tracking-wider", p.cls)}>{p.label}</p>
+              <div aria-hidden>
+                <Browser host={host}>
+                  <div className="aspect-[4/3]">{p.screen}</div>
+                </Browser>
+              </div>
+            </div>
+          ))}
+        </div>
+        <figcaption className="eyebrow mt-3">{caption}</figcaption>
+      </figure>
+    );
+  }
+
   return (
     <figure>
-      <div className="relative pb-6 pr-2" aria-hidden>
-        <div className="overflow-hidden rounded-md border border-ink bg-paper">
-          <div className="flex items-center gap-1.5 border-b border-ink/30 bg-paper-2 px-3 py-2">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="size-2 rounded-full bg-ink/25" />
-            ))}
-            <span className="mono ml-2 truncate rounded bg-paper px-2 py-0.5 text-[0.62rem] text-ink-3">{host}</span>
-          </div>
+      <div className={clsx("relative", phone && "pb-6 pr-2")} aria-hidden>
+        <Browser host={host}>
           <div className="aspect-[16/10]">
             <Screen variant={variant} compact={false} />
           </div>
-        </div>
-        <div className="absolute bottom-0 right-0 w-[24%] rounded-xl border border-ink bg-paper p-[3px] shadow-[0_8px_24px_-8px_rgb(16_17_20/0.35)]">
-          <div className="aspect-[9/17] overflow-hidden rounded-[0.6rem] bg-paper">
-            <Screen variant={variant} compact />
+        </Browser>
+        {phone && (
+          <div className="absolute bottom-0 right-0 w-[24%] rounded-xl border border-ink bg-paper p-[3px] shadow-[0_8px_24px_-8px_rgb(16_17_20/0.35)]">
+            <div className="aspect-[9/17] overflow-hidden rounded-[0.6rem] bg-paper">
+              <Screen variant={variant} compact />
+            </div>
           </div>
-        </div>
+        )}
       </div>
-      <figcaption className="eyebrow mt-2">
-        {label} · {note}
-      </figcaption>
+      <figcaption className="eyebrow mt-3">{caption}</figcaption>
     </figure>
   );
 }

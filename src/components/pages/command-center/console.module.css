@@ -1,0 +1,42 @@
+/* Panel filtering for the mobile console tabs (see ConsoleTabs.tsx). From lg up every panel shows. */
+@media (max-width: 63.999rem) {
+  .tabs[data-active="stack"] [data-group]:not([data-group="stack"]),
+  .tabs[data-active="platform"] [data-group]:not([data-group="platform"]),
+  .tabs[data-active="map"] [data-group]:not([data-group="map"]) {
+    display: none;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 1px;
+  background: var(--color-night-line);
+  border: 1px solid var(--color-night-line);
+}
+
+/* Hairline grid: panels sit on a 1px gap so their borders never double up. */
+.grid > * {
+  border: 0;
+}
+
+@media (min-width: 40rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .span3 { grid-column: span 3; }
+  .span4 { grid-column: span 4; }
+  .span5 { grid-column: span 5; }
+  .span6 { grid-column: span 6; }
+  .span7 { grid-column: span 7; }
+  .span8 { grid-column: span 8; }
+}
+
+@media (min-width: 40rem) and (max-width: 63.999rem) {
+  .wide { grid-column: span 2; }
+}

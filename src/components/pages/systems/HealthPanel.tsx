@@ -27,7 +27,7 @@ export function HealthPanel({ t, locale }: { t: SystemsContent["health"]; locale
   const tag = locale === "th" ? "th-TH-u-ca-gregory" : locale;
 
   return (
-    <div className="border border-ink">
+    <div className="border border-ink bg-paper">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink bg-paper-2 px-4 py-3">
         <p className="mono text-[0.8rem]">
           <span className="rounded bg-ink px-1.5 py-0.5 text-paper">GET</span> /api/health
@@ -58,6 +58,8 @@ export function HealthPanel({ t, locale }: { t: SystemsContent["health"]; locale
                 [t.fields.region, word(result.data.runtime.region), false],
                 [t.fields.environment, result.data.runtime.environment, false],
                 [t.fields.commit, word(result.data.deployment.commit), false],
+                [t.fields.email, word(result.data.checks.email ?? "not-configured"), false],
+                [t.fields.channels, result.data.checks.contactChannels?.length ? result.data.checks.contactChannels.join(" · ") : t.values.none, false],
                 [t.fields.database, word(result.data.checks.database), false],
                 [t.fields.webhook, word(result.data.checks.contactWebhook), false],
               ] as const

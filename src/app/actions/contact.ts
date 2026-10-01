@@ -7,7 +7,7 @@ import { deliverContact } from "@/lib/contact/deliver";
 
 export type ContactState =
   | { status: "idle" }
-  | { status: "success" }
+  | { status: "success"; acknowledged: boolean }
   | { status: "invalid"; fieldErrors: ContactFieldErrors }
   | { status: "rate-limited"; retryAfterSec: number }
   | { status: "unavailable" }
@@ -18,7 +18,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   const parsed = parseContact(raw);
 
   // Bots that fill the hidden field get a fake success so they learn nothing.
-  if (!parsed.success && parsed.honeypot) return { status: "success" };
+  if (!parsed.success && parsed.honeypot) return { status: "success", acknowledged: false };
   if (!parsed.success) return { status: "invalid", fieldErrors: parsed.fieldErrors };
 
   const h = await headers();
@@ -28,7 +28,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
 
   try {
     const result = await deliverContact(parsed.data);
-    if (result.ok) return { status: "success" };
+    if (result.ok) return { status: "success", acknowledged: result.acknowledged };
     return { status: result.reason === "unavailable" ? "unavailable" : "error" };
   } catch {
     return { status: "error" };

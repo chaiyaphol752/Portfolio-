@@ -69,6 +69,7 @@ describe("delivery", () => {
   beforeEach(() => {
     delete process.env.DATABASE_URL;
     delete process.env.CONTACT_WEBHOOK_URL;
+    delete process.env.RESEND_API_KEY;
   });
   afterEach(() => vi.restoreAllMocks());
 
@@ -78,7 +79,7 @@ describe("delivery", () => {
   it("delivers through the webhook when configured", async () => {
     process.env.CONTACT_WEBHOOK_URL = "https://hooks.example.test/x";
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response("ok", { status: 200 }));
-    expect(await deliverContact(data)).toEqual({ ok: true, channels: ["webhook"] });
+    expect(await deliverContact(data)).toEqual({ ok: true, channels: ["webhook"], acknowledged: false });
     expect(fetchMock).toHaveBeenCalledOnce();
   });
   it("fails when the only channel errors", async () => {

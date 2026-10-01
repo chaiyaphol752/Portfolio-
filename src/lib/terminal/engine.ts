@@ -7,10 +7,46 @@ import { interpolate } from "@/lib/interpolate";
  * small set of known command names to pre-written, localized output.
  */
 
-export const commandNames = ["help", "about", "skills", "projects", "stack", "ai", "architecture", "contact", "open", "lang", "clear"] as const;
+export const commandNames = [
+  "help",
+  "about",
+  "services",
+  "capabilities",
+  "projects",
+  "stack",
+  "ai",
+  "agents",
+  "local-ai",
+  "python",
+  "architecture",
+  "status",
+  "contact",
+  "email",
+  "open",
+  "lang",
+  "history",
+  "clear",
+] as const;
 export type CommandName = (typeof commandNames)[number];
 
+/** Alternative spellings that resolve to a canonical command. */
+export const commandAliases: Readonly<Record<string, CommandName>> = {
+  skills: "capabilities",
+  local: "local-ai",
+  localai: "local-ai",
+  agent: "agents",
+  phone: "contact",
+  mail: "email",
+  health: "status",
+  cls: "clear",
+};
+
+/** Commands whose output is fully pre-built in the context. */
+export const sectionNames = ["about", "services", "capabilities", "projects", "stack", "ai", "agents", "local-ai", "python", "architecture", "contact", "email"] as const;
+export type SectionName = (typeof sectionNames)[number];
+
 export const MAX_INPUT_LENGTH = 120;
+export const MAX_HISTORY_LINES = 20;
 
 export type LineKind = "heading" | "text" | "muted" | "row" | "error" | "success";
 
@@ -19,12 +55,13 @@ export interface OutputLine {
   text: string;
   /** Left column for `row` lines. */
   label?: string;
+  /** Only ever set from trusted configuration (mailto:, tel:, site paths), never from user input. */
+  href?: string;
 }
 
 export interface PageRef {
   id: string;
   slug: string;
-  number: number;
   label: string;
 }
 
@@ -45,16 +82,39 @@ export interface TerminalMessages {
   langUnknown: string;
   langCurrent: string;
   langSwitching: string;
+  historyEmpty: string;
+  statusTitle: string;
+  statusPending: string;
   descriptions: Record<CommandName, string>;
 }
+
+export type StatusLabel = "status" | "environment" | "region" | "commit" | "database" | "email" | "channels";
 
 export interface TerminalContext {
   locale: Locale;
   messages: TerminalMessages;
   /** Pre-built output for the informational commands. */
-  sections: Record<"about" | "skills" | "projects" | "stack" | "ai" | "architecture" | "contact", OutputLine[]>;
+  sections: Record<SectionName, OutputLine[]>;
   pages: PageRef[];
   locales: LocaleRef[];
+  /** Localized labels for the `status` command rows. */
+  statusLabels: Record<StatusLabel, string>;
+  /** Localized display values for raw health values such as "not-configured". */
+  statusValues: Record<string, string>;
+}
+
+/** The subset of /api/health the terminal prints. Supplied by the page once fetched. */
+export interface HealthSnapshot {
+  status: string;
+  runtime: { environment: string; region: string };
+  deployment: { commit: string | null };
+  checks: { database: string; email?: string; contactChannels?: string[] };
+}
+
+export interface RuntimeState {
+  /** Previously entered commands, oldest first. */
+  history?: readonly string[];
+  health?: HealthSnapshot | null;
 }
 
 export type Effect = { type: "clear" } | { type: "navigate"; slug: string } | { type: "locale"; locale: Locale };
@@ -72,55 +132,71 @@ export function parseInput(raw: string): { name: string; args: string[] } {
 
 const isCommand = (name: string): name is CommandName => (commandNames as readonly string[]).includes(name);
 
-/** Resolves "4", "04", "lab", "case-studies" or a localized label to a page. */
+/** Canonical command for a typed name, following aliases. */
+export function resolveCommand(name: string): CommandName | undefined {
+  if (isCommand(name)) return name;
+  return Object.hasOwn(commandAliases, name) ? commandAliases[name] : undefined;
+}
+
+/** Resolves "lab", "case-studies", "home", "skills" or a localized label to a page. */
 export function findPage(query: string, pages: PageRef[]): PageRef | undefined {
   const q = query.trim().toLowerCase();
   if (!q) return undefined;
-  const asNumber = /^\d+$/.test(q) ? Number.parseInt(q, 10) : null;
-  return pages.find((p) => p.id === q || p.slug === q || p.number === asNumber || p.label.toLowerCase() === q);
+  const slug = q === "home" ? "" : q === "skills" ? "capabilities" : q;
+  return pages.find((p) => p.id === q || p.slug === slug || p.label.toLowerCase() === q);
 }
 
 function helpLines(ctx: TerminalContext): OutputLine[] {
   const { messages, locales } = ctx;
-  const usage: Record<CommandName, string> = {
-    help: "help",
-    about: "about",
-    skills: "skills",
-    projects: "projects",
-    stack: "stack",
-    ai: "ai",
-    architecture: "architecture",
-    contact: "contact",
+  const usage: Partial<Record<CommandName, string>> = {
     open: `open <${messages.openArg}>`,
     lang: `lang <${locales.map((l) => l.code).join("|")}>`,
-    clear: "clear",
   };
   return [
     { kind: "heading", text: messages.helpTitle },
-    ...commandNames.map((name): OutputLine => ({ kind: "row", label: usage[name], text: messages.descriptions[name] })),
+    ...commandNames.map((name): OutputLine => ({ kind: "row", label: usage[name] ?? name, text: messages.descriptions[name] })),
     { kind: "muted", text: messages.helpHint },
   ];
 }
 
-export function execute(raw: string, ctx: TerminalContext): ExecutionResult {
-  const { name, args } = parseInput(raw);
+function statusLines(ctx: TerminalContext, health: HealthSnapshot | null | undefined): OutputLine[] {
+  const { messages, statusLabels: l } = ctx;
+  if (!health) return [{ kind: "muted", text: messages.statusPending }];
+  const v = (value: string) => ctx.statusValues[value] ?? value;
+  const channels = health.checks.contactChannels ?? [];
+  return [
+    { kind: "heading", text: messages.statusTitle },
+    { kind: health.status === "ok" ? "success" : "error", text: `${l.status}: ${v(health.status)}` },
+    { kind: "row", label: l.environment, text: v(health.runtime.environment) },
+    { kind: "row", label: l.region, text: v(health.runtime.region) },
+    { kind: "row", label: l.commit, text: health.deployment.commit ?? "—" },
+    { kind: "row", label: l.database, text: v(health.checks.database) },
+    { kind: "row", label: l.email, text: v(health.checks.email ?? "not-configured") },
+    { kind: "row", label: l.channels, text: channels.length ? channels.join(" · ") : "—" },
+  ];
+}
+
+export function execute(raw: string, ctx: TerminalContext, state: RuntimeState = {}): ExecutionResult {
+  const { name: typed, args } = parseInput(raw);
   const { messages } = ctx;
-  if (!name) return { lines: [] };
-  if (!isCommand(name)) return { lines: [{ kind: "error", text: interpolate(messages.unknown, { command: name }) }] };
+  if (!typed) return { lines: [] };
+  const name = resolveCommand(typed);
+  if (!name) return { lines: [{ kind: "error", text: interpolate(messages.unknown, { command: typed }) }] };
 
   switch (name) {
     case "help":
       return { lines: helpLines(ctx) };
     case "clear":
       return { lines: [], effect: { type: "clear" } };
-    case "about":
-    case "skills":
-    case "projects":
-    case "stack":
-    case "ai":
-    case "architecture":
-    case "contact":
-      return { lines: ctx.sections[name] };
+    case "status":
+      return { lines: statusLines(ctx, state.health) };
+    case "history": {
+      const all = state.history ?? [];
+      const recent = all.slice(-MAX_HISTORY_LINES);
+      if (!recent.length) return { lines: [{ kind: "muted", text: messages.historyEmpty }] };
+      const offset = all.length - recent.length;
+      return { lines: recent.map((cmd, i): OutputLine => ({ kind: "row", label: String(offset + i + 1), text: cmd })) };
+    }
     case "open": {
       const list = ctx.pages.map((p) => p.slug || "home").join(", ");
       if (args.length === 0) return { lines: [{ kind: "text", text: interpolate(messages.openUsage, { pages: list }) }] };
@@ -142,6 +218,8 @@ export function execute(raw: string, ctx: TerminalContext): ExecutionResult {
         effect: { type: "locale", locale: target.code },
       };
     }
+    default:
+      return { lines: ctx.sections[name] };
   }
 }
 
@@ -165,11 +243,11 @@ export function complete(input: string, ctx: TerminalContext): string {
     return matches.length === 1 ? `${matches[0]} ` : commonPrefix([...matches]);
   }
 
-  const command = tokens[0]!.toLowerCase();
+  const command = resolveCommand(tokens[0]!.toLowerCase());
   const partial = endsWithSpace ? "" : (tokens[1] ?? "").toLowerCase();
   if (tokens.length > 2 || (tokens.length === 2 && endsWithSpace)) return input;
   const options = command === "open" ? ctx.pages.map((p) => p.slug || "home") : command === "lang" ? ctx.locales.map((l) => l.code as string) : [];
   const matches = options.filter((o) => o.startsWith(partial));
   if (matches.length === 0) return input;
-  return `${command} ${matches.length === 1 ? matches[0] : commonPrefix(matches)}`;
+  return `${tokens[0]} ${matches.length === 1 ? matches[0] : commonPrefix(matches)}`;
 }

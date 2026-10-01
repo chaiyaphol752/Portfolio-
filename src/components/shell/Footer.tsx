@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { formatPageNumber, pages } from "@/config/pages";
+import { pages } from "@/config/pages";
 import { localizedPath } from "@/i18n/routing";
 import type { Locale } from "@/i18n/config";
 import { common } from "@/content/common";
 import { profile } from "@/config/profile";
 import { ExternalLink } from "@/components/ui/ExternalLink";
+import { Availability } from "@/components/ui/Availability";
+import { ContactActions } from "@/components/ui/ContactActions";
 
 export function Footer({ locale }: { locale: Locale }) {
   const t = common[locale];
@@ -18,25 +20,19 @@ export function Footer({ locale }: { locale: Locale }) {
     <footer className="border-t border-ink bg-paper">
       <div className="container-page grid gap-12 py-14 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <p className="display-serif text-4xl leading-tight sm:text-5xl">{profile.name}</p>
-          <p className="mt-5 max-w-[40ch] text-ink-2">{t.footer.tagline}</p>
-          <p className="mono mt-6 flex items-center gap-2 text-xs text-ink-2">
-            <span aria-hidden className={"size-2 rounded-full " + (profile.availability === "open" ? "bg-signal" : profile.availability === "limited" ? "bg-accent" : "bg-ink-3")} />
-            {t.footer.availability[profile.availability]} · {profile.location[locale]}
-          </p>
+          <Availability t={t} services className="text-sm" />
+          <p className="mt-6 max-w-[34ch] text-[clamp(1.4rem,2.4vw,2rem)] font-medium leading-tight tracking-tight">{t.footer.tagline}</p>
+          <ContactActions t={t} className="mt-8" />
         </div>
         <nav aria-label={t.footer.explore} className="lg:col-span-4">
           <p className="eyebrow mb-4">{t.footer.explore}</p>
-          <ol className="grid grid-cols-2 gap-x-6 gap-y-2">
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
             {pages.map((p) => (
               <li key={p.id}>
-                <Link href={localizedPath(locale, p.slug)} className="group flex gap-3 text-sm">
-                  <span className="mono tabular text-ink-3">{formatPageNumber(p.number)}</span>
-                  <span className="link-underline">{t.nav[p.id]}</span>
-                </Link>
+                <Link href={localizedPath(locale, p.slug)} className="link-underline">{t.nav[p.id]}</Link>
               </li>
             ))}
-          </ol>
+          </ul>
         </nav>
         <div className="lg:col-span-3">
           <p className="eyebrow mb-4">{t.footer.elsewhere}</p>
@@ -49,10 +45,8 @@ export function Footer({ locale }: { locale: Locale }) {
             <li>
               <ExternalLink href={profile.sourceRepo} hint={t.externalLink} className="link-underline">{t.footer.source}</ExternalLink>
             </li>
-            {profile.email && (
-              <li><a href={`mailto:${profile.email}`} className="link-underline">{profile.email}</a></li>
-            )}
           </ul>
+          <p className="display-serif mt-10 text-3xl">{profile.name}</p>
         </div>
       </div>
       <div className="container-page flex flex-wrap items-center justify-between gap-2 border-t border-line py-5">

@@ -3,18 +3,19 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { formatPageNumber, getPageBySlug, pages } from "@/config/pages";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { getPageBySlug, pages } from "@/config/pages";
 import { localizedPath, parsePathname } from "@/i18n/routing";
 import type { Locale } from "@/i18n/config";
 import type { CommonContent } from "@/content/common";
+import { mailtoHref, profile } from "@/config/profile";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
-/** Full-screen index of all nine pages. Uses native <dialog> for focus trapping and Esc handling. */
+/** Full-screen navigation with direct contact actions. Native <dialog> handles focus trapping and Esc. */
 export function IndexMenu({ locale, t }: { locale: Locale; t: CommonContent }) {
   const ref = useRef<HTMLDialogElement>(null);
   const pathname = usePathname();
-  const currentSlug = parsePathname(pathname).slug;
+  const currentId = getPageBySlug(parsePathname(pathname).slug.split("/")[0] ?? "")?.id ?? "home";
   const close = () => ref.current?.close();
 
   return (
@@ -34,7 +35,7 @@ export function IndexMenu({ locale, t }: { locale: Locale; t: CommonContent }) {
         className="m-0 h-dvh max-h-none w-screen max-w-none bg-paper p-0 text-ink backdrop:bg-transparent"
         onClick={(e) => e.target === ref.current && close()}
       >
-        <div className="container-page flex h-full flex-col overflow-y-auto pb-8">
+        <div className="container-page flex min-h-full flex-col pb-8">
           <div className="flex h-[var(--header-h)] shrink-0 items-center justify-between">
             <p className="eyebrow">{t.menu.title}</p>
             <button
@@ -46,29 +47,44 @@ export function IndexMenu({ locale, t }: { locale: Locale; t: CommonContent }) {
               {t.menu.close}
             </button>
           </div>
-          <ol className="mt-4 border-t border-ink">
-            {pages.map((p) => {
-              const active = getPageBySlug(currentSlug)?.id === p.id || (currentSlug === "" && p.id === "home");
-              return (
-                <li key={p.id} className="border-b border-line">
+
+          <div className="grid flex-1 gap-10 border-t border-ink pt-6 lg:grid-cols-12">
+            <ul className="lg:col-span-8 lg:columns-2 lg:gap-10">
+              {pages.map((p) => (
+                <li key={p.id} className="break-inside-avoid border-b border-line">
                   <Link
                     href={localizedPath(locale, p.slug)}
                     onClick={close}
-                    aria-current={active ? "page" : undefined}
-                    className="group flex items-baseline gap-5 py-3 sm:gap-8 sm:py-4"
+                    aria-current={currentId === p.id ? "page" : undefined}
+                    className="group flex items-baseline justify-between gap-4 py-3 sm:py-4"
                   >
-                    <span className="mono tabular w-8 text-xs text-ink-3">{formatPageNumber(p.number)}</span>
-                    <span className="h1 transition-transform duration-300 group-hover:translate-x-2 group-aria-[current=page]:text-accent-ink">
+                    <span className="text-[clamp(1.6rem,4.2vw,2.4rem)] font-medium leading-tight tracking-tight transition-transform duration-300 group-hover:translate-x-1 group-aria-[current=page]:text-accent-ink">
                       {t.nav[p.id]}
                     </span>
+                    <span className="hidden text-right text-sm text-ink-3 sm:block">{t.navHint[p.id]}</span>
                   </Link>
                 </li>
-              );
-            })}
-          </ol>
-          <div className="mt-auto flex flex-wrap items-center justify-between gap-6 pt-8">
-            <p className="max-w-[36ch] text-sm text-ink-3">{t.menu.hint}</p>
-            <LanguageSwitcher locale={locale} label={t.language} />
+              ))}
+            </ul>
+
+            <div className="flex flex-col gap-8 lg:col-span-4">
+              <div>
+                <p className="eyebrow mb-3">{t.menu.contact}</p>
+                <ul className="space-y-3">
+                  <li>
+                    <a href={mailtoHref} className="mono text-lg underline decoration-line underline-offset-4 hover:decoration-ink">{profile.contact.email}</a>
+                  </li>
+                  <li>
+                    <a href={profile.contact.phone.href} className="mono tabular text-lg underline decoration-line underline-offset-4 hover:decoration-ink">{profile.contact.phone.display}</a>
+                  </li>
+                </ul>
+              </div>
+              <Link href={localizedPath(locale, "contact")} onClick={close} className="btn btn-primary self-start">
+                {t.startProject}
+                <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
+              <LanguageSwitcher locale={locale} label={t.language} />
+            </div>
           </div>
         </div>
       </dialog>

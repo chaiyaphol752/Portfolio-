@@ -6,6 +6,7 @@ import { CornerDownLeft } from "lucide-react";
 import { localizedPath, switchLocalePath } from "@/i18n/routing";
 import { rememberLocale } from "@/i18n/remember";
 import { complete, execute, type OutputLine, type TerminalContext } from "@/lib/terminal/engine";
+import { useHealth } from "./HealthProvider";
 
 interface Copy {
   label: string;
@@ -24,23 +25,35 @@ interface Entry {
   lines: OutputLine[];
 }
 
-const QUICK_COMMANDS = ["help", "about", "skills", "projects", "stack", "ai", "architecture", "contact"] as const;
+const QUICK_COMMANDS = ["help", "services", "ai", "agents", "python", "status", "contact"] as const;
 
 const lineClass: Record<OutputLine["kind"], string> = {
   heading: "mono mt-1 text-xs uppercase tracking-[0.14em] text-accent",
   text: "text-night-ink",
   muted: "text-night-mute",
   row: "",
-  error: "text-[#ff8f73]",
-  success: "text-[#4fd18b]",
+  error: "text-err",
+  success: "text-ok",
 };
 
 function Line({ line }: { line: OutputLine }) {
   if (line.kind === "row") {
+    // href only ever comes from the trusted terminal context (mailto:, tel:, site paths, repo URL).
+    const external = line.href?.startsWith("http");
     return (
       <p className="grid gap-x-4 sm:grid-cols-[11rem_1fr]">
         <span className="text-night-mute break-words">{line.label}</span>
-        <span className="text-night-ink break-words">{line.text}</span>
+        {line.href ? (
+          <a
+            href={line.href}
+            {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className="break-words text-night-ink underline decoration-night-line underline-offset-4 hover:decoration-night-ink"
+          >
+            {line.text}
+          </a>
+        ) : (
+          <span className="text-night-ink break-words">{line.text}</span>
+        )}
       </p>
     );
   }
@@ -53,6 +66,7 @@ function Line({ line }: { line: OutputLine }) {
  */
 export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
   const router = useRouter();
+  const { state: health } = useHealth();
   const pathname = usePathname();
   const inputId = useId();
   const nextId = useRef(1);
@@ -71,9 +85,12 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
   const run = (raw: string) => {
     const command = raw.trim();
     if (!command) return;
+    const { lines, effect } = execute(command, ctx, {
+      history: history.current,
+      health: health.kind === "ready" ? health.data : null,
+    });
     history.current.push(command);
     cursor.current = -1;
-    const { lines, effect } = execute(command, ctx);
     if (effect?.type === "clear") {
       setEntries([]);
     } else {
@@ -110,10 +127,10 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
   };
 
   return (
-    <section aria-label={copy.label} className="on-night night overflow-hidden rounded-lg border border-night-line bg-night-2">
+    <section aria-label={copy.label} className="on-night flex min-w-0 flex-col bg-night">
       <div className="flex items-center justify-between border-b border-night-line px-4 py-3">
         <p className="mono text-xs text-night-mute">portfolio — {ctx.locale}</p>
-        <p className="mono rounded-full border border-night-line px-2.5 py-0.5 text-[0.65rem] uppercase tracking-wider text-night-mute">{copy.badge}</p>
+        <p className="mono rounded-sm border border-night-line px-2 py-0.5 text-[0.65rem] uppercase tracking-wider text-night-mute">{copy.badge}</p>
       </div>
 
       <div
@@ -123,7 +140,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
         aria-label={copy.logLabel}
         tabIndex={0}
         onClick={() => window.getSelection()?.toString() === "" && inputRef.current?.focus()}
-        className="mono h-[22rem] space-y-4 overflow-y-auto px-4 py-4 text-[0.82rem] leading-relaxed sm:h-[26rem]"
+        className="mono h-[20rem] space-y-4 overflow-y-auto px-4 py-4 text-[0.8rem] leading-relaxed sm:h-[24rem] lg:h-[25rem]"
       >
         {entries.map((entry) => (
           <div key={entry.id} className="space-y-1">
@@ -172,7 +189,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
           />
           <button
             type="submit"
-            className="mono inline-flex h-9 shrink-0 items-center gap-2 rounded-full border border-night-line px-3.5 text-xs text-night-ink transition-colors hover:border-night-ink"
+            className="mono inline-flex h-9 shrink-0 items-center gap-2 rounded-sm border border-night-line px-3.5 text-xs text-night-ink transition-colors hover:border-night-ink"
           >
             {copy.submit}
             <CornerDownLeft className="size-3.5" aria-hidden />
@@ -185,7 +202,7 @@ export function Terminal({ ctx, copy }: { ctx: TerminalContext; copy: Copy }) {
               key={name}
               type="button"
               onClick={() => run(name)}
-              className="mono rounded-full border border-night-line px-3 py-1 text-xs text-night-mute transition-colors hover:border-night-ink hover:text-night-ink"
+              className="mono rounded-sm border border-night-line px-2.5 py-1 text-xs text-night-mute transition-colors hover:border-night-ink hover:text-night-ink"
             >
               {name}
             </button>

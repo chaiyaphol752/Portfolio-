@@ -3,7 +3,8 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { CornerDownLeft } from "lucide-react";
-import { formatPageNumber, pages } from "@/config/pages";
+import { pages } from "@/config/pages";
+import { mailtoHref, profile } from "@/config/profile";
 import { localizedPath, switchLocalePath } from "@/i18n/routing";
 import { locales, localeMeta, type Locale } from "@/i18n/config";
 import { rememberLocale } from "@/i18n/remember";
@@ -48,7 +49,7 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
       id: `page-${p.id}`,
       group: "pages",
       label: t.nav[p.id],
-      hint: formatPageNumber(p.number),
+      hint: t.navHint[p.id],
       run: go(localizedPath(locale, p.slug)),
     }));
     const switchCommands: Command[] = locales
@@ -65,7 +66,9 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
       }));
     return [
       ...pageCommands,
-      { id: "contact", group: "actions", label: t.commandPalette.contact, hint: "↵", run: go(`${localizedPath(locale, "systems")}#contact`) },
+      { id: "contact", group: "actions", label: t.commandPalette.contact, hint: "↵", run: go(localizedPath(locale, "contact")) },
+      { id: "email", group: "actions", label: t.commandPalette.email, hint: profile.contact.email, run: () => { window.location.href = mailtoHref; } },
+      { id: "phone", group: "actions", label: t.commandPalette.phone, hint: profile.contact.phone.display, run: () => { window.location.href = profile.contact.phone.href; } },
       { id: "github", group: "actions", label: t.commandPalette.github, hint: "↗", run: open(githubUrl) },
       { id: "source", group: "actions", label: t.commandPalette.source, hint: "↗", run: open(sourceUrl) },
       ...switchCommands,

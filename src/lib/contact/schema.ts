@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { locales } from "@/i18n/config";
 
-export const projectTypes = ["website", "webapp", "saas", "ecommerce", "ai", "other"] as const;
+export const projectTypes = ["new-website", "redesign", "features", "webapp", "ai-integration", "automation", "local-ai", "other"] as const;
 export const budgets = ["under-1k", "1k-5k", "5k-15k", "15k-plus", "unsure"] as const;
 
 /** Empty form inputs arrive as "" — treat them as "not provided". */

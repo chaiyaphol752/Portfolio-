@@ -6,7 +6,7 @@ import { mkdirSync } from "node:fs";
 const base = process.env.BASE_URL ?? "http://localhost:3000";
 const out = process.argv[2] ?? "qa-shots";
 const locales = (process.argv[3] ?? "en,de,th").split(",");
-const slugs = ["", "about", "skills", "projects", "case-studies", "ai-native", "lab", "systems", "command-center"];
+const slugs = ["", "projects", "capabilities", "ai-native", "case-studies", "lab", "systems", "command-center", "about", "contact"];
 const all = { phone: { width: 360, height: 780 }, tablet: { width: 820, height: 1100 }, laptop: { width: 1366, height: 820 }, wide: { width: 1920, height: 1080 } };
 const wanted = (process.argv[4] ?? Object.keys(all).join(",")).split(",");
 mkdirSync(out, { recursive: true });

@@ -29,7 +29,8 @@ describe("case studies content", () => {
     for (const locale of locales) {
       for (const study of caseStudiesContent[locale].cases) {
         for (const step of caseStepIds) {
-          const { body, points } = study.sections[step];
+          const { client, body, points } = study.sections[step];
+          expect(client.trim().length).toBeGreaterThan(20);
           // A short lead-in is fine when bullet points carry the substance.
           expect(body.trim().length).toBeGreaterThan(points.length > 0 ? 3 : 40);
         }
@@ -50,6 +51,17 @@ describe("case studies content", () => {
       const { cases, ...rest } = caseStudiesContent[locale];
       expect(strings({ cases, ...rest }).every((s) => s.trim().length > 0)).toBe(true);
     }
+  });
+
+  it("follows the nine-chapter structure and has at least one diagram per case", () => {
+    expect(caseStepIds).toEqual(["problem", "constraints", "decision", "architecture", "implementation", "tradeoffs", "testing", "deployment", "future"]);
+    for (const study of caseStudiesContent.en.cases) expect(Object.keys(study.diagrams).length).toBeGreaterThan(0);
+  });
+
+  it("documents the real contact pipeline in the portfolio case", () => {
+    const portfolio = caseStudiesContent.en.cases.find((c) => c.id === "portfolio");
+    const text = JSON.stringify(portfolio);
+    for (const term of ["Resend", "Reply-To", "Zod", "honeypot", "Python", "Vercel", "/api/health"]) expect(text).toContain(term);
   });
 
   it("uses no gendered Thai self-reference", () => {

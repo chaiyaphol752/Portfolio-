@@ -7,7 +7,13 @@ export const healthSchema = z.object({
   time: z.string(),
   runtime: z.object({ node: z.string(), region: z.string(), environment: z.string() }),
   deployment: z.object({ commit: z.string().nullable() }),
-  checks: z.object({ database: z.string(), contactWebhook: z.string() }),
+  checks: z.object({
+    database: z.string(),
+    contactWebhook: z.string(),
+    // Optional so the panel keeps working against an older deployment of the endpoint.
+    email: z.string().optional(),
+    contactChannels: z.array(z.string()).optional(),
+  }),
 });
 
 export type Health = z.infer<typeof healthSchema>;

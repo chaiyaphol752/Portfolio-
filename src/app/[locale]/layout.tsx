@@ -38,8 +38,10 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     "@type": "Person",
     name: profile.name,
     url: profile.siteUrl,
-    jobTitle: "Web developer",
-    knowsAbout: ["Web development", "Next.js", "TypeScript", "AI-assisted engineering"],
+    jobTitle: "Web developer and AI-native builder",
+    email: `mailto:${profile.contact.email}`,
+    telephone: profile.contact.phone.display,
+    knowsAbout: ["Web development", "Website redesign", "Next.js", "TypeScript", "Python", "AI integration", "Autonomous agents", "Local AI"],
     sameAs: [profile.links.github, profile.links.linkedin, ...profile.links.freelance.map((f) => f.url)].filter(Boolean),
   };
 
@@ -52,7 +54,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
         >
           {t.skipToContent}
         </a>
-        <Header locale={locale} t={t} brandName={profile.shortName} monogram={profile.monogram} />
+        <Header locale={locale} t={t} brandName={profile.shortName} monogram={profile.monogram} available={profile.availability === "open"} />
         <main id="main" tabIndex={-1} className="outline-none">{children}</main>
         <Footer locale={locale} />
         <CommandPalette locale={locale} t={t} githubUrl={profile.links.github} sourceUrl={profile.sourceRepo} />

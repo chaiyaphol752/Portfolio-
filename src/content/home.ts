@@ -4,36 +4,115 @@ const en = {
   meta: {
     title: "Web developer × AI-native builder",
     description:
-      "Portfolio of a web developer who builds modern, responsive websites and web applications with AI-native engineering workflows, from idea to reliable production software.",
+      "Freelance web developer for new websites, redesigns, new features, full-stack web applications, AI integration and automation — designed, built and shipped to production.",
   },
   hero: {
-    eyebrow: "Portfolio",
-    lineA: "Web developer",
-    lineB: "AI-native",
-    lineC: "builder",
-    value:
-      "I build modern web experiences and use AI-native engineering workflows to move efficiently from idea to reliable production software.",
+    role: "Web developer × AI-native builder",
+    titleA: "Build it new.",
+    titleB: "Make it better.",
+    titleAccent: "Ship it.",
+    lede:
+      "I design and develop websites and web applications, redesign the ones that have fallen behind and add features to products already in use — connected to APIs, backends and AI where it earns its place, and taken all the way to production.",
+    secondary: "Explore AI systems",
+    outcomesLabel: "What I take on",
+    outcomes: [
+      "New websites",
+      "Website redesigns",
+      "New features",
+      "Web applications",
+      "AI integration",
+      "Automation",
+      "APIs & backend",
+      "Production deployment",
+    ],
   },
-  capabilitiesLabel: "Capabilities",
-  capabilities: [
-    "Responsive interfaces",
-    "Full-stack web apps",
-    "APIs & databases",
-    "AI-assisted engineering",
-    "Accessibility & performance",
-    "Testing & deployment",
-  ],
-  visual: {
-    alt: "Diagram of a build path in four steps: idea, plan, build, ship.",
-    nodes: ["Idea", "Plan", "Build", "Ship"],
-    caption: "From idea to production, one deliberate step at a time.",
+  services: {
+    eyebrow: "Work with me",
+    title: "Four ways most projects start.",
+    lede: "Whether you are starting from zero or improving something that already runs, the work covers design, code and delivery — not just one slice of it.",
+    youGet: "What you get",
+    lead: [
+      {
+        id: "new-website",
+        title: "Build a new website",
+        outcome: "A fast, responsive site that explains your offer clearly and is easy to keep up to date.",
+        points: ["Structure and copy hierarchy", "Custom design, not a theme", "Responsive and accessible", "SEO basics and analytics-ready"],
+        cta: "Start a project",
+      },
+      {
+        id: "redesign",
+        title: "Redesign an existing website",
+        outcome: "Your current site, rebuilt to look current, load quickly and work properly on phones.",
+        points: ["Audit of what works and what doesn't", "Visual and technical modernisation", "Content carried over", "Redirects so nothing breaks"],
+        cta: "Discuss a redesign",
+      },
+      {
+        id: "features",
+        title: "Add features to an existing application",
+        outcome: "New pages, workflows, dashboards or integrations — added cleanly to the system you already have.",
+        points: ["Reading the existing codebase first", "Changes that follow its conventions", "Tests around new behaviour", "Reviewed, documented hand-over"],
+        cta: "Add a feature",
+      },
+      {
+        id: "webapp",
+        title: "Build a web application",
+        outcome: "Frontend, backend, database and APIs as one working product, deployed and ready for real users.",
+        points: ["Product scope and data model", "Typed frontend and backend", "Auth, validation and error states", "CI and production deployment"],
+        cta: "Start a project",
+      },
+    ],
+    more: {
+      title: "Also available",
+      engineering: {
+        title: "Engineering",
+        items: [
+          { title: "Frontend development", note: "React, Next.js, TypeScript and accessible, responsive UI." },
+          { title: "Backend development", note: "Route handlers, server actions, validation and data." },
+          { title: "API integration", note: "Payments, CRMs, email, webhooks and third-party APIs." },
+          { title: "Performance & responsive fixes", note: "Slow pages, broken mobile layouts, layout shifts." },
+          { title: "Deployment", note: "GitHub, Vercel and a release process you can repeat." },
+        ],
+      },
+      ai: {
+        title: "AI & automation",
+        items: [
+          { title: "AI integration", note: "ChatGPT, Claude or other models inside your site or tool." },
+          { title: "AI workflow automation", note: "Repetitive steps handled by AI, checked by people." },
+          { title: "Autonomous agent workflows", note: "Planned, tool-using agents with checkpoints and approval." },
+          { title: "Local AI concepts", note: "Private, self-hosted model setups for sensitive data." },
+          { title: "Python automation", note: "Scripts, data processing and glue between systems." },
+        ],
+        cta: "Build with AI",
+      },
+    },
   },
-  sitemap: {
-    eyebrow: "How to read this site",
-    title: "Nine pages, each a little more technical.",
-    body: "Start with the overview. Go deeper whenever you want proof: interface work, case studies, a working lab, a real backend and a command center.",
-    simple: "Simple",
-    technical: "Technical",
+  ai: {
+    eyebrow: "AI systems",
+    title: "Not a chatbot bolted on. A system with checks.",
+    body:
+      "ChatGPT, Claude and local models each have a place. The work is orchestrating them with Python, APIs and real data — and keeping tests and human approval between the model and production.",
+    generated: "This board is generated by a Python script in the repository: {nodes} components, {edges} traces.",
+    imageAlt:
+      "Circuit diagram: human intent flows into an orchestrator, out to ChatGPT, Claude and local AI, through a tool router to Python, web APIs, data and GitHub, then through validation and human approval to deployment and production.",
+  },
+  process: {
+    eyebrow: "How a project runs",
+    title: "Clear steps, visible progress.",
+    steps: [
+      { title: "Scope", body: "We agree on goals, pages or features, and what done means — in writing." },
+      { title: "Build", body: "Work happens in small, reviewable steps you can see and comment on." },
+      { title: "Ship", body: "Tested, deployed to production and handed over with documentation." },
+      { title: "Iterate", body: "Real usage shows what to improve next. Further changes are easy to add." },
+    ],
+  },
+  work: {
+    eyebrow: "Proof of work",
+    title: "See how the work is done.",
+    body: "Concept projects, case studies and working tools — clearly labelled for what they are.",
+  },
+  closing: {
+    title: "Tell me what you're building.",
+    body: "A new site, a redesign, a feature for an existing product or an AI workflow. Describe it in a few lines and you'll get a clear reply about scope, approach and timing.",
   },
 };
 
@@ -43,36 +122,115 @@ const de: HomeContent = {
   meta: {
     title: "Webentwicklung × KI-natives Bauen",
     description:
-      "Portfolio für moderne, responsive Websites und Webanwendungen: mit KI-nativen Entwicklungs-Workflows von der Idee bis zur verlässlichen Produktion.",
+      "Freelance-Webentwicklung für neue Websites, Redesigns, neue Features, Full-Stack-Webanwendungen, KI-Integration und Automatisierung – konzipiert, gebaut und live gebracht.",
   },
   hero: {
-    eyebrow: "Portfolio",
-    lineA: "Webentwicklung",
-    lineB: "KI-natives",
-    lineC: "Bauen",
-    value:
-      "Ich baue moderne Web-Erlebnisse und nutze KI-native Entwicklungs-Workflows, um effizient von der Idee zu verlässlicher Produktionssoftware zu kommen.",
+    role: "Webentwicklung × KI-natives Bauen",
+    titleA: "Neu bauen.",
+    titleB: "Besser machen.",
+    titleAccent: "Live bringen.",
+    lede:
+      "Ich entwerfe und entwickle Websites und Webanwendungen, bringe veraltete Auftritte auf den aktuellen Stand und ergänze Produkte, die bereits laufen, um neue Features – angebunden an APIs, Backends und KI, wo es sinnvoll ist, und bis in die Produktion begleitet.",
+    secondary: "KI-Systeme entdecken",
+    outcomesLabel: "Was ich übernehme",
+    outcomes: [
+      "Neue Websites",
+      "Website-Redesigns",
+      "Neue Features",
+      "Webanwendungen",
+      "KI-Integration",
+      "Automatisierung",
+      "APIs & Backend",
+      "Deployment",
+    ],
   },
-  capabilitiesLabel: "Kompetenzen",
-  capabilities: [
-    "Responsive Oberflächen",
-    "Full-Stack-Webanwendungen",
-    "APIs & Datenbanken",
-    "KI-gestützte Entwicklung",
-    "Barrierefreiheit & Performance",
-    "Tests & Deployment",
-  ],
-  visual: {
-    alt: "Diagramm eines Bauwegs in vier Schritten: Idee, Plan, Bau, Livegang.",
-    nodes: ["Idee", "Plan", "Bau", "Live"],
-    caption: "Von der Idee zur Produktion, Schritt für Schritt mit Absicht.",
+  services: {
+    eyebrow: "Zusammenarbeit",
+    title: "Vier typische Einstiege.",
+    lede: "Ob du bei null anfängst oder etwas verbessern willst, das schon läuft: Die Arbeit umfasst Design, Code und Auslieferung – nicht nur einen Ausschnitt davon.",
+    youGet: "Was du bekommst",
+    lead: [
+      {
+        id: "new-website",
+        title: "Neue Website bauen",
+        outcome: "Eine schnelle, responsive Website, die dein Angebot klar erklärt und sich leicht pflegen lässt.",
+        points: ["Struktur und Text-Hierarchie", "Eigenes Design statt Theme", "Responsive und barrierearm", "SEO-Grundlagen, bereit für Analytics"],
+        cta: "Projekt starten",
+      },
+      {
+        id: "redesign",
+        title: "Bestehende Website neu gestalten",
+        outcome: "Deine aktuelle Website, neu aufgebaut: zeitgemäß, schnell und auf dem Smartphone wirklich gut nutzbar.",
+        points: ["Analyse, was funktioniert und was nicht", "Visuelle und technische Modernisierung", "Inhalte werden übernommen", "Weiterleitungen, damit nichts bricht"],
+        cta: "Redesign besprechen",
+      },
+      {
+        id: "features",
+        title: "Features für bestehende Anwendungen",
+        outcome: "Neue Seiten, Workflows, Dashboards oder Integrationen – sauber in dein bestehendes System eingefügt.",
+        points: ["Erst den bestehenden Code verstehen", "Änderungen im vorhandenen Stil", "Tests für neues Verhalten", "Review und dokumentierte Übergabe"],
+        cta: "Feature ergänzen",
+      },
+      {
+        id: "webapp",
+        title: "Webanwendung entwickeln",
+        outcome: "Frontend, Backend, Datenbank und APIs als ein funktionierendes Produkt – deployed und bereit für echte Nutzung.",
+        points: ["Produktumfang und Datenmodell", "Typisiertes Frontend und Backend", "Auth, Validierung und Fehlerzustände", "CI und Produktions-Deployment"],
+        cta: "Projekt starten",
+      },
+    ],
+    more: {
+      title: "Außerdem",
+      engineering: {
+        title: "Engineering",
+        items: [
+          { title: "Frontend-Entwicklung", note: "React, Next.js, TypeScript und barrierearme, responsive UI." },
+          { title: "Backend-Entwicklung", note: "Route Handlers, Server Actions, Validierung und Daten." },
+          { title: "API-Integration", note: "Zahlungen, CRM, E-Mail, Webhooks und externe APIs." },
+          { title: "Performance & Responsive", note: "Langsame Seiten, kaputte Mobil-Layouts, springende Inhalte." },
+          { title: "Deployment", note: "GitHub, Vercel und ein Release-Prozess, der sich wiederholen lässt." },
+        ],
+      },
+      ai: {
+        title: "KI & Automatisierung",
+        items: [
+          { title: "KI-Integration", note: "ChatGPT, Claude oder andere Modelle in deiner Website oder deinem Tool." },
+          { title: "KI-Workflow-Automatisierung", note: "Wiederkehrende Schritte übernimmt die KI, Menschen prüfen." },
+          { title: "Autonome Agent-Workflows", note: "Geplante Agents mit Tools, Checkpoints und Freigabe." },
+          { title: "Lokale KI-Konzepte", note: "Private, selbst gehostete Modelle für sensible Daten." },
+          { title: "Python-Automatisierung", note: "Skripte, Datenverarbeitung und Verbindungen zwischen Systemen." },
+        ],
+        cta: "Mit KI bauen",
+      },
+    },
   },
-  sitemap: {
-    eyebrow: "So liest sich diese Seite",
-    title: "Neun Seiten, jede ein Stück technischer.",
-    body: "Beginne mit dem Überblick. Geh tiefer, wenn du Belege sehen willst: Oberflächen, Fallstudien, ein funktionierendes Labor, ein echtes Backend und eine Kommandozentrale.",
-    simple: "Einfach",
-    technical: "Technisch",
+  ai: {
+    eyebrow: "KI-Systeme",
+    title: "Kein angeschraubter Chatbot. Ein System mit Kontrollen.",
+    body:
+      "ChatGPT, Claude und lokale Modelle haben jeweils ihren Platz. Die eigentliche Arbeit ist, sie mit Python, APIs und echten Daten zu orchestrieren – mit Tests und menschlicher Freigabe zwischen Modell und Produktion.",
+    generated: "Diese Platine erzeugt ein Python-Skript im Repository: {nodes} Bauteile, {edges} Leiterbahnen.",
+    imageAlt:
+      "Schaltplan: Menschliche Absicht fließt in einen Orchestrator, weiter zu ChatGPT, Claude und lokaler KI, über einen Tool-Router zu Python, Web-APIs, Daten und GitHub, dann über Validierung und menschliche Freigabe zu Deployment und Produktion.",
+  },
+  process: {
+    eyebrow: "So läuft ein Projekt",
+    title: "Klare Schritte, sichtbarer Fortschritt.",
+    steps: [
+      { title: "Umfang", body: "Wir klären Ziele, Seiten oder Features und was „fertig“ heißt – schriftlich." },
+      { title: "Bauen", body: "Die Arbeit passiert in kleinen, prüfbaren Schritten, die du sehen und kommentieren kannst." },
+      { title: "Ausliefern", body: "Getestet, in Produktion gebracht und mit Dokumentation übergeben." },
+      { title: "Weiterentwickeln", body: "Echte Nutzung zeigt, was als Nächstes kommt. Weitere Änderungen lassen sich leicht ergänzen." },
+    ],
+  },
+  work: {
+    eyebrow: "Arbeitsproben",
+    title: "Sieh dir an, wie gearbeitet wird.",
+    body: "Konzeptprojekte, Fallstudien und funktionierende Tools – klar gekennzeichnet als das, was sie sind.",
+  },
+  closing: {
+    title: "Erzähl mir, was du baust.",
+    body: "Eine neue Website, ein Redesign, ein Feature für ein bestehendes Produkt oder ein KI-Workflow. Beschreib es in ein paar Zeilen und du bekommst eine klare Antwort zu Umfang, Vorgehen und Zeitplan.",
   },
 };
 
@@ -80,36 +238,115 @@ const th: HomeContent = {
   meta: {
     title: "นักพัฒนาเว็บ × AI-native builder",
     description:
-      "พอร์ตโฟลิโอนักพัฒนาเว็บที่สร้างเว็บไซต์และเว็บแอปสมัยใหม่แบบ responsive ด้วยกระบวนการพัฒนาแบบ AI-native ตั้งแต่ไอเดียจนถึงซอฟต์แวร์ที่พร้อมใช้งานจริง",
+      "รับงานฟรีแลนซ์ทำเว็บไซต์ใหม่ Redesign เพิ่มฟีเจอร์ เว็บแอปแบบ Full-stack, AI Integration และระบบอัตโนมัติ ตั้งแต่ออกแบบ พัฒนา จนขึ้นใช้งานจริง",
   },
   hero: {
-    eyebrow: "พอร์ตโฟลิโอ",
-    lineA: "นักพัฒนาเว็บ",
-    lineB: "AI-native",
-    lineC: "builder",
-    value:
-      "สร้างประสบการณ์เว็บสมัยใหม่ และใช้กระบวนการพัฒนาแบบ AI-native เพื่อเดินจากไอเดียสู่ซอฟต์แวร์ที่เชื่อถือได้อย่างมีประสิทธิภาพ",
+    role: "นักพัฒนาเว็บ × AI-native builder",
+    titleA: "สร้างใหม่",
+    titleB: "ทำให้ดีขึ้น",
+    titleAccent: "ส่งขึ้นใช้งานจริง",
+    lede:
+      "ออกแบบและพัฒนาเว็บไซต์และเว็บแอป ปรับโฉมเว็บที่ล้าสมัย และเพิ่มฟีเจอร์ให้ระบบที่ใช้งานอยู่แล้ว เชื่อมต่อ API, Backend และ AI เมื่อช่วยได้จริง แล้วพางานไปจนถึง Production",
+    secondary: "สำรวจระบบ AI",
+    outcomesLabel: "งานที่รับ",
+    outcomes: [
+      "เว็บไซต์ใหม่",
+      "Redesign เว็บไซต์",
+      "เพิ่มฟีเจอร์",
+      "เว็บแอปพลิเคชัน",
+      "AI Integration",
+      "ระบบอัตโนมัติ",
+      "API และ Backend",
+      "Deploy ขึ้น Production",
+    ],
   },
-  capabilitiesLabel: "ความสามารถ",
-  capabilities: [
-    "อินเทอร์เฟซ responsive",
-    "เว็บแอปแบบ full-stack",
-    "API และฐานข้อมูล",
-    "การพัฒนาโดยมี AI ช่วย",
-    "การเข้าถึงได้และประสิทธิภาพ",
-    "การทดสอบและการ deploy",
-  ],
-  visual: {
-    alt: "แผนภาพเส้นทางการสร้างสี่ขั้น: ไอเดีย วางแผน สร้าง เปิดใช้งาน",
-    nodes: ["ไอเดีย", "วางแผน", "สร้าง", "เปิดใช้"],
-    caption: "จากไอเดียสู่ระบบจริง ทีละขั้นอย่างตั้งใจ",
+  services: {
+    eyebrow: "ทำงานร่วมกัน",
+    title: "สี่จุดเริ่มต้นที่พบบ่อย",
+    lede: "จะเริ่มจากศูนย์หรือปรับปรุงสิ่งที่ใช้งานอยู่แล้วก็ได้ งานครอบคลุมทั้งดีไซน์ โค้ด และการส่งมอบ ไม่ใช่แค่ส่วนใดส่วนหนึ่ง",
+    youGet: "สิ่งที่ได้รับ",
+    lead: [
+      {
+        id: "new-website",
+        title: "สร้างเว็บไซต์ใหม่",
+        outcome: "เว็บไซต์ที่เร็ว รองรับทุกหน้าจอ อธิบายสิ่งที่คุณขายได้ชัด และอัปเดตเองได้ง่าย",
+        points: ["วางโครงสร้างและลำดับเนื้อหา", "ดีไซน์เฉพาะ ไม่ใช่ธีมสำเร็จรูป", "Responsive และเข้าถึงได้", "พื้นฐาน SEO พร้อมต่อ Analytics"],
+        cta: "เริ่มโปรเจกต์",
+      },
+      {
+        id: "redesign",
+        title: "Redesign เว็บไซต์เดิม",
+        outcome: "สร้างเว็บเดิมขึ้นใหม่ให้ดูทันสมัย โหลดเร็ว และใช้งานบนมือถือได้ดีจริง",
+        points: ["ตรวจว่าอะไรใช้ได้ อะไรต้องแก้", "ปรับทั้งภาพลักษณ์และเทคนิค", "ย้ายเนื้อหาเดิมมาให้ครบ", "ตั้ง Redirect ไม่ให้ลิงก์เสีย"],
+        cta: "คุยเรื่อง Redesign",
+      },
+      {
+        id: "features",
+        title: "เพิ่มฟีเจอร์ให้ระบบที่มีอยู่",
+        outcome: "หน้าใหม่ Workflow Dashboard หรือการเชื่อมต่อระบบ ใส่เข้าไปในระบบเดิมอย่างเรียบร้อย",
+        points: ["อ่านโค้ดเดิมให้เข้าใจก่อน", "เขียนตามแนวทางของโปรเจกต์เดิม", "มีเทสต์ครอบฟีเจอร์ใหม่", "รีวิวและส่งมอบพร้อมเอกสาร"],
+        cta: "เพิ่มฟีเจอร์",
+      },
+      {
+        id: "webapp",
+        title: "สร้างเว็บแอปพลิเคชัน",
+        outcome: "Frontend, Backend, ฐานข้อมูล และ API รวมเป็นผลิตภัณฑ์เดียวที่ใช้งานได้จริง Deploy พร้อมให้ผู้ใช้จริง",
+        points: ["ขอบเขตผลิตภัณฑ์และ Data model", "Frontend และ Backend แบบ Typed", "Auth, Validation และสถานะ Error", "CI และ Deploy ขึ้น Production"],
+        cta: "เริ่มโปรเจกต์",
+      },
+    ],
+    more: {
+      title: "บริการอื่น ๆ",
+      engineering: {
+        title: "Engineering",
+        items: [
+          { title: "Frontend Development", note: "React, Next.js, TypeScript และ UI ที่ Responsive และเข้าถึงได้" },
+          { title: "Backend Development", note: "Route Handler, Server Action, Validation และข้อมูล" },
+          { title: "API Integration", note: "ระบบชำระเงิน CRM อีเมล Webhook และ API ภายนอก" },
+          { title: "Performance และ Responsive", note: "หน้าเว็บช้า Layout บนมือถือพัง เนื้อหากระตุก" },
+          { title: "Deployment", note: "GitHub, Vercel และขั้นตอน Release ที่ทำซ้ำได้" },
+        ],
+      },
+      ai: {
+        title: "AI และระบบอัตโนมัติ",
+        items: [
+          { title: "AI Integration", note: "ใส่ ChatGPT, Claude หรือโมเดลอื่นเข้าไปในเว็บหรือเครื่องมือของคุณ" },
+          { title: "AI Workflow Automation", note: "ให้ AI ทำงานซ้ำ ๆ แทน โดยมีคนตรวจสอบ" },
+          { title: "Autonomous Agent Workflow", note: "Agent ที่วางแผนและใช้เครื่องมือ มี Checkpoint และการอนุมัติ" },
+          { title: "แนวคิด Local AI", note: "ระบบโมเดลแบบ Self-hosted สำหรับข้อมูลที่ต้องเก็บเป็นความลับ" },
+          { title: "Python Automation", note: "สคริปต์ ประมวลผลข้อมูล และเชื่อมระบบเข้าด้วยกัน" },
+        ],
+        cta: "สร้างด้วย AI",
+      },
+    },
   },
-  sitemap: {
-    eyebrow: "วิธีอ่านเว็บไซต์นี้",
-    title: "เก้าหน้า แต่ละหน้าลึกขึ้นอีกขั้น",
-    body: "เริ่มจากภาพรวม แล้วลงลึกได้ทุกเมื่อที่อยากเห็นหลักฐาน ทั้งงานอินเทอร์เฟซ กรณีศึกษา ห้องทดลองที่ใช้งานได้จริง แบ็กเอนด์จริง และศูนย์ควบคุม",
-    simple: "เรียบง่าย",
-    technical: "เชิงเทคนิค",
+  ai: {
+    eyebrow: "ระบบ AI",
+    title: "ไม่ใช่แค่ติด Chatbot แต่เป็นระบบที่มีการตรวจสอบ",
+    body:
+      "ChatGPT, Claude และ Local AI ต่างมีจุดที่เหมาะของตัวเอง งานจริงคือการ Orchestrate ทั้งหมดเข้ากับ Python, API และข้อมูลจริง โดยมีเทสต์และการอนุมัติจากคนคั่นระหว่างโมเดลกับ Production",
+    generated: "แผงวงจรนี้สร้างจากสคริปต์ Python ใน Repository: {nodes} ชิ้นส่วน {edges} เส้นทาง",
+    imageAlt:
+      "แผนผังวงจร: ความต้องการของคนเข้าสู่ Orchestrator ส่งต่อไปยัง ChatGPT, Claude และ Local AI ผ่าน Tool router ไปยัง Python, Web API, ข้อมูล และ GitHub จากนั้นผ่าน Validation และการอนุมัติของคน ไปสู่ Deployment และ Production",
+  },
+  process: {
+    eyebrow: "ขั้นตอนการทำงาน",
+    title: "ขั้นตอนชัด เห็นความคืบหน้า",
+    steps: [
+      { title: "กำหนดขอบเขต", body: "ตกลงเป้าหมาย หน้า หรือฟีเจอร์ และนิยามคำว่าเสร็จ เป็นลายลักษณ์อักษร" },
+      { title: "พัฒนา", body: "ทำงานเป็นช่วงสั้น ๆ ที่ตรวจดูและให้ความเห็นได้ตลอด" },
+      { title: "ส่งมอบ", body: "ทดสอบ Deploy ขึ้น Production และส่งมอบพร้อมเอกสาร" },
+      { title: "ต่อยอด", body: "การใช้งานจริงบอกว่าควรปรับอะไรต่อ เพิ่มการเปลี่ยนแปลงได้ง่าย" },
+    ],
+  },
+  work: {
+    eyebrow: "ตัวอย่างงาน",
+    title: "ดูว่างานถูกสร้างอย่างไร",
+    body: "โปรเจกต์แนวคิด กรณีศึกษา และเครื่องมือที่ใช้งานได้จริง ระบุประเภทไว้ชัดเจนทุกชิ้น",
+  },
+  closing: {
+    title: "เล่าสิ่งที่คุณกำลังสร้าง",
+    body: "เว็บไซต์ใหม่ Redesign ฟีเจอร์สำหรับระบบเดิม หรือ AI Workflow เล่ามาสั้น ๆ แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และระยะเวลา",
   },
 };
 
