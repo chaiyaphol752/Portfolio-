@@ -5,7 +5,7 @@
  */
 export const capabilityGroups = [
   { id: "web", items: ["HTML", "CSS", "TypeScript", "React", "Next.js", "Tailwind CSS", "Responsive UI", "Accessibility"] },
-  { id: "backend", items: ["Node.js", "APIs", "Serverless", "PostgreSQL", "Zod validation", "Auth concepts"] },
+  { id: "backend", items: ["Node.js", "APIs", "Webhooks", "n8n workflows", "Serverless", "PostgreSQL", "Zod validation", "Auth concepts"] },
   { id: "python", items: ["Automation", "API clients", "Data transformation", "File processing", "Agent utilities", "Code generation"] },
   { id: "ai", items: ["ChatGPT", "OpenAI ecosystem", "Claude", "Claude Code", "Tool calling", "Context engineering", "Multi-agent workflows"] },
   { id: "local", items: ["Local models", "Self-hosted inference", "Embeddings", "RAG concepts", "Cloud/local routing"] },

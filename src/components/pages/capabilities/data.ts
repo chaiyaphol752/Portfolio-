@@ -40,6 +40,8 @@ const defs = {
   ],
   server: [
     ["api-integration", "API integration"],
+    ["n8n", "n8n workflow automation"],
+    ["webhooks", "Webhooks"],
     ["nodejs", "Node.js"],
     ["backend", "Backend"],
     ["serverless", "Serverless"],
@@ -125,6 +127,9 @@ export const capabilityEdges: readonly (readonly [CapabilityId, CapabilityId])[]
   ["nextjs", "serverless"], ["nextjs", "backend"], ["nodejs", "backend"], ["javascript", "nodejs"],
   ["backend", "api-integration"], ["backend", "validation"], ["backend", "auth"], ["backend", "postgresql"],
   ["postgresql", "database-design"], ["serverless", "vercel"], ["api-integration", "validation"],
+  // Workflow automation: n8n moves data between systems; reasoning stays with the orchestrator.
+  ["n8n", "webhooks"], ["n8n", "api-integration"], ["n8n", "py-automation"], ["n8n", "orchestration"],
+  ["n8n", "postgresql"], ["webhooks", "backend"],
   // Delivery
   ["git", "github"], ["github", "vercel"], ["vercel", "deployment"], ["testing", "deployment"],
   ["nextjs", "performance"], ["typescript", "testing"], ["github", "testing"],
@@ -204,6 +209,7 @@ function relatedOf(id: CapabilityId): CapabilityId[] {
 /** Nodes with a written "what this lets me build" note; others fall back to their domain description. */
 export const featuredIds = [
   "python",
+  "n8n",
   "chatgpt",
   "claude",
   "claude-code",
@@ -243,5 +249,5 @@ export const chains: Record<ChainId, readonly CapabilityId[]> = {
   redesign: ["ui-architecture", "responsive-ui", "accessibility", "nextjs", "performance", "vercel"],
   "ai-feature": ["nextjs", "backend", "validation", "ai-api", "chatgpt", "human-review"],
   "private-search": ["py-files", "embeddings", "rag", "local-models", "local-endpoints", "nextjs"],
-  automation: ["py-scripts", "py-api-clients", "tool-calling", "claude", "testing", "deployment"],
+  automation: ["webhooks", "n8n", "py-scripts", "py-api-clients", "tool-calling", "testing"],
 };

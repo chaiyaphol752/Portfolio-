@@ -8,7 +8,8 @@ const tag: Partial<Record<LoopStageId, "human" | "checkpoint">> = {
   goal: "human",
   orchestrator: "checkpoint",
   validation: "checkpoint",
-  review: "human",
+  review: "checkpoint",
+  approval: "human",
 };
 
 // Stages inside the bounded retry loop: orchestrator → review.
