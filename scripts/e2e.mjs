@@ -31,7 +31,8 @@ await check("terminal refuses shell commands", async () => { const i = p.locator
 await check("contact: ?type=redesign preselects project type", async () => { await p.goto(`${base}/en/contact?type=redesign`); await p.waitForTimeout(500); assert((await p.locator('select[name="projectType"]').inputValue()) === "redesign", "not preselected"); });
 await check("contact: client validation errors", async () => { await p.goto(`${base}/en/contact`); await p.getByRole("button", { name: /send/i }).click(); await p.waitForTimeout(300); assert((await p.locator('[aria-invalid="true"]').count()) >= 3, "no invalid fields"); });
 await check("contact: has direct email + phone", async () => { assert(await p.locator('main a[href="mailto:chaiyaphol.752@gmail.com"]').count() > 0, "mailto"); assert(await p.locator('main a[href="tel:+4915154914268"]').count() > 0, "tel"); });
-await check(`contact: server path ${submitReal ? "(REAL submission)" : "(state shown)"}`, async () => {
+// Real submissions send email once Resend is configured, so they are opt-in: E2E_SUBMIT=1.
+if (submitReal) await check("contact: REAL submission is delivered", async () => {
   await p.goto(`${base}/en/contact`);
   await p.locator('input[name="name"]').fill("Portfolio QA");
   await p.locator('input[name="email"]').fill(process.env.E2E_EMAIL ?? "qa@example.com");
@@ -41,8 +42,7 @@ await check(`contact: server path ${submitReal ? "(REAL submission)" : "(state s
   await p.getByRole("button", { name: /send/i }).click();
   await p.waitForTimeout(6000);
   const t = await text();
-  if (submitReal) assert(/thank|received|sent|reached/i.test(t) && !/unavailable|can.t deliver|went wrong/i.test(t), t.slice(0, 300));
-  else assert(/unavailable|can.t deliver|thank|received|sent|went wrong|try again/i.test(t), "no state");
+  assert(/thank|received|sent|reached/i.test(t) && !/unavailable|can.t deliver|went wrong/i.test(t), t.slice(0, 300));
 });
 await check("/api/health ok", async () => { const r = await p.request.get(`${base}/api/health`); assert(r.ok(), "status"); });
 await check("sitemap + robots", async () => { assert((await (await p.request.get(`${base}/sitemap.xml`)).text()).includes("/th/contact"), "sitemap"); assert((await (await p.request.get(`${base}/robots.txt`)).text()).includes("Sitemap"), "robots"); });
