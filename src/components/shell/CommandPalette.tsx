@@ -102,6 +102,12 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
     };
   }, []);
 
+  // Keep the keyboard-active option visible while arrowing through a long list.
+  const activeId = results[active] ? `${listId}-${results[active].id}` : undefined;
+  useEffect(() => {
+    if (activeId) document.getElementById(activeId)?.scrollIntoView({ block: "nearest" });
+  }, [activeId]);
+
   const run = (command: Command | undefined) => {
     if (!command) return;
     dialogRef.current?.close();
@@ -127,7 +133,7 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
     <dialog
       ref={dialogRef}
       aria-label={t.commandPalette.hint}
-      className="on-night night m-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] rounded-xl border border-night-line p-0 shadow-2xl"
+      className="on-night night m-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] rounded-md border border-night-line p-0 shadow-2xl"
       onClick={(e) => e.target === dialogRef.current && dialogRef.current?.close()}
     >
       <div className="border-b border-night-line p-4">
@@ -142,7 +148,7 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
           role="combobox"
           aria-expanded="true"
           aria-controls={listId}
-          aria-activedescendant={results[active] ? `${listId}-${results[active].id}` : undefined}
+          aria-activedescendant={activeId}
           aria-label={t.commandPalette.placeholder}
           placeholder={t.commandPalette.placeholder}
           className="mono w-full bg-transparent text-[0.95rem] text-night-ink placeholder:text-night-mute focus:outline-none"

@@ -6,6 +6,7 @@ vi.mock("resend", () => ({ Resend: class { emails = { send }; } }));
 const { buildAcknowledgement, buildOwnerNotification, emailConfig, escapeHtml } = await import("./email");
 const { deliverContact, configuredChannels } = await import("./deliver");
 import type { ContactInput } from "./schema";
+import { profile } from "@/config/profile";
 
 const env = (values: Record<string, string>) => values as unknown as NodeJS.ProcessEnv;
 
@@ -26,7 +27,7 @@ describe("email config", () => {
   });
   it("defaults to the profile inbox and the Resend test sender", () => {
     const c = emailConfig(env({ RESEND_API_KEY: "re_test" }));
-    expect(c).toMatchObject({ to: "chaiyaphol.752@gmail.com", from: "Portfolio <onboarding@resend.dev>", customSender: false });
+    expect(c).toMatchObject({ to: profile.contact.email, from: "Portfolio <onboarding@resend.dev>", customSender: false });
   });
   it("detects a verified custom sender", () => {
     const c = emailConfig(env({ RESEND_API_KEY: "re_test", CONTACT_FROM_EMAIL: "Portfolio <contact@example.dev>", CONTACT_TO_EMAIL: "me@example.dev" }));
@@ -76,7 +77,7 @@ describe("delivery through Resend", () => {
     send.mockResolvedValue({ data: { id: "email_1" }, error: null });
     expect(await deliverContact(input)).toEqual({ ok: true, channels: ["email"], acknowledged: false });
     expect(send).toHaveBeenCalledOnce();
-    expect(send.mock.calls[0]?.[0]).toMatchObject({ to: ["chaiyaphol.752@gmail.com"], replyTo: "ada@example.com" });
+    expect(send.mock.calls[0]?.[0]).toMatchObject({ to: [profile.contact.email], replyTo: "ada@example.com" });
   });
   it("sends an acknowledgement only from a verified sender", async () => {
     process.env.CONTACT_FROM_EMAIL = "Portfolio <contact@example.dev>";

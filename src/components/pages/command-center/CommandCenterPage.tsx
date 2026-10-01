@@ -105,7 +105,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
                   {webGroups.map((g) => (
                     <div key={g.id}>
                       <p className="mono mb-2 text-[0.68rem] uppercase tracking-wider text-night-mute">{c.terminal.capabilities.groups[g.id]}</p>
-                      <Chips items={g.items} />
+                      <Chips items={g.items.map((i) => c.terminal.capabilities.items[i] ?? i)} />
                     </div>
                   ))}
                 </div>

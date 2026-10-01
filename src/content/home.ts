@@ -161,7 +161,7 @@ const de: HomeContent = {
         id: "redesign",
         title: "Bestehende Website neu gestalten",
         outcome: "Deine aktuelle Website, neu aufgebaut: zeitgemäß, schnell und auf dem Smartphone wirklich gut nutzbar.",
-        points: ["Analyse, was funktioniert und was nicht", "Visuelle und technische Modernisierung", "Inhalte werden übernommen", "Weiterleitungen, damit nichts bricht"],
+        points: ["Analyse, was funktioniert und was nicht", "Visuelle und technische Modernisierung", "Inhalte werden übernommen", "Weiterleitungen, damit kein Link ins Leere führt"],
         cta: "Redesign besprechen",
       },
       {
@@ -209,7 +209,7 @@ const de: HomeContent = {
     title: "Kein angeschraubter Chatbot. Ein System mit Kontrollen.",
     body:
       "ChatGPT, Claude und lokale Modelle haben jeweils ihren Platz. Die eigentliche Arbeit ist, sie mit Python, APIs und echten Daten zu orchestrieren – mit Tests und menschlicher Freigabe zwischen Modell und Produktion.",
-    generated: "Diese Platine erzeugt ein Python-Skript im Repository: {nodes} Bauteile, {edges} Leiterbahnen.",
+    generated: "Diese Platine wird von einem Python-Skript im Repository erzeugt: {nodes} Bauteile, {edges} Leiterbahnen.",
     imageAlt:
       "Schaltplan: Menschliche Absicht fließt in einen Orchestrator, weiter zu ChatGPT, Claude und lokaler KI, über einen Tool-Router zu Python, Web-APIs, Daten und GitHub, dann über Validierung und menschliche Freigabe zu Deployment und Produktion.",
   },
@@ -218,14 +218,14 @@ const de: HomeContent = {
     title: "Klare Schritte, sichtbarer Fortschritt.",
     steps: [
       { title: "Umfang", body: "Wir klären Ziele, Seiten oder Features und was „fertig“ heißt – schriftlich." },
-      { title: "Bauen", body: "Die Arbeit passiert in kleinen, prüfbaren Schritten, die du sehen und kommentieren kannst." },
+      { title: "Bauen", body: "Gearbeitet wird in kleinen, prüfbaren Schritten, die du sehen und kommentieren kannst." },
       { title: "Ausliefern", body: "Getestet, in Produktion gebracht und mit Dokumentation übergeben." },
       { title: "Weiterentwickeln", body: "Echte Nutzung zeigt, was als Nächstes kommt. Weitere Änderungen lassen sich leicht ergänzen." },
     ],
   },
   work: {
     eyebrow: "Arbeitsproben",
-    title: "Sieh dir an, wie gearbeitet wird.",
+    title: "Sieh dir an, wie ich arbeite.",
     body: "Konzeptprojekte, Fallstudien und funktionierende Tools – klar gekennzeichnet als das, was sie sind.",
   },
   closing: {
@@ -269,7 +269,7 @@ const th: HomeContent = {
       {
         id: "new-website",
         title: "สร้างเว็บไซต์ใหม่",
-        outcome: "เว็บไซต์ที่เร็ว รองรับทุกหน้าจอ อธิบายสิ่งที่คุณขายได้ชัด และอัปเดตเองได้ง่าย",
+        outcome: "เว็บไซต์ที่เร็ว รองรับทุกหน้าจอ อธิบายสินค้าและบริการได้ชัด และอัปเดตเองได้ง่าย",
         points: ["วางโครงสร้างและลำดับเนื้อหา", "ดีไซน์เฉพาะ ไม่ใช่ธีมสำเร็จรูป", "Responsive และเข้าถึงได้", "พื้นฐาน SEO พร้อมต่อ Analytics"],
         cta: "เริ่มโปรเจกต์",
       },
@@ -303,14 +303,14 @@ const th: HomeContent = {
           { title: "Frontend Development", note: "React, Next.js, TypeScript และ UI ที่ Responsive และเข้าถึงได้" },
           { title: "Backend Development", note: "Route Handler, Server Action, Validation และข้อมูล" },
           { title: "API Integration", note: "ระบบชำระเงิน CRM อีเมล Webhook และ API ภายนอก" },
-          { title: "Performance และ Responsive", note: "หน้าเว็บช้า Layout บนมือถือพัง เนื้อหากระตุก" },
+          { title: "Performance และ Responsive", note: "หน้าเว็บช้า Layout บนมือถือพัง และหน้าเว็บขยับไปมาระหว่างโหลด" },
           { title: "Deployment", note: "GitHub, Vercel และขั้นตอน Release ที่ทำซ้ำได้" },
         ],
       },
       ai: {
         title: "AI และระบบอัตโนมัติ",
         items: [
-          { title: "AI Integration", note: "ใส่ ChatGPT, Claude หรือโมเดลอื่นเข้าไปในเว็บหรือเครื่องมือของคุณ" },
+          { title: "AI Integration", note: "ใส่ ChatGPT, Claude หรือโมเดลอื่นเข้าไปในเว็บหรือเครื่องมือที่ใช้อยู่" },
           { title: "AI Workflow Automation", note: "ให้ AI ทำงานซ้ำ ๆ แทน โดยมีคนตรวจสอบ" },
           { title: "Autonomous Agent Workflow", note: "Agent ที่วางแผนและใช้เครื่องมือ มี Checkpoint และการอนุมัติ" },
           { title: "แนวคิด Local AI", note: "ระบบโมเดลแบบ Self-hosted สำหรับข้อมูลที่ต้องเก็บเป็นความลับ" },
@@ -333,19 +333,19 @@ const th: HomeContent = {
     eyebrow: "ขั้นตอนการทำงาน",
     title: "ขั้นตอนชัด เห็นความคืบหน้า",
     steps: [
-      { title: "กำหนดขอบเขต", body: "ตกลงเป้าหมาย หน้า หรือฟีเจอร์ และนิยามคำว่าเสร็จ เป็นลายลักษณ์อักษร" },
+      { title: "กำหนดขอบเขต", body: "ตกลงเป้าหมาย หน้า หรือฟีเจอร์ และแบบไหนถึงเรียกว่าเสร็จ เป็นลายลักษณ์อักษร" },
       { title: "พัฒนา", body: "ทำงานเป็นช่วงสั้น ๆ ที่ตรวจดูและให้ความเห็นได้ตลอด" },
-      { title: "ส่งมอบ", body: "ทดสอบ Deploy ขึ้น Production และส่งมอบพร้อมเอกสาร" },
-      { title: "ต่อยอด", body: "การใช้งานจริงบอกว่าควรปรับอะไรต่อ เพิ่มการเปลี่ยนแปลงได้ง่าย" },
+      { title: "ส่งมอบ", body: "ผ่านการทดสอบ Deploy ขึ้น Production แล้วส่งมอบพร้อมเอกสาร" },
+      { title: "ต่อยอด", body: "การใช้งานจริงบอกว่าควรปรับอะไรต่อ และต่อยอดภายหลังได้ง่าย" },
     ],
   },
   work: {
     eyebrow: "ตัวอย่างงาน",
-    title: "ดูว่างานถูกสร้างอย่างไร",
+    title: "ดูวิธีทำงานจริง",
     body: "โปรเจกต์แนวคิด กรณีศึกษา และเครื่องมือที่ใช้งานได้จริง ระบุประเภทไว้ชัดเจนทุกชิ้น",
   },
   closing: {
-    title: "เล่าสิ่งที่คุณกำลังสร้าง",
+    title: "เล่าให้ฟังว่ากำลังสร้างอะไร",
     body: "เว็บไซต์ใหม่ Redesign ฟีเจอร์สำหรับระบบเดิม หรือ AI Workflow เล่ามาสั้น ๆ แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และระยะเวลา",
   },
 };

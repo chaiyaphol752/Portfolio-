@@ -66,7 +66,7 @@ export function StatusPanel({ copy, values, sourceLabel, className }: { copy: C[
           rel="noopener noreferrer"
           className="mono mt-auto self-start pt-4 text-[0.72rem] text-night-mute underline decoration-night-line underline-offset-4 hover:text-night-ink"
         >
-          {copy.raw} ↗<span className="sr-only"> (new tab)</span>
+          {copy.raw} ↗<span className="sr-only"> {copy.newTab}</span>
         </a>
       </div>
     </Panel>
@@ -139,7 +139,7 @@ export function RepositoryPanel({
           [
             copy.repo,
             <a key="repo" href={repoUrl} target="_blank" rel="noopener noreferrer" className="underline decoration-night-line underline-offset-4 hover:decoration-night-ink">
-              {repoLabel} ↗<span className="sr-only"> (new tab)</span>
+              {repoLabel} ↗<span className="sr-only"> {copy.newTab}</span>
             </a>,
           ],
           [copy.branch, "main"],

@@ -197,7 +197,7 @@ export function CircuitBoard({ locale, initial = null, variant = "full", classNa
 
   return (
     <div className={clsx("on-night grid gap-px overflow-hidden rounded-md border border-night-line bg-night-line text-night-ink lg:grid-cols-12", className)}>
-      <figure className="grid-night lg:col-span-9">
+      <figure className="grid-night min-w-0 lg:col-span-9">
         <p className="mono hidden px-5 pt-4 text-[0.7rem] text-night-mute lg:block">{copy.ui.keyboardHint}</p>
         <p className="mono px-4 pt-4 text-[0.7rem] text-night-mute lg:hidden">{copy.ui.scrollHint} →</p>
         <div className="p-3 sm:p-5">{board}</div>
@@ -207,7 +207,7 @@ export function CircuitBoard({ locale, initial = null, variant = "full", classNa
         </figcaption>
       </figure>
 
-      <aside aria-label={copy.ui.inspector} className="flex flex-col gap-6 bg-night-2 p-5 lg:col-span-3">
+      <aside aria-label={copy.ui.inspector} className="flex min-w-0 flex-col gap-6 bg-night-2 p-5 lg:col-span-3">
         <div className="flex items-center justify-between gap-3">
           <p className="eyebrow">{copy.ui.inspector}</p>
           {selected && (

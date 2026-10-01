@@ -22,7 +22,7 @@ export function Chains({ t }: { t: CapabilitiesContent }) {
                   {i > 0 && <li aria-hidden className="ml-[5px] h-4 w-px bg-ink lg:ml-0 lg:h-px lg:w-auto lg:min-w-4 lg:flex-1" />}
                   <li className="flex items-center gap-2.5 lg:flex-col lg:gap-2">
                     <span aria-hidden className={clsx("size-2.5 shrink-0", padClass[node.family])} />
-                    <span className="mono text-[0.78rem] lg:max-w-[9ch] lg:text-center lg:leading-tight">{t.labels[nodeId] ?? node.label}</span>
+                    <span className="mono hyphens-auto text-[0.78rem] lg:max-w-[13ch] lg:text-center lg:leading-tight">{t.labels[nodeId] ?? node.label}</span>
                   </li>
                 </Fragment>
               );

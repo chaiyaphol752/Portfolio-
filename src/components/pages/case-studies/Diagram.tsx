@@ -59,7 +59,7 @@ export function Diagram({ diagram, label, id, tone = "night", columns = 3 }: Pro
   const c = tones[tone];
   const titleId = `${id}-title`;
   return (
-    <figure aria-labelledby={titleId} className={`${c.frame} -mx-[var(--gutter)] px-[var(--gutter)] py-8 sm:mx-0 sm:rounded-sm sm:p-8 lg:p-10`}>
+    <figure aria-labelledby={titleId} className={`${c.frame} @container -mx-[var(--gutter)] px-[var(--gutter)] py-8 sm:mx-0 sm:rounded-sm sm:p-8 lg:p-10`}>
       <figcaption className="mb-8 max-w-[60ch]">
         <span className="eyebrow">{label}</span>
         <span id={titleId} className={`h3 mt-1 block ${c.text}`}>{diagram.title}</span>
@@ -85,8 +85,8 @@ export function Flow({ nodes, tone, columns }: { nodes: { label: string; detail:
       {nodes.map((node, i) => (
         <li key={node.label} className={`group relative border p-5 ${c.box}`}>
           <span className={`eyebrow tabular ${c.accent}`}>{pad(i + 1)}</span>
-          <p className={`mt-2 font-medium ${c.text}`}>{node.label}</p>
-          <p className={`mt-1 text-sm ${c.muted}`}>{node.detail}</p>
+          <p className={`mt-2 hyphens-auto break-words font-medium ${c.text}`}>{node.label}</p>
+          <p className={`mt-1 hyphens-auto break-words text-sm ${c.muted}`}>{node.detail}</p>
           {i < nodes.length - 1 && (
             <>
               <span aria-hidden className={`absolute -bottom-[1.6rem] left-5 ${f.down} ${c.muted}`}>
@@ -161,8 +161,8 @@ function BranchBox({ node, tone, emphasis }: { node: DiagramNode; tone: DiagramT
   const c = tones[tone];
   return (
     <div className={`border px-4 py-3 ${c.box} ${emphasis ? "border-l-2 border-l-accent" : ""}`}>
-      <p className={`text-sm font-medium ${c.text}`}>{node.label}</p>
-      <p className={`mt-0.5 text-xs leading-snug ${c.muted}`}>{node.detail}</p>
+      <p className={`hyphens-auto break-words text-sm font-medium ${c.text}`}>{node.label}</p>
+      <p className={`mt-0.5 hyphens-auto break-words text-xs leading-snug ${c.muted}`}>{node.detail}</p>
     </div>
   );
 }
@@ -177,7 +177,8 @@ function Branch({ before, branches, after, tone }: { before: DiagramNode[]; bran
   const columns = `repeat(${before.length}, minmax(0, 1fr)) minmax(0, 1.2fr) repeat(${after.length}, minmax(0, 1fr))`;
   return (
     <>
-      <ol className="hidden items-center gap-x-9 lg:grid" style={{ gridTemplateColumns: columns }}>
+      {/* Container query: the article column is narrow even on laptops, so go horizontal only when the figure is wide. */}
+      <ol className="hidden items-center gap-x-9 @4xl:grid" style={{ gridTemplateColumns: columns }}>
         {before.map((node, i) => (
           <li key={node.label} className="relative">
             <BranchBox node={node} tone={tone} />
@@ -221,7 +222,7 @@ function Branch({ before, branches, after, tone }: { before: DiagramNode[]; bran
         ))}
       </ol>
 
-      <ol className="space-y-6 lg:hidden">
+      <ol className="space-y-6 @4xl:hidden">
         {before.map((node) => (
           <li key={node.label} className="relative">
             <BranchBox node={node} tone={tone} />

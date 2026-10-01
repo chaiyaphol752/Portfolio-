@@ -28,6 +28,7 @@ const en = {
     error: "The health endpoint could not be reached.",
     retry: "Check again",
     raw: "Raw JSON",
+    newTab: "(opens in a new tab)",
     measured: "Round trip (measured now)",
     status: { ok: "Operational", degraded: "Degraded" },
     fields: { environment: "Environment", region: "Region", runtime: "Runtime", commit: "Commit", database: "Database", email: "Email", channels: "Contact channels" },
@@ -46,7 +47,7 @@ const en = {
     local: "local",
   } as Record<string, string>,
   panels: {
-    web: { title: "Web stack", note: "What this site is built with, and what client projects are built with." },
+    web: { title: "Web stack", note: "What this site is built with — and the default stack for new projects." },
     ai: {
       title: "AI stack",
       note: "Tools in the engineering environment. Listed as capabilities, not as usage statistics.",
@@ -112,7 +113,7 @@ const en = {
         "not-configured": "Email delivery is not configured in this environment.",
       } as Record<string, string>,
     },
-    repository: { title: "Repository", repo: "Source", branch: "Branch", commit: "Deployed commit", pending: "Reading…" },
+    repository: { title: "Repository", repo: "Source", branch: "Branch", commit: "Deployed commit", pending: "Reading…", newTab: "(opens in a new tab)" },
     deployment: { title: "Deployment", platform: "Platform", environment: "Environment", region: "Region", runtime: "Runtime", headers: "Security headers", headersValue: "HSTS · nosniff · frame deny · referrer · permissions" },
     routes: { title: "Routes", total: "Localized routes", pages: "Pages", api: "API" },
     locales: { title: "Locales", caption: "Supported locales", cols: { language: "Language", prefix: "Prefix", html: "lang" } },
@@ -178,6 +179,8 @@ const en = {
     capabilities: {
       heading: "Capabilities",
       groups: { web: "Web", backend: "Backend", python: "Python", ai: "AI", local: "Local AI", delivery: "Delivery" } satisfies Record<CapabilityGroupId, string>,
+      /** Translations for the language-neutral item names in src/lib/terminal/data.ts; missing keys fall back to the name. */
+      items: {} as Record<string, string>,
       hint: "The full network: open capabilities",
     },
     projects: {
@@ -277,6 +280,7 @@ const de: CommandCenterContent = {
     error: "Der Health-Endpunkt ist nicht erreichbar.",
     retry: "Erneut prüfen",
     raw: "Roh-JSON",
+    newTab: "(öffnet in neuem Tab)",
     measured: "Antwortzeit (jetzt gemessen)",
     status: { ok: "In Betrieb", degraded: "Eingeschränkt" },
     fields: { environment: "Umgebung", region: "Region", runtime: "Runtime", commit: "Commit", database: "Datenbank", email: "E-Mail", channels: "Kontaktkanäle" },
@@ -295,7 +299,7 @@ const de: CommandCenterContent = {
     local: "lokal",
   },
   panels: {
-    web: { title: "Web-Stack", note: "Womit diese Website gebaut ist – und womit Kundenprojekte gebaut werden." },
+    web: { title: "Web-Stack", note: "Womit diese Website gebaut ist – und der Standard-Stack für neue Projekte." },
     ai: {
       title: "KI-Stack",
       note: "Werkzeuge in der Entwicklungsumgebung. Als Fähigkeiten aufgeführt, nicht als Nutzungsstatistik.",
@@ -317,7 +321,7 @@ const de: CommandCenterContent = {
         act: "Spezialisierte Agents arbeiten mit Tools",
         validate: "Typen, Tests und Schema-Prüfungen",
         review: "Freigabe durch einen Menschen vor dem Release",
-        result: "Gemergt, deployed, dokumentiert",
+        result: "Gemergt, deployt, dokumentiert",
       },
       guardrails: ["Retry-Limits", "Workflow-Zustand", "Kontextübergabe", "Ergebnis-Aggregation"],
     },
@@ -357,11 +361,11 @@ const de: CommandCenterContent = {
       replyToValue: "Adresse der anfragenden Person",
       explain: {
         configured: "Anfragen werden über Resend von einem verifizierten Absender verschickt.",
-        "configured-test-sender": "Resend ist mit dem Test-Absender aktiv; der stellt nur an das Postfach des Inhabers zu.",
+        "configured-test-sender": "Resend ist mit dem Test-Absender aktiv, der nur an die Adresse des eigenen Kontos zustellt.",
         "not-configured": "In dieser Umgebung ist keine E-Mail-Zustellung eingerichtet.",
       },
     },
-    repository: { title: "Repository", repo: "Quelle", branch: "Branch", commit: "Deployter Commit", pending: "Wird gelesen …" },
+    repository: { title: "Repository", repo: "Quelle", branch: "Branch", commit: "Deployter Commit", pending: "Wird gelesen …", newTab: "(öffnet in neuem Tab)" },
     deployment: { title: "Deployment", platform: "Plattform", environment: "Umgebung", region: "Region", runtime: "Runtime", headers: "Security-Header", headersValue: "HSTS · nosniff · frame deny · referrer · permissions" },
     routes: { title: "Routen", total: "Lokalisierte Routen", pages: "Seiten", api: "API" },
     locales: { title: "Sprachen", caption: "Unterstützte Sprachen", cols: { language: "Sprache", prefix: "Präfix", html: "lang" } },
@@ -376,7 +380,7 @@ const de: CommandCenterContent = {
     prompt: "besucher@portfolio:~$",
     placeholder: "Befehl eingeben, z. B. help",
     submit: "Ausführen",
-    quick: "Probier",
+    quick: "Probier mal",
     intro: "Sicheres, schreibgeschütztes Terminal. Mit help siehst du alle Befehle.",
     messages: {
       helpTitle: "Verfügbare Befehle",
@@ -416,7 +420,7 @@ const de: CommandCenterContent = {
     },
     labels: { name: "Name", location: "Standort", availability: "Verfügbarkeit", github: "GitHub", email: "E-Mail", phone: "Telefon", form: "Kontaktformular", source: "Quellcode" },
     about: {
-      heading: "Über",
+      heading: "Über mich",
       text: "Webentwicklung × KI-natives Bauen. Websites, Redesigns, neue Features, Full-Stack-Apps und KI-gestützte Systeme – bis in die Produktion.",
     },
     services: {
@@ -427,6 +431,27 @@ const de: CommandCenterContent = {
     capabilities: {
       heading: "Fähigkeiten",
       groups: { web: "Web", backend: "Backend", python: "Python", ai: "KI", local: "Lokale KI", delivery: "Auslieferung" },
+      items: {
+        "Responsive UI": "Responsive UI",
+        Accessibility: "Barrierefreiheit",
+        "Zod validation": "Validierung mit Zod",
+        "Auth concepts": "Auth-Konzepte",
+        Automation: "Automatisierung",
+        "API clients": "API-Clients",
+        "Data transformation": "Datentransformation",
+        "File processing": "Dateiverarbeitung",
+        "Agent utilities": "Agent-Werkzeuge",
+        "Code generation": "Codegenerierung",
+        "OpenAI ecosystem": "OpenAI-Ökosystem",
+        "Tool calling": "Tool-Calling",
+        "Context engineering": "Context Engineering",
+        "Multi-agent workflows": "Multi-Agent-Workflows",
+        "Local models": "Lokale Modelle",
+        "Self-hosted inference": "Selbst gehostete Inferenz",
+        "RAG concepts": "RAG-Konzepte",
+        "Cloud/local routing": "Cloud-/Local-Routing",
+        Testing: "Tests",
+      },
       hint: "Das ganze Netzwerk: open capabilities",
     },
     projects: {
@@ -487,7 +512,7 @@ const de: CommandCenterContent = {
         branches: ["Resend-E-Mail", "PostgreSQL (Neon)", "Webhook"],
       },
       { id: "python", label: "Python-Build-Artefakt", path: "scripts/generate_ai_circuit.py", desc: "Erzeugt JSON und SVG des KI-Schaltplans im Voraus. Die Produktion braucht nie eine Python-Runtime." },
-      { id: "vercel", label: "GitHub → Vercel", path: "next.config.ts", desc: "Pushes auf main werden auf Vercel deployed. Security-Header sind in next.config.ts gesetzt." },
+      { id: "vercel", label: "GitHub → Vercel", path: "next.config.ts", desc: "Jeder Push auf main wird automatisch auf Vercel deployt. Security-Header sind in next.config.ts gesetzt." },
     ],
   },
   facts: {
@@ -505,7 +530,7 @@ const th: CommandCenterContent = {
   },
   header: {
     eyebrow: "Command Center",
-    title: "ระบบเบื้องหลังพอร์ตโฟลิโอ แบบสด ๆ",
+    title: "ระบบเบื้องหลังพอร์ตโฟลิโอ แบบเรียลไทม์",
     lede: "สถานะ สแตก และการส่งข้อความอ่านจาก Deployment ที่กำลังทำงานและจาก Repository จริง ส่วนไหนเป็นแนวคิดจะติดป้ายบอกไว้ชัดเจน",
     paletteButton: "Command Palette",
     paletteKeys: "คีย์ลัด",
@@ -524,6 +549,7 @@ const th: CommandCenterContent = {
     error: "เชื่อมต่อ Health Endpoint ไม่ได้",
     retry: "ตรวจอีกครั้ง",
     raw: "ดู JSON",
+    newTab: "(เปิดในแท็บใหม่)",
     measured: "เวลาตอบกลับ (วัดตอนนี้)",
     status: { ok: "ทำงานปกติ", degraded: "ทำงานได้บางส่วน" },
     fields: { environment: "Environment", region: "Region", runtime: "Runtime", commit: "Commit", database: "ฐานข้อมูล", email: "อีเมล", channels: "ช่องทางติดต่อ" },
@@ -542,7 +568,7 @@ const th: CommandCenterContent = {
     local: "local",
   },
   panels: {
-    web: { title: "Web Stack", note: "เครื่องมือที่ใช้สร้างเว็บไซต์นี้ และใช้กับงานของลูกค้า" },
+    web: { title: "Web Stack", note: "เครื่องมือที่ใช้สร้างเว็บไซต์นี้ และเป็นสแตกหลักสำหรับโปรเจกต์ใหม่" },
     ai: {
       title: "AI Stack",
       note: "เครื่องมือในสภาพแวดล้อมการพัฒนา แสดงเป็นความสามารถ ไม่ใช่สถิติการใช้งาน",
@@ -571,7 +597,7 @@ const th: CommandCenterContent = {
     localAi: {
       title: "Local AI",
       badge: "แนวคิดเชิงสถาปัตยกรรม",
-      note: "รูปแบบที่ทำให้ข้อมูลอยู่บนเครื่องของคุณเอง นำเสนอในเชิงสถาปัตยกรรม ไม่ได้อ้างว่าใช้งานจริงใน Production แล้ว",
+      note: "รูปแบบที่ทำให้ข้อมูลอยู่บนฮาร์ดแวร์ขององค์กรเอง นำเสนอในเชิงสถาปัตยกรรม ไม่ได้อ้างว่าใช้งานจริงใน Production แล้ว",
       items: ["Local LLM Endpoint (แบบ Ollama / LM Studio)", "โมเดลที่รองรับ llama.cpp", "Embeddings และ RAG บนเอกสารส่วนตัว", "Routing ระหว่าง Cloud กับ Local ตามความเป็นส่วนตัว ต้นทุน และ Latency"],
     },
     python: {
@@ -603,12 +629,12 @@ const th: CommandCenterContent = {
       replyTo: "Reply-To",
       replyToValue: "อีเมลของผู้ติดต่อ",
       explain: {
-        configured: "คำขอโปรเจกต์ถูกส่งเป็นอีเมลผ่าน Resend จากผู้ส่งที่ยืนยันโดเมนแล้ว",
+        configured: "คำขอโปรเจกต์ส่งเป็นอีเมลผ่าน Resend จากผู้ส่งที่ยืนยันโดเมนแล้ว",
         "configured-test-sender": "เปิดใช้ Resend ด้วยผู้ส่งทดสอบ ซึ่งส่งได้เฉพาะกล่องอีเมลของเจ้าของบัญชี",
         "not-configured": "ยังไม่ได้ตั้งค่าการส่งอีเมลใน Environment นี้",
       },
     },
-    repository: { title: "Repository", repo: "ซอร์สโค้ด", branch: "Branch", commit: "Commit ที่ Deploy", pending: "กำลังอ่าน…" },
+    repository: { title: "Repository", repo: "ซอร์สโค้ด", branch: "Branch", commit: "Commit ที่ Deploy", pending: "กำลังอ่าน…", newTab: "(เปิดในแท็บใหม่)" },
     deployment: { title: "Deployment", platform: "แพลตฟอร์ม", environment: "Environment", region: "Region", runtime: "Runtime", headers: "Security Header", headersValue: "HSTS · nosniff · frame deny · referrer · permissions" },
     routes: { title: "Routes", total: "Route ทุกภาษา", pages: "หน้า", api: "API" },
     locales: { title: "ภาษา", caption: "ภาษาที่รองรับ", cols: { language: "ภาษา", prefix: "Prefix", html: "lang" } },
@@ -661,7 +687,7 @@ const th: CommandCenterContent = {
         clear: "ล้างหน้าจอ",
       },
     },
-    labels: { name: "ชื่อ", location: "ที่อยู่", availability: "การรับงาน", github: "GitHub", email: "อีเมล", phone: "โทรศัพท์", form: "ฟอร์มติดต่อ", source: "ซอร์สโค้ด" },
+    labels: { name: "ชื่อ", location: "ที่ตั้ง", availability: "การรับงาน", github: "GitHub", email: "อีเมล", phone: "โทรศัพท์", form: "ฟอร์มติดต่อ", source: "ซอร์สโค้ด" },
     about: {
       heading: "เกี่ยวกับ",
       text: "นักพัฒนาเว็บ × AI-native builder ทำเว็บไซต์ Redesign ฟีเจอร์ใหม่ Full-stack App และระบบที่ใช้ AI จนขึ้นใช้งานจริง",
@@ -674,6 +700,24 @@ const th: CommandCenterContent = {
     capabilities: {
       heading: "ความสามารถ",
       groups: { web: "Web", backend: "Backend", python: "Python", ai: "AI", local: "Local AI", delivery: "Delivery" },
+      items: {
+        Accessibility: "Accessibility",
+        "Zod validation": "Validation ด้วย Zod",
+        "Auth concepts": "แนวคิด Auth",
+        "API clients": "API Client",
+        "Data transformation": "แปลงข้อมูล",
+        "File processing": "ประมวลผลไฟล์",
+        "Agent utilities": "เครื่องมือสำหรับ Agent",
+        "Code generation": "สร้างโค้ดอัตโนมัติ",
+        "OpenAI ecosystem": "OpenAI Ecosystem",
+        "Tool calling": "Tool Calling",
+        "Context engineering": "Context Engineering",
+        "Multi-agent workflows": "Multi-agent Workflow",
+        "Local models": "Local Model",
+        "Self-hosted inference": "Inference แบบโฮสต์เอง",
+        "RAG concepts": "แนวคิด RAG",
+        "Cloud/local routing": "Routing ระหว่าง Cloud/Local",
+      },
       hint: "ดูเครือข่ายทั้งหมด: open capabilities",
     },
     projects: {

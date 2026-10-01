@@ -165,7 +165,7 @@ const de: ProjectsContent = {
     eyebrow: "Ausgewählte Arbeiten",
     title: "Websites, Produkte",
     titleAccent: "und KI-Systeme.",
-    lede: "Jede Leistung als durchgearbeitetes Beispiel: das Problem, die Entscheidungen und der Stack. Eines ist diese Live-Website, die übrigen sind klar gekennzeichnete Konzepte.",
+    lede: "Jede Leistung als ausgearbeitetes Beispiel: das Problem, die Entscheidungen und der Stack. Eines ist diese Live-Website, die übrigen sind klar gekennzeichnete Konzepte.",
   },
   ui: {
     indexTitle: "Übersicht",
@@ -259,7 +259,7 @@ const de: ProjectsContent = {
     },
     rota: {
       tagline: "Eine Webanwendung zur Schichtplanung für Teams, die noch in Tabellen planen.",
-      problem: "Tausch, Urlaub und Besetzungsregeln existieren nur im Kopf einer Person, Konflikte zeigen sich erst am Tag selbst.",
+      problem: "Schichttausch, Urlaub und Besetzungsregeln existieren nur im Kopf einer Person, Konflikte zeigen sich erst am Tag selbst.",
       solution: "Ein Wochenplaner, der Besetzungsregeln schon beim Bearbeiten anwendet und jeden Konflikt erklärt.",
       decisions: [
         "Planungsregeln sind reine Funktionen mit Unit-Tests, getrennt von der Oberfläche.",
@@ -274,7 +274,7 @@ const de: ProjectsContent = {
       decisions: [
         "Zuerst regelbasiertes Parsen; die ChatGPT-API übernimmt nur Layouts, die die Regeln nicht lesen können.",
         "Jedes extrahierte Feld wird mit typisierten Modellen validiert, bevor etwas gebucht wird.",
-        "Eine tägliche Zusammenfassung mit Freigabeschritt lässt den Menschen entscheiden, was in die Bücher kommt.",
+        "Eine tägliche Zusammenfassung mit Freigabeschritt lässt eine Person entscheiden, was in die Bücher kommt.",
       ],
     },
     "quiet-archive": {
@@ -290,7 +290,7 @@ const de: ProjectsContent = {
     "brief-loop": {
       tagline: "Ein Multi-Agent-Entwicklungssystem, das aus einem schriftlichen Briefing einen geprüften Pull Request macht.",
       problem: "KI-generierter Code ist schnell, aber uneinheitlich, wenn Anforderungen vage sind und niemand das Ergebnis prüft.",
-      solution: "Ein Orchestrator verteilt das Briefing auf Design-, Frontend-, Backend- und Test-Agents, führt ihre Arbeit zusammen, startet CI und hält an einer menschlichen Review-Schranke.",
+      solution: "Ein Orchestrator verteilt das Briefing auf Design-, Frontend-, Backend- und Test-Agents, führt ihre Arbeit zusammen, startet CI und stoppt vor einer verpflichtenden menschlichen Freigabe.",
       decisions: [
         "Jeder Agent hat einen klaren Input und Output, sodass ein fehlgeschlagener Schritt einzeln wiederholt werden kann.",
         "Tests und Typprüfungen laufen vor dem Review, damit die Review-Zeit in Designfragen fließt.",
@@ -304,13 +304,13 @@ const th: ProjectsContent = {
   meta: {
     title: "ผลงาน",
     description:
-      "ผลงานที่คัดมา: เว็บไซต์ใหม่ Redesign เพิ่มฟีเจอร์ เว็บแอป AI Integration ระบบอัตโนมัติ Local AI และระบบ Multi-agent พร้อมระบุชัดเจนว่าเป็นโปรเจกต์แนวคิด งานสาธิต หรือ Architecture Demo",
+      "ผลงานที่คัดมา: เว็บไซต์ใหม่ Redesign เพิ่มฟีเจอร์ เว็บแอป AI Integration ระบบอัตโนมัติ Local AI และระบบ Multi-agent พร้อมระบุชัดเจนว่าเป็นโปรเจกต์แนวคิด งานสาธิต หรือเดโมสถาปัตยกรรม",
   },
   hero: {
     eyebrow: "ผลงานที่คัดมา",
     title: "เว็บไซต์ ผลิตภัณฑ์",
     titleAccent: "และระบบ AI",
-    lede: "ทุกบริการแสดงเป็นตัวอย่างงานจริงจัง: ปัญหา การตัดสินใจ และสแตกที่ใช้ หนึ่งในนั้นคือเว็บไซต์นี้ที่ใช้งานอยู่จริง ส่วนที่เหลือเป็นโปรเจกต์แนวคิดที่ระบุไว้ชัดเจน",
+    lede: "ทุกบริการมีตัวอย่างงานให้ดู: ปัญหา การตัดสินใจ และสแตกที่ใช้ ชิ้นหนึ่งคือเว็บไซต์นี้ซึ่งใช้งานอยู่จริง ส่วนที่เหลือเป็นโปรเจกต์แนวคิดที่ระบุไว้ชัดเจน",
   },
   ui: {
     indexTitle: "สารบัญ",
@@ -324,7 +324,7 @@ const th: ProjectsContent = {
     columns: { project: "โปรเจกต์", service: "บริการ", type: "ประเภท" },
     jump: "ไปที่โปรเจกต์",
   },
-  kind: { concept: "โปรเจกต์แนวคิด", demo: "งานสาธิตทางเทคนิค", architecture: "Architecture Demo" },
+  kind: { concept: "โปรเจกต์แนวคิด", demo: "งานสาธิตทางเทคนิค", architecture: "เดโมสถาปัตยกรรม" },
   detail: {
     problem: "ปัญหา",
     solution: "แนวทาง",
@@ -348,14 +348,14 @@ const th: ProjectsContent = {
   },
   disclaimer: {
     title: "วิธีอ่านป้ายกำกับ",
-    body: "โปรเจกต์แนวคิดเป็นงานที่ริเริ่มเองและใช้ข้อมูลสังเคราะห์ Architecture Demo อธิบายการออกแบบระบบ ไม่ใช่ผลิตภัณฑ์ที่ส่งมอบแล้ว ทั้งสองแบบไม่ได้ทำให้ลูกค้าจริง ส่วนงานสาธิตทางเทคนิค ซึ่งก็คือพอร์ตโฟลิโอนี้ ใช้งานได้จริงและเปิดซอร์สโค้ดให้ดู",
+    body: "โปรเจกต์แนวคิดเป็นงานที่ริเริ่มเองและใช้ข้อมูลสังเคราะห์ ส่วนเดโมสถาปัตยกรรมอธิบายการออกแบบระบบ ไม่ใช่ผลิตภัณฑ์ที่ส่งมอบแล้ว ทั้งสองแบบไม่ได้ทำหรือส่งมอบให้ลูกค้า ส่วนงานสาธิตทางเทคนิค ซึ่งก็คือพอร์ตโฟลิโอนี้ ใช้งานได้จริงและเปิดซอร์สโค้ดให้ดู",
   },
   cta: { title: "มีงานคล้ายกันอยู่ในแผนไหม", body: "เว็บไซต์ใหม่ Redesign ฟีเจอร์สำหรับระบบเดิม หรือ AI Workflow เล่ามาสั้น ๆ แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขตและแนวทาง" },
   projects: {
     "this-portfolio": {
       tagline: "เว็บไซต์ที่กำลังอ่านอยู่นี้: สามภาษา Backend จริง ส่งอีเมลได้จริง และวงจรที่สร้างด้วย Python",
       problem: "พอร์ตโฟลิโอควรพิสูจน์ฝีมือทางวิศวกรรม ไม่ใช่แค่บรรยาย",
-      solution: "ระบบดีไซน์ที่ออกแบบเอง เนื้อหาแบบมี type ทั้ง EN, DE และ TH ระบบฟอร์มติดต่อที่ผ่าน Validation และส่งอีเมลผ่าน Resend มีเทสต์ และ Deploy ขึ้น Vercel อัตโนมัติ",
+      solution: "ระบบดีไซน์ที่ออกแบบเอง เนื้อหาแบบ Typed ทั้ง EN, DE และ TH ระบบฟอร์มติดต่อที่ผ่าน Validation และส่งอีเมลผ่าน Resend มีเทสต์ และ Deploy ขึ้น Vercel อัตโนมัติ",
       decisions: [
         "ใช้ Server Components เป็นค่าเริ่มต้น และใช้โค้ดฝั่ง client เฉพาะส่วนที่ต้องโต้ตอบ หน้าเว็บจึงส่ง JavaScript น้อย",
         "วงจร AI สร้างโดยสคริปต์ Python ตอน build แล้ว commit เก็บไว้ ฝั่ง Production จึงไม่ต้องมี Python runtime",
@@ -369,7 +369,7 @@ const th: ProjectsContent = {
       decisions: [
         "เริ่มจากดูว่าผู้เข้าชมใช้อะไรจริง Redesign จึงลดจำนวนหน้าลงแทนที่จะเพิ่ม",
         "ปรับขนาดและ lazy-load รูปผ่าน helper เดียว ลดน้ำหนักหน้าเว็บบนมือถือได้มาก",
-        "ย้ายเนื้อหาไปไว้ในไฟล์แบบมี type แยกตามภาษา หากคำแปลขาด build จะไม่ผ่าน",
+        "ย้ายเนื้อหาไปไว้ในไฟล์แบบ Typed แยกตามภาษา หากคำแปลขาด build จะไม่ผ่าน",
       ],
     },
     "relay-desk": {
@@ -379,16 +379,16 @@ const th: ProjectsContent = {
       decisions: [
         "สร้างไว้หลัง feature flag บนโมเดลข้อมูลเดิม จึงเปิดให้ทีมเดียวใช้ก่อนได้",
         "โมเดลคืนค่าแบบมีโครงสร้างที่ตรวจด้วย Zod หากไม่ถูกต้องจะกลับไปคัดแยกด้วยมือ",
-        "ไม่มีการใช้คำแนะนำแบบเงียบ ๆ คนต้องยืนยันหรือแก้ไขทุกครั้ง และบันทึกการแก้ไขไว้",
+        "ระบบไม่นำคำแนะนำไปใช้เองเงียบ ๆ ต้องมีคนยืนยันหรือแก้ไขทุกครั้ง และบันทึกการแก้ไขไว้",
       ],
     },
     tideline: {
       tagline: "เว็บไซต์และร้านค้าออนไลน์ใหม่สำหรับแบรนด์เสื้อผ้าขนาดเล็ก",
-      problem: "แบรนด์ใหม่ต้องมีเว็บที่ดูตั้งใจและขายได้บนมือถือตั้งแต่วันแรก",
+      problem: "แบรนด์ใหม่ต้องมีเว็บที่ดูประณีตและขายได้บนมือถือตั้งแต่วันแรก",
       solution: "ร้านค้าที่โหลดเร็ว หน้าสินค้าแบบ editorial ตะกร้าที่จำค่าไว้ และขั้นตอนชำระเงินสั้น ๆ ที่ออกแบบสำหรับมือถือก่อน",
       decisions: [
         "คำนวณราคาใหม่ที่เซิร์ฟเวอร์ทุกครั้ง เบราว์เซอร์มีหน้าที่แสดงผลเท่านั้น",
-        "เก็บสถานะตะกร้าไว้ที่เซิร์ฟเวอร์ด้วย id ที่ไม่ระบุตัวตน จึงอยู่รอดแม้รีโหลดหรือเปลี่ยนอุปกรณ์",
+        "เก็บสถานะตะกร้าไว้ที่เซิร์ฟเวอร์ด้วย id ที่ไม่ระบุตัวตน ตะกร้าจึงไม่หายแม้รีโหลดหรือเปลี่ยนอุปกรณ์",
         "ชำระเงินสามขั้นตอนสั้น ๆ มี validation ทันที ออกแบบให้ใช้นิ้วโป้งได้สะดวก",
       ],
     },
@@ -405,7 +405,7 @@ const th: ProjectsContent = {
     rota: {
       tagline: "เว็บแอปจัดตารางกะสำหรับทีมที่ยังจัดตารางใน spreadsheet",
       problem: "การแลกกะ การลา และกฎการจัดคนอยู่ในหัวของคนคนเดียว ปัญหาจึงโผล่มาในวันทำงานจริง",
-      solution: "ตัววางแผนรายสัปดาห์ที่ตรวจกฎการจัดคนระหว่างแก้ไข และอธิบายทุกข้อขัดแย้งที่พบ",
+      solution: "ตารางวางแผนรายสัปดาห์ที่ตรวจกฎการจัดคนระหว่างแก้ไข และอธิบายทุกข้อขัดแย้งที่พบ",
       decisions: [
         "กฎการจัดตารางเป็น pure function ที่มี unit test แยกจากส่วนอินเทอร์เฟซ",
         "ทุกข้อขัดแย้งระบุกฎและคนที่ได้รับผลกระทบ แทนคำว่า “ไม่ถูกต้อง”",
@@ -439,7 +439,7 @@ const th: ProjectsContent = {
       decisions: [
         "ทุก Agent มี input และ output ที่ชัดเจน ขั้นตอนที่ล้มเหลวจึงรันใหม่แยกได้",
         "เทสต์และ type check รันก่อนถึงมือคนรีวิว เวลารีวิวจึงใช้กับเรื่องการออกแบบ",
-        "Agent ไม่มีวัน merge งานตัวเอง การอนุมัติโดยคนเป็นขั้นตอนบังคับ",
+        "Agent ไม่ merge งานของตัวเองเด็ดขาด การอนุมัติโดยคนเป็นขั้นตอนบังคับ",
       ],
     },
   },

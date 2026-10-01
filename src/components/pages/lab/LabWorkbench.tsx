@@ -71,7 +71,7 @@ export function LabWorkbench({ t }: { t: LabContent }) {
                 )}
               >
                 <Icon className={clsx("size-4 shrink-0", selected ? "text-accent-ink" : "")} aria-hidden />
-                <span className="truncate font-medium">{t.workbench.tabs[id].label}</span>
+                <span className="min-w-0 hyphens-auto break-words font-medium leading-tight">{t.workbench.tabs[id].label}</span>
                 <span aria-hidden className={clsx("absolute inset-x-0 top-0 h-0.5", selected ? "bg-accent" : "bg-transparent")} />
               </button>
             );

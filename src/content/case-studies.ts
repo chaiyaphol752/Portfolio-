@@ -180,9 +180,9 @@ const en: CaseStudiesContent = {
           points: [],
         },
         future: {
-          client: "Next: confirmations for visitors and real project write-ups as client work becomes shareable.",
+          client: "Next: confirmations for visitors, and real project write-ups once there is work that can be shared.",
           body: "The remaining improvements are operational rather than architectural.",
-          points: ["Verified sending domain for visitor confirmation emails", "A shared store for rate limiting across instances", "Real client work added as it becomes shareable"],
+          points: ["Verified sending domain for visitor confirmation emails", "A shared store for rate limiting across instances", "Real project write-ups once work can be shared"],
         },
       },
       diagrams: {
@@ -553,15 +553,15 @@ const de: CaseStudiesContent = {
           points: [],
         },
         future: {
-          client: "Als Nächstes: Bestätigungen für Besuchende und echte Projektberichte, sobald Kundenarbeit gezeigt werden darf.",
+          client: "Als Nächstes: Bestätigungen für Besuchende und echte Projektberichte, sobald es Arbeiten gibt, die gezeigt werden dürfen.",
           body: "Die offenen Verbesserungen betreffen den Betrieb, nicht die Architektur.",
-          points: ["Verifizierte Absenderdomain für Bestätigungsmails", "Gemeinsamer Speicher für das Rate Limit über Instanzen hinweg", "Echte Kundenprojekte, sobald sie gezeigt werden dürfen"],
+          points: ["Verifizierte Absenderdomain für Bestätigungsmails", "Gemeinsamer Speicher für das Rate Limit über Instanzen hinweg", "Echte Projektberichte, sobald Arbeiten gezeigt werden dürfen"],
         },
       },
       diagrams: {
         decision: {
           kind: "tree",
-          title: "Welche Sprache sieht ein Besuch?",
+          title: "Welche Sprache sehen Besuchende?",
           caption: "Einmal im Proxy entschieden, bevor eine Seite rendert.",
           root: {
             label: "Beginnt die URL mit /en, /de oder /th?",
@@ -663,13 +663,13 @@ const de: CaseStudiesContent = {
         },
         tradeoffs: {
           client: "Manche Entscheidungen halten den Betrieb einfacher, auch wenn dafür ein paar Extras wegfallen.",
-          body: "Ein Headless CMS ist ein zusätzlicher Dienst; Markdown in Git ist günstiger, aber weniger freundlich für Laien. Ein eigenes Design kostet mehr als ein Theme, erspart aber spätere Kämpfe damit.",
+          body: "Ein Headless CMS ist ein zusätzlicher Dienst; Markdown in Git ist günstiger, aber weniger freundlich für Laien. Ein eigenes Design kostet mehr als ein Theme, erspart aber, später gegen dessen Grenzen anzuarbeiten.",
           points: ["Keine schwere Animation im Hero: Tempo und Klarheit zuerst", "Weniger, bessere Seiten statt alles zu migrieren", "CMS-Wahl pro Auftrag, nicht aus Gewohnheit"],
         },
         testing: {
           client: "Vor dem Livegang werden alle alten Links, Formulare und Seiten automatisch geprüft.",
           body: "Ein automatischer Test ruft jede URL der Redirect-Map auf und erwartet eine dauerhafte Weiterleitung auf die richtige Seite. Seiten werden in mehreren Bildschirmgrößen geprüft, mit Barrierefreiheits-Audit und Performance-Budget.",
-          points: ["Redirect-Map: jede alte URL löst auf", "Formular: Validierung, Zustellung und Fehlerzustände", "Barrierefreiheit und Kontrast auf jedem Template"],
+          points: ["Redirect-Map: jede alte URL führt ans Ziel", "Formular: Validierung, Zustellung und Fehlerzustände", "Barrierefreiheit und Kontrast auf jedem Template"],
         },
         deployment: {
           client: "Der Betrieb prüft eine private Vorschau, dann ersetzt die neue Website die alte ohne Ausfallzeit.",
@@ -743,7 +743,7 @@ const de: CaseStudiesContent = {
         },
         decision: {
           client: "Die KI entwirft, ein Mensch entscheidet. Nichts wird ohne Freigabe verschickt.",
-          body: "Das Feature schlägt eine Antwort samt verwendeter Quellen aus der Wissensdatenbank vor; das Team bearbeitet und versendet sie. Die Ausgabe ist strukturiert (Entwurf, Quellen, Hinweise zur Sicherheit), damit die Oberfläche zeigen kann, woher jede Aussage stammt.",
+          body: "Das Feature schlägt eine Antwort samt verwendeter Quellen aus der Wissensdatenbank vor; das Team bearbeitet und versendet sie. Die Ausgabe ist strukturiert (Entwurf, Quellen, Hinweise zur Verlässlichkeit), damit die Oberfläche zeigen kann, woher jede Aussage stammt.",
           points: ["Entwerfen, nie automatisch senden", "Quellen bei jedem Vorschlag sichtbar", "Rollout per Feature Flag pro Team"],
         },
         architecture: {
@@ -757,7 +757,7 @@ const de: CaseStudiesContent = {
           points: ["Strukturierte Ausgabe gegen ein Schema validiert", "Prüfung auf personenbezogene Daten vor jedem Cloud-Aufruf", "Audit-Log für Entwürfe, Änderungen und Freigaben"],
         },
         tradeoffs: {
-          client: "Private lokale Modelle schützen Daten, schreiben aber eventuell etwas schwächere Entwürfe; das wird pro Kunde entschieden.",
+          client: "Private lokale Modelle schützen Daten, schreiben aber eventuell etwas schwächere Entwürfe; das wird pro Mandant entschieden.",
           body: "Lokale Modelle tauschen etwas Qualität und Tempo gegen Datenhoheit. Retrieval hält Antworten faktennah, braucht aber einen aktuellen Index. Budgetgrenzen halten Kosten planbar, dafür fällt gelegentlich ein Entwurf aus.",
           points: ["Qualität gegen Datenschutz, pro Mandant gewählt", "Aktualität des Index gegen Aufwand der Aufnahme", "Lieber kein Entwurf als ein überschrittenes Budget"],
         },
@@ -833,7 +833,7 @@ const th: CaseStudiesContent = {
     documents: "เอกสาร",
     kind: { demo: "งานสาธิตทางเทคนิค", concept: "โปรเจกต์แนวคิด" },
     kindNote: {
-      demo: "ซอฟต์แวร์ที่ใช้งานจริง คือเว็บไซต์ที่คุณกำลังอ่านอยู่",
+      demo: "ซอฟต์แวร์ที่ใช้งานจริง คือเว็บไซต์นี้เอง",
       concept: "แบบฝึกการออกแบบ ไม่มีลูกค้าจริงและไม่ได้ส่งมอบงาน",
     },
     service: "บริการ",
@@ -864,7 +864,7 @@ const th: CaseStudiesContent = {
       title: "พอร์ตโฟลิโอนี้: เว็บไซต์หลายภาษาที่มี Backend จริง",
       tagline: "สิบหน้าในสามภาษา ระบบติดต่อที่ส่งอีเมลจริง และแผนผังวงจรที่สร้างด้วย Python ทั้งหมด Deploy บน Vercel",
       facts: [
-        { label: "สถานะ", value: "ใช้งานจริง คือเว็บที่คุณกำลังอ่าน" },
+        { label: "สถานะ", value: "ใช้งานจริง คือเว็บไซต์นี้เอง" },
         { label: "ขอบเขต", value: "ออกแบบ Frontend Backend เนื้อหา EN/DE/TH และ Deploy" },
       ],
       stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
@@ -887,7 +887,7 @@ const th: CaseStudiesContent = {
           client: "ทุกภาษามีที่อยู่ของตัวเอง ลิงก์จึงเปิดในภาษาที่ถูกต้องเสมอ",
           body: "ภาษาอยู่ใน Path (/en, /de, /th) มี Proxy ขนาดเล็กคอยพา URL ที่ไม่มี Prefix ไปยังภาษาที่เคยเลือกไว้หรือภาษาของเบราว์เซอร์ และเมื่อเปลี่ยนภาษาจะยังอยู่หน้าเดิม",
           points: [
-            "Dictionary แบบมีชนิดข้อมูล ถ้าขาดข้อความภาษาเยอรมันหรือไทย Type check จะไม่ผ่าน",
+            "Dictionary แบบ Typed ถ้าขาดข้อความภาษาเยอรมันหรือไทย Type check จะไม่ผ่าน",
             "ใช้ Server Components เป็นค่าเริ่มต้น โค้ดฝั่ง Client เฉพาะส่วนที่โต้ตอบได้",
             "ใช้ Design Token ชุดเดียว แต่ละหน้ามีการจัดวางของตัวเอง",
           ],
@@ -926,9 +926,9 @@ const th: CaseStudiesContent = {
           points: [],
         },
         future: {
-          client: "ขั้นต่อไป: อีเมลยืนยันถึงผู้เข้าชม และกรณีศึกษาจากงานลูกค้าจริงเมื่อเปิดเผยได้",
+          client: "ขั้นต่อไป: อีเมลยืนยันถึงผู้เข้าชม และกรณีศึกษาจากโปรเจกต์จริงเมื่อมีงานที่เปิดเผยได้",
           body: "สิ่งที่เหลือเป็นเรื่องการดูแลระบบ ไม่ใช่สถาปัตยกรรม",
-          points: ["โดเมนผู้ส่งที่ยืนยันแล้วสำหรับอีเมลยืนยัน", "ที่เก็บข้อมูลกลางสำหรับ Rate Limit ข้ามเซิร์ฟเวอร์", "เพิ่มงานลูกค้าจริงเมื่อเปิดเผยได้"],
+          points: ["โดเมนผู้ส่งที่ยืนยันแล้วสำหรับอีเมลยืนยัน", "ที่เก็บข้อมูลกลางสำหรับ Rate Limit ข้ามเซิร์ฟเวอร์", "เพิ่มกรณีศึกษาจากโปรเจกต์จริงเมื่อมีงานที่เปิดเผยได้"],
         },
       },
       diagrams: {
@@ -960,7 +960,7 @@ const th: CaseStudiesContent = {
           nodes: [
             { label: "Browser", detail: "HTML ที่เรนเดอร์จากเซิร์ฟเวอร์ มี Client Component เล็ก ๆ สำหรับเมนู Palette Terminal ฟอร์ม และ Lab" },
             { label: "Proxy", detail: "src/proxy.ts พา URL ที่ไม่มี Prefix ไปยังภาษาที่เหมาะสม" },
-            { label: "App Router", detail: "หน้า Static ใต้ /[locale] และ Dictionary แบบมีชนิดข้อมูลใน src/content" },
+            { label: "App Router", detail: "หน้า Static ใต้ /[locale] และ Dictionary แบบ Typed ใน src/content" },
             { label: "Server Action · Route Handler", detail: "รับข้อความติดต่อและ /api/health" },
             { label: "Validation", detail: "Zod Schema, Honeypot และ Rate Limit" },
             { label: "การส่งข้อความ", detail: "อีเมลผ่าน Resend และ PostgreSQL หรือ Webhook หากเปิดใช้" },
@@ -980,7 +980,7 @@ const th: CaseStudiesContent = {
             { label: "PostgreSQL", detail: "เมื่อเปิดใช้" },
             { label: "Webhook", detail: "เมื่อเปิดใช้" },
           ],
-          after: [{ label: "ผลลัพธ์แบบมีชนิด", detail: "success · invalid · rate-limited · unavailable · error" }],
+          after: [{ label: "ผลลัพธ์แบบ Typed", detail: "success · invalid · rate-limited · unavailable · error" }],
         },
         deployment: {
           kind: "flow",
@@ -1115,8 +1115,8 @@ const th: CaseStudiesContent = {
           points: ["กฎความเป็นส่วนตัวแยกตามลูกค้าแต่ละราย", "เพดานงบสำหรับการใช้โมเดล", "เมื่อปิดใช้ ระบบเดิมต้องไม่ได้รับผลกระทบ"],
         },
         decision: {
-          client: "AI ร่าง คนตัดสินใจ ไม่มีข้อความใดถูกส่งโดยไม่ผ่านการอนุมัติ",
-          body: "ฟีเจอร์เสนอร่างคำตอบพร้อมแหล่งอ้างอิงจาก Knowledge Base ที่ใช้ ทีมแก้ไขแล้วจึงส่ง Output เป็นแบบมีโครงสร้าง (ร่างคำตอบ แหล่งอ้างอิง และข้อสังเกต) เพื่อให้หน้าจอแสดงที่มาของทุกข้อความได้",
+          client: "AI ร่าง คนตัดสินใจ ไม่มีข้อความไหนส่งออกไปโดยไม่ผ่านการอนุมัติ",
+          body: "ฟีเจอร์เสนอร่างคำตอบพร้อมแหล่งอ้างอิงจาก Knowledge Base ที่ใช้ ทีมแก้ไขแล้วจึงส่ง Output เป็นแบบมีโครงสร้าง (ร่างคำตอบ แหล่งอ้างอิง และระดับความมั่นใจ) เพื่อให้หน้าจอแสดงที่มาของทุกข้อความได้",
           points: ["ร่างเท่านั้น ไม่ส่งอัตโนมัติ", "แสดงแหล่งอ้างอิงกับทุกคำแนะนำ", "Rollout ผ่าน Feature Flag แยกตามทีม"],
         },
         architecture: {
@@ -1161,8 +1161,8 @@ const th: CaseStudiesContent = {
             { label: "Router", detail: "ความเป็นส่วนตัว · งบ · ความพร้อมใช้งาน" },
           ],
           branches: [
-            { label: "Cloud model", detail: "ChatGPT หรือ Claude ผ่าน API" },
-            { label: "Local model", detail: "โฮสต์เอง ข้อมูลอยู่ในองค์กร" },
+            { label: "Cloud Model", detail: "ChatGPT หรือ Claude ผ่าน API" },
+            { label: "Local Model", detail: "โฮสต์เอง ข้อมูลอยู่ในองค์กร" },
           ],
           after: [
             { label: "Validation", detail: "Schema · ข้อมูลส่วนบุคคล · ความยาว" },
@@ -1184,7 +1184,7 @@ const th: CaseStudiesContent = {
     },
   ],
   cta: {
-    label: "คุยเรื่องโปรเจกต์ของคุณ",
+    label: "คุยเรื่องโปรเจกต์",
     title: "Redesign ฟีเจอร์ใหม่ หรือ AI Workflow",
     body: "เล่าสั้น ๆ ว่าตอนนี้อยู่ตรงไหนและอยากไปถึงไหน แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และขั้นตอนถัดไป",
   },

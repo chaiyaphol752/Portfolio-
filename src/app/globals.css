@@ -16,7 +16,7 @@
   --color-accent: #f2411a;
   --color-accent-ink: #c2310f;
   --color-accent-soft: #fde3da;
-  --color-signal: #147a45;
+  --color-signal: #116b3c;
   --color-night: #0f1014;
   --color-night-2: #171920;
   --color-night-3: #21242d;
@@ -180,11 +180,11 @@ html[lang="th"] .display-serif { font-family: var(--font-sans); font-style: norm
   white-space: nowrap;
 }
 .btn-primary { background: var(--color-ink); color: var(--color-paper); }
-.btn-primary:hover { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.btn-primary:hover { background: var(--color-accent-ink); border-color: var(--color-accent-ink); color: #fff; }
 .btn-ghost { background: transparent; color: var(--color-ink); }
 .btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
 .night .btn-primary, .btn-on-night { background: var(--color-night-ink); color: var(--color-night); border-color: var(--color-night-ink); }
-.night .btn-primary:hover, .btn-on-night:hover { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.night .btn-primary:hover, .btn-on-night:hover { background: var(--color-accent-ink); border-color: var(--color-accent-ink); color: #fff; }
 .night .btn-ghost { color: var(--color-night-ink); border-color: var(--color-night-ink); }
 .night .btn-ghost:hover { background: var(--color-night-ink); color: var(--color-night); }
 .btn .arrow { transition: transform 0.2s; }

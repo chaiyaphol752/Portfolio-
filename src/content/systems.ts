@@ -166,7 +166,7 @@ const de: SystemsContent = {
     ],
     channelsLabel: "Zustellkanäle",
     channels: [
-      { title: "E-Mail über Resend", role: "Primär", body: "Benachrichtigung an den eigenen Posteingang, Reply-To auf den Absender gesetzt. HTML-escapte Vorlage, API-Key nur auf dem Server.", file: "lib/contact/email.ts" },
+      { title: "E-Mail über Resend", role: "Primär", body: "Benachrichtigung an den eigenen Posteingang, Reply-To auf die absendende Adresse gesetzt. HTML-escapte Vorlage, API-Key nur auf dem Server.", file: "lib/contact/email.ts" },
       { title: "PostgreSQL", role: "Optional", body: "Neon über Vercel. Schreibt in contact_submissions, beim ersten Aufruf angelegt.", file: "lib/contact/store.ts" },
       { title: "Webhook", role: "Optional", body: "JSON an eine beliebige Slack- oder Discord-kompatible URL.", file: "lib/contact/deliver.ts" },
     ],
@@ -184,13 +184,13 @@ const de: SystemsContent = {
   },
   security: {
     eyebrow: "Hinweise",
-    title: "Sicherheit, wie gebaut.",
+    title: "Sicherheit, wie umgesetzt.",
     items: [
       "Security-Header – HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy und Permissions-Policy – sind in next.config.ts gesetzt.",
       "RESEND_API_KEY und Datenbank-Zugangsdaten existieren nur als Server-Umgebungsvariablen. Das E-Mail-Modul ist als server-only markiert.",
       "Eingaben werden auf dem Server mit Zod validiert und in der Benachrichtigungs-E-Mail HTML-escaped. Betreffzeilen werden von Zeilenumbrüchen befreit.",
-      "Spamschutz: ein verstecktes Honeypot-Feld und ein Rate-Limit pro Besucher (best effort pro Serverless-Instanz).",
-      "Besucher sehen nur sichere Statusmeldungen, nie Fehler von Anbieter oder Datenbank.",
+      "Spamschutz: ein verstecktes Honeypot-Feld und ein Rate-Limit pro Person (Best Effort pro Serverless-Instanz).",
+      "Besuchende sehen nur sichere Statusmeldungen, nie Fehler von Anbieter oder Datenbank.",
       "Externe Links öffnen mit rel=\"noopener noreferrer\".",
     ],
   },
@@ -215,7 +215,7 @@ const de: SystemsContent = {
       channels: "Kontaktkanäle",
     },
     values: {
-      ok: "Gesund",
+      ok: "Betriebsbereit",
       degraded: "Eingeschränkt",
       connected: "Verbunden",
       unreachable: "Nicht erreichbar",
@@ -304,11 +304,11 @@ const th: SystemsContent = {
   },
   security: {
     eyebrow: "หมายเหตุ",
-    title: "ความปลอดภัยตามที่สร้างจริง",
+    title: "ความปลอดภัยที่ใช้งานจริง",
     items: [
       "Security Header ได้แก่ HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy และ Permissions-Policy ตั้งค่าไว้ใน next.config.ts",
-      "RESEND_API_KEY และข้อมูลเข้าฐานข้อมูลอยู่ใน Environment Variable ฝั่งเซิร์ฟเวอร์เท่านั้น และโมดูลอีเมลถูกกำหนดเป็น server-only",
-      "ข้อมูลที่ส่งเข้ามาตรวจสอบด้วย Zod บนเซิร์ฟเวอร์ และ Escape HTML ก่อนใส่ในอีเมลแจ้งเตือน หัวเรื่องถูกตัดการขึ้นบรรทัดใหม่ออก",
+      "RESEND_API_KEY และข้อมูลสำหรับเข้าถึงฐานข้อมูลอยู่ใน Environment Variable ฝั่งเซิร์ฟเวอร์เท่านั้น และโมดูลอีเมลถูกกำหนดเป็น server-only",
+      "ข้อมูลที่ส่งเข้ามาตรวจสอบด้วย Zod บนเซิร์ฟเวอร์ และ Escape HTML ก่อนใส่ในอีเมลแจ้งเตือน พร้อมตัดการขึ้นบรรทัดใหม่ออกจากหัวเรื่อง",
       "ป้องกันสแปมด้วยช่อง Honeypot ที่ซ่อนไว้และ Rate Limit ต่อผู้เข้าชม (แบบ Best Effort ต่อ Serverless Instance)",
       "ผู้เข้าชมเห็นเฉพาะข้อความสถานะที่ปลอดภัย ไม่เห็น Error จากผู้ให้บริการหรือฐานข้อมูล",
       "ลิงก์ภายนอกเปิดด้วย rel=\"noopener noreferrer\"",
@@ -316,7 +316,7 @@ const th: SystemsContent = {
   },
   health: {
     eyebrow: "Endpoint แบบสด",
-    title: "/api/health เรียกจากเบราว์เซอร์ของคุณ",
+    title: "/api/health เรียกจากเบราว์เซอร์โดยตรง",
     body: "Route Handler ส่งข้อมูลรันไทม์ที่ปลอดภัยและไม่เป็นความลับ รวมถึงช่องทางติดต่อที่ตั้งค่าไว้ Request นี้เป็นของจริง",
     loading: "กำลังเรียก Endpoint…",
     error: "เชื่อมต่อ Endpoint ไม่ได้",
@@ -359,7 +359,7 @@ const th: SystemsContent = {
     noDescription: "ยังไม่มีคำอธิบาย",
   },
   cta: {
-    title: "อยากได้ Backend แบบนี้ให้เว็บไซต์ของคุณไหม",
+    title: "อยากได้ Backend แบบนี้ให้เว็บไซต์ไหม",
     body: "ฟอร์มที่ส่งข้อความได้จริง API ฐานข้อมูล อีเมล และการ Deploy สร้าง ทดสอบ และมีเอกสารครบ",
     label: "เริ่มโปรเจกต์",
   },

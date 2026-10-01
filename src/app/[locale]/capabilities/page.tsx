@@ -55,7 +55,8 @@ export default async function CapabilitiesPage({ params }: { params: Promise<{ l
         </div>
       </header>
 
-      <section aria-label={t.ui.boardLabel} className="container-page py-[clamp(3rem,6vw,5rem)]">
+      <section aria-labelledby="board-title" className="container-page py-[clamp(3rem,6vw,5rem)]">
+        <h2 id="board-title" className="sr-only">{t.ui.boardLabel}</h2>
         <CapabilityNetwork t={t} />
       </section>
 

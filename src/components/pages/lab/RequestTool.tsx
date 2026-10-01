@@ -236,14 +236,14 @@ export function RequestTool({ t }: { t: LabContent["request"] }) {
             <Send className="size-4" aria-hidden />
             {response.state === "sending" ? t.sending : t.send}
           </button>
-          <p className="min-w-0 flex-1 text-xs text-ink-3">{t.sendNote}</p>
+          <p className="min-w-[12rem] flex-1 text-xs text-ink-3">{t.sendNote}</p>
         </div>
       </div>
 
       {/* ---------------- inspection pane ---------------- */}
       <div className="flex min-w-0 flex-col bg-paper-2">
         <section aria-labelledby={`${uid}-resolved`} className="border-b border-line p-4">
-          <h3 id={`${uid}-resolved`} className="eyebrow">{t.resolved}</h3>
+          <h2 id={`${uid}-resolved`} className="eyebrow">{t.resolved}</h2>
           {resolved.ok ? (
             <>
               <p className="mono mt-2 break-all text-[0.82rem]">
@@ -276,7 +276,7 @@ export function RequestTool({ t }: { t: LabContent["request"] }) {
         </section>
 
         <section aria-labelledby={`${uid}-checks`} className="border-b border-line p-4">
-          <h3 id={`${uid}-checks`} className="eyebrow">{t.warningsTitle}</h3>
+          <h2 id={`${uid}-checks`} className="eyebrow">{t.warningsTitle}</h2>
           {warnings.length === 0 ? (
             <p className="mt-2 flex items-center gap-2 text-sm text-signal">
               <CheckCircle2 className="size-4" aria-hidden />
@@ -296,7 +296,7 @@ export function RequestTool({ t }: { t: LabContent["request"] }) {
 
         <section aria-labelledby={`${uid}-code`} className="border-b border-line p-4">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 id={`${uid}-code`} className="eyebrow mr-auto">{t.snippets}</h3>
+            <h2 id={`${uid}-code`} className="eyebrow mr-auto">{t.snippets}</h2>
             <fieldset className="flex items-center gap-1">
               <legend className="sr-only">{t.snippets}</legend>
               {(["curl", "fetch", "python"] as const).map((f) => (
@@ -316,7 +316,7 @@ export function RequestTool({ t }: { t: LabContent["request"] }) {
         </section>
 
         <section aria-labelledby={`${uid}-response`} aria-live="polite" className="flex-1 p-4">
-          <h3 id={`${uid}-response`} className="eyebrow">{t.response}</h3>
+          <h2 id={`${uid}-response`} className="eyebrow">{t.response}</h2>
           {response.state === "idle" && <p className="mt-2 text-sm text-ink-3">{t.emptyResponse}</p>}
           {response.state === "sending" && <p className="mono mt-2 text-sm text-ink-2">{t.sending}</p>}
           {response.state === "error" && (

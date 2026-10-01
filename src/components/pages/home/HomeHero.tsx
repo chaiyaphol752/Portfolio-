@@ -60,7 +60,7 @@ export function HomeHero({ locale }: { locale: Locale }) {
         <p className="eyebrow mb-4">{c.outcomesLabel}</p>
         <ul className="grid grid-cols-2 gap-x-6 sm:grid-cols-4">
           {c.outcomes.map((o) => (
-            <li key={o} className="flex items-center gap-3 border-b border-line py-3 text-[0.95rem] font-medium">
+            <li key={o} className="flex items-center gap-3 hyphens-auto border-b border-line py-3 text-[0.95rem] font-medium">
               <span aria-hidden className="size-1.5 shrink-0 bg-accent" />
               {o}
             </li>

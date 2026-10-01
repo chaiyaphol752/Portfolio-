@@ -21,7 +21,7 @@ function Labels({ project, t, dark }: { project: ProjectMeta; t: ProjectsContent
       <span
         className={clsx(
           "mono rounded-sm px-2 py-1 text-[0.66rem] uppercase tracking-wider",
-          project.kind === "demo" ? "bg-accent text-white" : dark ? "border border-night-line text-night-ink" : "border border-ink text-ink",
+          project.kind === "demo" ? "bg-accent-ink text-white" : dark ? "border border-night-line text-night-ink" : "border border-ink text-ink",
         )}
       >
         {t.kind[project.kind]}
@@ -51,7 +51,7 @@ function Facts({ project, t, dark, cols = false }: { project: ProjectMeta; t: Pr
         <ol className="space-y-3">
           {copy.decisions.map((d, i) => (
             <li key={i} className={clsx("grid grid-cols-[1.5rem_1fr] gap-2 text-[0.9rem] leading-relaxed", mute)}>
-              <span aria-hidden className="mono pt-0.5 text-xs text-accent-ink">{String.fromCharCode(97 + i)}.</span>
+              <span aria-hidden className={clsx("mono pt-0.5 text-xs", dark ? "text-accent" : "text-accent-ink")}>{String.fromCharCode(97 + i)}.</span>
               <span>{d}</span>
             </li>
           ))}

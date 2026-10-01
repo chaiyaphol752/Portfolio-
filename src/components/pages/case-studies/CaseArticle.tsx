@@ -57,7 +57,7 @@ export function CaseArticle({ study, labels }: Props) {
             >
               <div>
                 <p className="mono text-xs text-accent-ink">§{i + 1}</p>
-                <h3 id={headingId} className="mt-1 text-[1.05rem] font-semibold tracking-tight">{labels.steps[stepId]}</h3>
+                <h3 id={headingId} className="mt-1 hyphens-auto break-words text-[1.05rem] font-semibold tracking-tight">{labels.steps[stepId]}</h3>
               </div>
               <div className="min-w-0">
                 <p className="sr-only">{labels.forClients}:</p>

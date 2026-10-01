@@ -72,8 +72,8 @@ const de: AboutContent = {
   hero: {
     eyebrow: "Über mich",
     greeting: "Hallo, ich bin {name}.",
-    title: "Ich bringe Ideen gern ganz bis zu etwas, das Menschen wirklich nutzen.",
-    lede: "Nicht nur das Mock-up und nicht nur den Code. Den ganzen Weg: was es leisten soll, wie es sich anfühlt, wie es darunter funktioniert – und wie es sicher online geht.",
+    title: "Ich bringe Ideen gern bis zu einem Produkt, das Menschen wirklich nutzen.",
+    lede: "Nicht nur das Mock-up und nicht nur den Code. Den ganzen Weg: was es leisten soll, wie es sich anfühlt, wie es technisch funktioniert – und wie es sicher online geht.",
   },
   facts: {
     title: "Auf einen Blick",
@@ -88,7 +88,7 @@ const de: AboutContent = {
   path: {
     eyebrow: "Woran ich arbeite",
     title: "Jede Ebene – damit zwischen ihnen nichts verloren geht.",
-    body: "Die meisten Probleme in Webprojekten entstehen an den Übergängen – zwischen Design und Code oder zwischen Frontend und Backend. Wer alle Ebenen bearbeitet, hält diese Übergänge klein.",
+    body: "Die meisten Probleme in Webprojekten entstehen an den Übergängen – zwischen Design und Code oder zwischen Frontend und Backend. Wer alle Ebenen abdeckt, hält diese Übergänge klein.",
     layers: [
       { title: "Oberfläche", body: "Layout, Typografie und Interaktion, die auf dem Smartphone genauso funktionieren wie auf dem großen Bildschirm." },
       { title: "Anwendungslogik", body: "State, Formulare, Sonderfälle und die Fehlermeldungen, an die niemand denkt." },
@@ -103,7 +103,7 @@ const de: AboutContent = {
     body: "ChatGPT, Claude und Claude Code sowie lokale Modelle sind Alltagswerkzeuge – so wie ein guter Editor oder ein Test-Runner. Sie machen die Arbeit schneller und gründlicher. Urteilsvermögen ersetzen sie nicht.",
     helpsTitle: "Wo KI hilft",
     helps: ["Recherche und fremden Code lesen", "Planen und Aufgaben zerlegen", "Implementierung entwerfen", "Debugging und Fehlersuche", "Diffs reviewen", "Tests schreiben", "Wiederkehrende Schritte automatisieren"],
-    staysTitle: "Was Engineering-Verantwortung bleibt",
+    staysTitle: "Was in technischer Verantwortung bleibt",
     stays: [
       { title: "Architektur", body: "Wie das System aufgebaut ist und warum." },
       { title: "Sicherheitsentscheidungen", body: "Datenverarbeitung, Secrets, Zugriffe und Validierung." },
@@ -121,7 +121,7 @@ const de: AboutContent = {
     ],
   },
   closing: {
-    title: "Etwas im Kopf?",
+    title: "Schon eine Idee?",
     body: "Erzähl mir, was du baust oder was repariert werden muss. Du bekommst eine klare Antwort zu Umfang, Vorgehen und Zeitplan.",
   },
 };
@@ -133,9 +133,9 @@ const th: AboutContent = {
   },
   hero: {
     eyebrow: "เกี่ยวกับ",
-    greeting: "สวัสดี {name} ยินดีที่ได้รู้จัก",
+    greeting: "สวัสดี นี่คือ {name}",
     title: "ชอบพาไอเดียไปให้ถึงสิ่งที่คนใช้งานได้จริง",
-    lede: "ไม่ใช่แค่ Mock-up และไม่ใช่แค่โค้ด แต่ครบทั้งเส้นทาง ตั้งแต่ควรทำอะไร ควรรู้สึกอย่างไร ทำงานข้างในอย่างไร ไปจนถึงขึ้นออนไลน์อย่างปลอดภัย",
+    lede: "ไม่ใช่แค่ Mock-up และไม่ใช่แค่โค้ด แต่ครบทั้งเส้นทาง ตั้งแต่ควรทำอะไร ใช้งานแล้วรู้สึกอย่างไร ทำงานข้างในอย่างไร ไปจนถึงขึ้นออนไลน์อย่างปลอดภัย",
   },
   facts: {
     title: "ข้อมูลโดยย่อ",
@@ -167,7 +167,7 @@ const th: AboutContent = {
     helps: ["ค้นคว้าและอ่านโค้ดที่ไม่คุ้นเคย", "วางแผนและแตกงานย่อย", "ร่างโค้ด", "Debug และไล่หา Error", "รีวิว Diff", "เขียนเทสต์", "ทำงานซ้ำ ๆ ให้อัตโนมัติ"],
     staysTitle: "สิ่งที่ยังเป็นความรับผิดชอบทางวิศวกรรม",
     stays: [
-      { title: "สถาปัตยกรรม", body: "ระบบถูกจัดโครงสร้างอย่างไร และเพราะอะไร" },
+      { title: "สถาปัตยกรรม", body: "โครงสร้างของระบบเป็นแบบไหน และเพราะอะไร" },
       { title: "การตัดสินใจด้านความปลอดภัย", body: "การจัดการข้อมูล Secret สิทธิ์การเข้าถึง และ Validation" },
       { title: "ตรวจสอบบน Production", body: "เช็กว่าสิ่งที่ส่งขึ้นไปใช้งานได้จริง" },
     ],
@@ -178,12 +178,12 @@ const th: AboutContent = {
     items: [
       { title: "ขอบเขตเป็นลายลักษณ์อักษร", body: "ก่อนเริ่มงาน ตกลงกันว่าจะสร้างอะไร และแบบไหนเรียกว่าเสร็จ" },
       { title: "เห็นความคืบหน้า", body: "ทำเป็นช่วงสั้น ๆ ที่ดูและให้ความเห็นได้ ไม่ใช่รอเปิดตัวทีเดียว" },
-      { title: "โค้ดเป็นของคุณ", body: "Repository และ Hosting ของคุณ โค้ดอ่านง่าย พร้อมเอกสารส่งมอบ" },
+      { title: "โค้ดเป็นของลูกค้า", body: "Repository และ Hosting เป็นของลูกค้าเอง โค้ดอ่านง่าย พร้อมเอกสารส่งมอบ" },
       { title: "พูดตรง ๆ", body: "ถ้าอะไรไม่ควรทำ มีความเสี่ยง หรือเกินขอบเขต จะบอกตั้งแต่เนิ่น ๆ" },
     ],
   },
   closing: {
-    title: "มีอะไรในใจไหม",
+    title: "มีโปรเจกต์ในใจไหม",
     body: "เล่ามาว่ากำลังสร้างอะไร หรืออะไรต้องแก้ แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และระยะเวลา",
   },
 };

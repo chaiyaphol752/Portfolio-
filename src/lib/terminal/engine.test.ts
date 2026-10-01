@@ -4,6 +4,7 @@ import { buildTerminalContext } from "./context";
 import { commandCenterContent } from "@/content/command-center";
 import { locales } from "@/i18n/config";
 import { pages } from "@/config/pages";
+import { profile } from "@/config/profile";
 
 const ctx = buildTerminalContext("en");
 
@@ -62,9 +63,9 @@ describe("execute", () => {
   });
   it("prints email and phone as trusted links", () => {
     const rows = execute("contact", ctx).lines;
-    expect(rows.some((l) => l.href === "mailto:chaiyaphol.752@gmail.com")).toBe(true);
-    expect(rows.some((l) => l.href === "tel:+4915154914268")).toBe(true);
-    expect(execute("email", ctx).lines[0]?.text).toBe("chaiyaphol.752@gmail.com");
+    expect(rows.some((l) => l.href === `mailto:${profile.contact.email}`)).toBe(true);
+    expect(rows.some((l) => l.href === profile.contact.phone.href)).toBe(true);
+    expect(execute("email", ctx).lines[0]?.text).toBe(profile.contact.email);
   });
   it("never turns user input into a link", () => {
     for (const input of ["open javascript:alert(1)", "javascript:alert(1)", "<a href=x>"]) {

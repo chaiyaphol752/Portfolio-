@@ -41,7 +41,7 @@ export function buildTerminalContext(locale: Locale): TerminalContext {
       services: [heading(t.services.heading), ...t.services.items.map((s) => row("·", s)), muted(t.services.hint)],
       capabilities: [
         heading(t.capabilities.heading),
-        ...capabilityGroups.map((g) => row(t.capabilities.groups[g.id], g.items.join(" · "))),
+        ...capabilityGroups.map((g) => row(t.capabilities.groups[g.id], g.items.map((i) => t.capabilities.items[i] ?? i).join(" · "))),
         muted(t.capabilities.hint),
       ],
       projects: [heading(t.projects.heading), text(t.projects.text), muted(t.projects.hint)],

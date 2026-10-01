@@ -156,7 +156,7 @@ const de: CommonContent = {
     explore: "Entdecken",
     elsewhere: "Online",
     source: "Quellcode",
-    builtWith: "Next.js · TypeScript · Python-generierter Schaltplan · Deployed auf Vercel",
+    builtWith: "Next.js · TypeScript · Python-generierter Schaltplan · Gehostet auf Vercel",
     rights: "Alle Rechte vorbehalten.",
   },
   cta: {
@@ -250,7 +250,7 @@ const th: CommonContent = {
     viewWork: "ดูผลงาน",
     startProject: "เริ่มโปรเจกต์",
     exploreAi: "สำรวจระบบ AI",
-    tellMe: "เล่าสิ่งที่คุณกำลังสร้าง",
+    tellMe: "เล่าให้ฟังว่ากำลังสร้างอะไร",
     discussRedesign: "คุยเรื่อง Redesign",
     addFeature: "เพิ่มฟีเจอร์",
     buildWithAi: "สร้างด้วย AI",
