@@ -21,7 +21,7 @@ function Labels({ project, t, dark }: { project: ProjectMeta; t: ProjectsContent
       <span
         className={clsx(
           "mono rounded-sm px-2 py-1 text-[0.72rem] uppercase tracking-wider sm:text-[0.66rem]",
-          project.kind === "demo" ? "bg-accent-ink text-white" : dark ? "border border-night-line text-night-ink" : "border border-ink text-ink",
+          project.kind === "live" ? "bg-accent text-paper" : dark ? "border border-night-line text-night-ink" : "border border-ink text-ink",
         )}
       >
         {t.kind[project.kind]}
@@ -78,7 +78,7 @@ function Actions({ project, t, common, locale, dark }: Props & { dark?: boolean 
   return (
     <div className="flex flex-wrap items-center gap-3">
       <ButtonLink href={localizedPath(locale, "contact")} variant={dark ? "primary" : "ghost"}>
-        {common.cta[project.cta]}
+        {common.cta.contact}
       </ButtonLink>
       {project.links.map((l) => (
         <a
@@ -88,7 +88,7 @@ function Actions({ project, t, common, locale, dark }: Props & { dark?: boolean 
           rel="noopener noreferrer"
           className={clsx("btn", dark ? "btn-ghost" : "btn-ghost border-transparent")}
         >
-          {t.detail.source}
+          {t.detail[l.kind]}
           <ArrowUpRight className="size-4" aria-hidden />
           <span className="sr-only"> ({common.externalLink})</span>
         </a>

@@ -27,7 +27,6 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
 
   return (
     <header
-      data-tone={currentId === "operator" ? "dark" : undefined}
       className="site-header sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-[2px]"
     >
       <div className="container-page flex h-[var(--header-h)] items-center justify-between gap-4">
@@ -38,19 +37,18 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
           </span>
           <span className="hidden leading-none xs:block">
             <span className="block text-[0.9rem] font-semibold tracking-tight">{brandName}</span>
-            <span className="mono mt-1 block text-[0.62rem] uppercase tracking-[0.14em] text-ink-3">Web × AI</span>
+            <span className="mono mt-1 block text-[0.62rem] uppercase tracking-[0.14em] text-ink-3">{t.brandTag}</span>
           </span>
         </Link>
 
         <nav aria-label={t.primaryNav} className="hidden lg:block">
           <ul className="flex items-center gap-1">
             {pages
-              .filter((p) => p.primary)
+              .filter((p) => p.primary && p.listed)
               .map((p) => {
                 const active = p.id === currentId;
                 return (
-                  // Operator joins the header from xl up; below that the six labels don't fit in German.
-                  <li key={p.id} className={p.id === "operator" ? "hidden xl:block" : undefined}>
+                  <li key={p.id}>
                     <Link
                       href={localizedPath(locale, p.slug)}
                       aria-current={active ? "page" : undefined}
@@ -59,7 +57,6 @@ export function Header({ locale, t, brandName, monogram, available }: Props) {
                         active ? "text-ink" : "text-ink-2 hover:text-ink",
                       )}
                     >
-                      {p.id === "operator" && <span aria-hidden className="mr-1.5 size-1.5 rounded-full bg-accent" />}
                       {t.nav[p.id]}
                       <span aria-hidden className={clsx("absolute inset-x-2 bottom-1 h-px xl:inset-x-3", active ? "bg-accent" : "bg-transparent")} />
                     </Link>

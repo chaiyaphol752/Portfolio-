@@ -86,7 +86,7 @@ describe("execute", () => {
     expect(execute("open home", ctx).effect).toEqual({ type: "navigate", slug: "" });
     expect(execute("open skills", ctx).effect).toEqual({ type: "navigate", slug: "capabilities" });
     expect(execute("open contact", ctx).effect).toEqual({ type: "navigate", slug: "contact" });
-    expect(execute("open Work", ctx).effect).toEqual({ type: "navigate", slug: "projects" });
+    expect(execute("open Projects", ctx).effect).toEqual({ type: "navigate", slug: "projects" });
     expect(execute("open 4", ctx).effect).toBeUndefined();
   });
   it("explains open usage and unknown pages", () => {

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import { localizedPath } from "@/i18n/routing";
@@ -28,7 +27,7 @@ export function HomeHero({ locale }: { locale: Locale }) {
           </p>
           <h1
             id="home-title"
-            className="display rise text-[clamp(2.7rem,8.6vw,8.75rem)]"
+            className="display rise text-[clamp(2.7rem,8.2vw,8rem)]"
             style={{ "--d": 1 } as React.CSSProperties}
           >
             <span className="block">{c.titleA}</span>
@@ -46,19 +45,21 @@ export function HomeHero({ locale }: { locale: Locale }) {
           <div className="flex flex-wrap gap-3 lg:justify-end">
             <ButtonLink href={localizedPath(locale, "projects")}>{t.cta.viewWork}</ButtonLink>
             <ButtonLink href={localizedPath(locale, "contact")} variant="ghost">
-              {t.cta.startProject}
+              {t.cta.contact}
             </ButtonLink>
-            {/* A direct door into the Operator showcase, marked with its signal dot. */}
-            <Link href={localizedPath(locale, "operator")} className="btn btn-ghost mono !gap-2.5 text-[0.8rem] uppercase tracking-[0.14em]">
-              <span aria-hidden className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgb(242_65_26_/_0.8)]" />
-              {t.nav.operator}
+            <a href={profile.links.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost mono !gap-2.5 text-[0.8rem] uppercase tracking-[0.14em]">
+              {t.cta.github}
               <ArrowUpRight className="size-4" aria-hidden />
-            </Link>
+              <span className="sr-only"> ({t.externalLink})</span>
+            </a>
           </div>
-          <Link href={localizedPath(locale, "ai-native")} className="group inline-flex min-h-11 items-center gap-2 self-start text-sm font-medium lg:self-end">
+          <a
+            href={localizedPath(locale, "ai-native")}
+            className="group inline-flex min-h-11 items-center gap-2 self-start text-sm font-medium lg:self-end"
+          >
             <span className="link-underline">{c.secondary}</span>
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
-          </Link>
+            <ArrowRight className="size-4 text-ink-3 transition-transform group-hover:translate-x-1" aria-hidden />
+          </a>
         </div>
       </div>
 

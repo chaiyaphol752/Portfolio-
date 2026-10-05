@@ -23,8 +23,7 @@ function ensureTable(): Promise<void> {
         name TEXT NOT NULL,
         email TEXT NOT NULL,
         company TEXT,
-        project_type TEXT NOT NULL,
-        budget TEXT,
+        enquiry_type TEXT NOT NULL,
         message TEXT NOT NULL,
         preferred_language TEXT NOT NULL,
         status TEXT NOT NULL DEFAULT 'new',
@@ -41,8 +40,8 @@ export async function insertSubmission(input: ContactInput): Promise<void> {
   await ensureTable();
   const db = sql();
   await db`
-    INSERT INTO contact_submissions (name, email, company, project_type, budget, message, preferred_language)
-    VALUES (${input.name}, ${input.email}, ${input.company ?? null}, ${input.projectType}, ${input.budget ?? null}, ${input.message}, ${input.language})`;
+    INSERT INTO contact_submissions (name, email, company, enquiry_type, message, preferred_language)
+    VALUES (${input.name}, ${input.email}, ${input.company ?? null}, ${input.enquiryType}, ${input.message}, ${input.language})`;
 }
 
 export async function pingDatabase(): Promise<boolean> {

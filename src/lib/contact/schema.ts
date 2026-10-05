@@ -2,8 +2,7 @@
 import * as z from "zod/mini";
 import { locales } from "@/i18n/config";
 
-export const projectTypes = ["new-website", "redesign", "features", "webapp", "ai-integration", "automation", "local-ai", "other"] as const;
-export const budgets = ["under-1k", "1k-5k", "5k-15k", "15k-plus", "unsure"] as const;
+export const enquiryTypes = ["job-opportunity", "internship", "collaboration", "feedback", "other"] as const;
 
 /**
  * Error messages are stable codes, not sentences: the client maps each code to
@@ -13,8 +12,7 @@ export const contactSchema = z.object({
   name: z.string().check(z.trim(), z.minLength(2, "name.short"), z.maxLength(100, "name.long")),
   email: z.string().check(z.trim(), z.maxLength(200, "email.long"), z.regex(z.regexes.email, "email.invalid")),
   company: z.optional(z.string().check(z.trim(), z.maxLength(120, "company.long"))),
-  projectType: z.enum(projectTypes, { error: "projectType.invalid" }),
-  budget: z.optional(z.enum(budgets, { error: "budget.invalid" })),
+  enquiryType: z.enum(enquiryTypes, { error: "enquiryType.invalid" }),
   message: z.string().check(z.trim(), z.minLength(20, "message.short"), z.maxLength(4000, "message.long")),
   language: z.enum(locales, { error: "language.invalid" }),
   consent: z.literal("on", { error: "consent.required" }),
@@ -24,11 +22,11 @@ export const contactSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>;
 
-export type ContactErrorCode = "name.short" | "name.long" | "email.invalid" | "email.long" | "company.long" | "projectType.invalid" | "budget.invalid" | "message.short" | "message.long" | "language.invalid" | "consent.required";
+export type ContactErrorCode = "name.short" | "name.long" | "email.invalid" | "email.long" | "company.long" | "enquiryType.invalid" | "message.short" | "message.long" | "language.invalid" | "consent.required";
 
 export type ContactFieldErrors = Partial<Record<keyof ContactInput, string>>;
 
-const optionalFields = ["company", "budget"] as const;
+const optionalFields = ["company"] as const;
 
 /** Returns validated data or a per-field map of error codes. */
 export function parseContact(raw: Record<string, unknown>):

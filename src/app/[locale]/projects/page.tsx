@@ -27,7 +27,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
       id: p.id,
       name: p.name,
       kindLabel: t.kind[p.kind],
-      demo: p.kind === "demo",
+      highlight: p.kind === "live",
       serviceLabel,
       categories: p.categories,
       haystack: buildHaystack([p.name, copy.tagline, copy.problem, copy.solution, ...copy.decisions, ...p.stack, serviceLabel, t.kind[p.kind]]),
@@ -59,7 +59,6 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         </div>
       </section>
 
-      <CtaBand locale={locale} title={t.cta.title} body={t.cta.body} label={c.cta.startProject} />
-    </>
+      <CtaBand locale={locale} title={t.cta.title} body={t.cta.body} label={c.cta.startProject} />    </>
   );
 }

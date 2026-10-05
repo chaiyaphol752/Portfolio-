@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { profile } from "@/config/profile";
 import type { CommonContent } from "@/content/common";
 
-/** Freelance availability, driven by profile.availability. */
+/** Employment availability, driven by profile.availability. */
 export function Availability({ t, services = false, className, dark }: { t: CommonContent; services?: boolean; className?: string; dark?: boolean }) {
   const state = profile.availability;
   return (

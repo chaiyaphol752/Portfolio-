@@ -17,3 +17,5 @@ next-env.d.ts
 .DS_Store
 npm-debug.log*
 qa-shots
+# Local QA scratch (node_modules tarball for exFAT-based drives)
+.qa-cache

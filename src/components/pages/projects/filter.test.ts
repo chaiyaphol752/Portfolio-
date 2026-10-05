@@ -39,7 +39,7 @@ describe("project data", () => {
     expect(projectsMeta.map((p) => p.id).sort()).toEqual([...projectIds].sort());
     for (const c of categoryIds) expect(projectsMeta.some((p) => p.categories.includes(c))).toBe(true);
   });
-  it("labels only this portfolio as a real technical demonstration", () => {
-    expect(projectsMeta.filter((p) => p.kind === "demo").map((p) => p.id)).toEqual(["this-portfolio"]);
+  it("labels exactly the two deployed projects as live", () => {
+    expect(projectsMeta.filter((p) => p.kind === "live").map((p) => p.id).sort()).toEqual(["this-portfolio", "wat-charoen-dham"]);
   });
 });

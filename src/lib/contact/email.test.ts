@@ -14,8 +14,7 @@ const input: ContactInput = {
   name: "Ada <script>alert(1)</script>",
   email: "ada@example.com",
   company: "Analytical & Co",
-  projectType: "redesign",
-  budget: "5k-15k",
+  enquiryType: "job-opportunity",
   message: "We need a redesign.\n<b>bold</b> & more",
   language: "de",
   consent: "on",
@@ -44,15 +43,15 @@ describe("templates", () => {
     expect(html).not.toContain("<script>");
     expect(html).toContain("&lt;script&gt;");
     expect(html).toContain("&lt;b&gt;bold&lt;/b&gt; &amp; more");
-    expect(subject).toBe("New portfolio enquiry — Ada <script>alert(1)</script> — Website redesign");
-    expect(text).toContain("Budget: 5,000 – 15,000 USD");
+    expect(subject).toBe("New portfolio message — Ada <script>alert(1)</script> — Job opportunity");
+    expect(text).toContain("Enquiry type: Job opportunity");
     expect(text).toContain("Received: 2026-10-01 10:00 UTC");
   });
   it("keeps the subject on one line", () => {
     expect(buildOwnerNotification({ ...input, name: "A\r\nBcc: x@y.z" }).subject).not.toMatch(/[\r\n]/);
   });
   it("localizes the acknowledgement", () => {
-    expect(buildAcknowledgement(input).subject).toMatch(/Projektanfrage/);
+    expect(buildAcknowledgement(input).subject).toMatch(/Nachricht/);
     expect(buildAcknowledgement({ ...input, language: "th" }).text).not.toMatch(/ครับ|ค่ะ/);
   });
   it("escapes HTML entities", () => {

@@ -12,7 +12,7 @@ export interface IndexItem extends Searchable {
   id: ProjectId;
   name: string;
   kindLabel: string;
-  demo: boolean;
+  highlight: boolean;
   serviceLabel: string;
 }
 
@@ -112,7 +112,7 @@ export function ProjectsBrowser({ items, sections, t }: Props) {
                     </th>
                     <td className="py-3 pr-4 text-sm text-ink-2 max-md:hidden">{item.serviceLabel}</td>
                     <td className="py-3 text-right">
-                      <span className={clsx("mono text-[0.72rem] uppercase tracking-wider sm:whitespace-nowrap sm:text-[0.68rem]", item.demo ? "text-accent-ink" : "text-ink-3")}>{item.kindLabel}</span>
+                      <span className={clsx("mono text-[0.72rem] uppercase tracking-wider sm:whitespace-nowrap sm:text-[0.68rem]", item.highlight ? "text-accent-ink" : "text-ink-3")}>{item.kindLabel}</span>
                     </td>
                   </tr>
                 ))}

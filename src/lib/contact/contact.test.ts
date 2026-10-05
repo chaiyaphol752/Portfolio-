@@ -7,9 +7,8 @@ const valid = {
   name: "Ada Lovelace",
   email: "ada@example.com",
   company: "",
-  projectType: "webapp",
-  budget: "",
-  message: "I need a dashboard for our internal operations team.",
+  enquiryType: "job-opportunity",
+  message: "I would like to talk about a junior web development role.",
   language: "de",
   consent: "on",
   website: "",
@@ -21,11 +20,10 @@ describe("contact validation", () => {
     expect(r.success).toBe(true);
     if (r.success) {
       expect(r.data.company).toBeUndefined();
-      expect(r.data.budget).toBeUndefined();
     }
   });
   it("returns stable error codes per field", () => {
-    const r = parseContact({ ...valid, name: "A", email: "nope", message: "short", consent: undefined, projectType: "x" });
+    const r = parseContact({ ...valid, name: "A", email: "nope", message: "short", consent: undefined, enquiryType: "x" });
     expect(r.success).toBe(false);
     if (!r.success) {
       expect(r.fieldErrors).toMatchObject({
@@ -33,7 +31,7 @@ describe("contact validation", () => {
         email: "email.invalid",
         message: "message.short",
         consent: "consent.required",
-        projectType: "projectType.invalid",
+        enquiryType: "enquiryType.invalid",
       });
     }
   });

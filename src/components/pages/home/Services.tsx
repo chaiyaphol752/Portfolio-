@@ -4,10 +4,9 @@ import type { Locale } from "@/i18n/config";
 import { localizedPath } from "@/i18n/routing";
 import { homeContent } from "@/content/home";
 
-/** Four lead services as large editorial rows, then a dense two-column index. */
+/** Four strengths as large editorial rows, then a dense two-column toolbox index. */
 export function Services({ locale }: { locale: Locale }) {
   const c = homeContent[locale].services;
-  const contact = localizedPath(locale, "contact");
 
   return (
     <section id="services" className="border-t border-line bg-paper-2/60" aria-labelledby="services-title">
@@ -39,7 +38,7 @@ export function Services({ locale }: { locale: Locale }) {
                 </ul>
               </div>
               <div className="flex items-start lg:col-span-3 lg:justify-end">
-                <Link href={contact} className="group inline-flex items-center gap-2 rounded-full border border-ink px-4 py-2 text-sm font-medium transition-colors hover:bg-ink hover:text-paper">
+                <Link href={localizedPath(locale, s.href)} className="group inline-flex items-center gap-2 rounded-full border border-ink px-4 py-2 text-sm font-medium transition-colors hover:bg-ink hover:text-paper">
                   {s.cta}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
                 </Link>
@@ -56,7 +55,7 @@ export function Services({ locale }: { locale: Locale }) {
                 <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
                   <p className="h3">{group.title}</p>
                   {group.cta && (
-                    <Link href={contact} className="group -my-3 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent-ink">
+                    <Link href={localizedPath(locale, "contact")} className="group -my-3 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-accent-ink">
                       <span className="link-underline">{group.cta}</span>
                       <ArrowUpRight className="size-4" aria-hidden />
                     </Link>

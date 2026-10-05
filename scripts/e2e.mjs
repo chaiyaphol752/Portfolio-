@@ -18,6 +18,7 @@ await check("language switch keeps page", async () => { await p.goto(`${base}/en
 await check("unknown route -> 404", async () => { const r = await p.goto(`${base}/en/nope`); assert(r.status() === 404, `status ${r.status()}`); });
 await check("no page numbers or complexity labels anywhere", async () => { for (const s of ["", "/lab", "/command-center"]) { await p.goto(`${base}/en${s}`); const t = await p.locator("body").innerText(); assert(!/complexity|\b0[1-9]\s*\/\s*0?9\b/i.test(t), `found on ${s}`); } });
 await check("footer has mailto and tel links", async () => { await p.goto(`${base}/en`); assert(await p.locator('footer a[href="mailto:chaiyaphol.752@gmail.com"]').count() > 0, "mailto"); assert(await p.locator('footer a[href="tel:+4915154914268"]').count() > 0, "tel"); });
+await check("home features the strongest projects with real links", async () => { await p.goto(`${base}/en`, { waitUntil: "networkidle" }); assert((await p.locator('#featured-title').count()) === 1, "featured section"); assert((await p.locator('a[href="https://wat-charoen-dham.de"]').count()) === 1, "live link"); assert((await p.locator('a[href="/en/projects#project-android-app"]').count()) === 1, "android link"); });
 await check("palette opens with Ctrl+K and navigates", async () => { await p.goto(`${base}/en`, { waitUntil: "networkidle" }); await p.keyboard.press("Control+k"); await p.getByRole("combobox").fill("lab"); await p.keyboard.press("Enter"); await p.waitForURL("**/en/lab"); });
 await check("mobile menu lists 10 pages and contact actions", async () => { await p.setViewportSize({ width: 360, height: 780 }); await p.goto(`${base}/en`); await p.getByRole("button", { name: /menu/i }).click(); const d = p.locator("dialog[open]"); assert((await d.locator("ul li a[href^='/en']").count()) >= 10, "pages"); assert(await d.locator('a[href^="tel:"]').count() === 1, "tel"); await p.keyboard.press("Escape"); await p.setViewportSize({ width: 1366, height: 820 }); });
 await check("AI circuit: selecting Python highlights its connections", async () => { await p.goto(`${base}/en/ai-native`); const before = await p.locator("main").innerText(); await p.getByRole("button", { name: /^python$/i }).first().click(); await p.waitForTimeout(300); const after = await text(); assert(after !== before && /automation/i.test(after), "inspector did not change"); });
@@ -28,7 +29,7 @@ await check("lab JSON inspector flags invalid JSON", async () => { await p.goto(
 await check("lab API inspector calls /api/health", async () => { await p.goto(`${base}/en/lab`); await p.getByRole("tab", { name: /api|request/i }).first().click(); await p.getByRole("button", { name: /send/i }).first().click(); await p.waitForTimeout(1500); assert(/200/.test(await text()), "no 200"); });
 await check("terminal runs `capabilities`", async () => { await p.goto(`${base}/en/command-center`); const i = p.locator('input[maxlength="120"]'); await i.fill("capabilities"); await i.press("Enter"); await p.waitForTimeout(300); assert(/python/i.test(await text()), "no output"); });
 await check("terminal refuses shell commands", async () => { const i = p.locator('input[maxlength="120"]'); await i.fill("rm -rf /"); await i.press("Enter"); await p.waitForTimeout(300); assert(/unknown|not found|help/i.test(await text()), "no rejection"); });
-await check("contact: ?type=redesign preselects project type", async () => { await p.goto(`${base}/en/contact?type=redesign`); await p.waitForTimeout(500); assert((await p.locator('select[name="projectType"]').inputValue()) === "redesign", "not preselected"); });
+await check("contact: ?type=job-opportunity preselects enquiry type", async () => { await p.goto(`${base}/en/contact?type=job-opportunity`); await p.waitForTimeout(500); assert((await p.locator('select[name="enquiryType"]').inputValue()) === "job-opportunity", "not preselected"); });
 await check("contact: client validation errors", async () => { await p.goto(`${base}/en/contact`); await p.getByRole("button", { name: /send/i }).click(); await p.waitForTimeout(300); assert((await p.locator('[aria-invalid="true"]').count()) >= 3, "no invalid fields"); });
 await check("contact: has direct email + phone", async () => { assert(await p.locator('main a[href="mailto:chaiyaphol.752@gmail.com"]').count() > 0, "mailto"); assert(await p.locator('main a[href="tel:+4915154914268"]').count() > 0, "tel"); });
 // Real submissions send email once Resend is configured, so they are opt-in: E2E_SUBMIT=1.
@@ -36,7 +37,7 @@ if (submitReal) await check("contact: REAL submission is delivered", async () =>
   await p.goto(`${base}/en/contact`);
   await p.locator('input[name="name"]').fill("Portfolio QA");
   await p.locator('input[name="email"]').fill(process.env.E2E_EMAIL ?? "qa@example.com");
-  await p.locator('select[name="projectType"]').selectOption("redesign");
+  await p.locator('select[name="enquiryType"]').selectOption("job-opportunity");
   await p.locator('textarea[name="message"]').fill("Automated production check of the contact pipeline. Please ignore.");
   await p.locator('input[name="consent"]').check();
   await p.getByRole("button", { name: /send/i }).click();
@@ -52,9 +53,13 @@ await check("operator showcase renders with its figure and exit links", async ()
   await p.mouse.wheel(0, 4000); await p.waitForTimeout(400);
   assert((await p.locator("[data-scene][data-active]").count()) >= 1, "scroll director inactive");
 });
-await check("operator: home entry, screen inspector, safe console, visor", async () => {
+await check("operator is hidden from recruiter navigation but reachable by URL", async () => {
   await p.goto(`${base}/en`, { waitUntil: "networkidle" });
-  assert((await p.locator('#operator-entry-title').count()) === 1 && (await p.locator('a[href="/en/operator"]').count()) > 0, "home entry");
+  assert((await p.locator('#operator-entry-title').count()) === 0, "home entry still present");
+  assert((await p.locator('header nav a[href="/en/operator"]').count()) === 0, "header link still present");
+  assert((await p.locator('footer a[href="/en/operator"]').count()) === 0, "footer link still present");
+});
+await check("operator: screen inspector, safe console, visor", async () => {
   await p.goto(`${base}/en/operator`, { waitUntil: "networkidle" });
   const triggers = p.locator('main button[aria-haspopup="dialog"]');
   assert((await triggers.count()) >= 6, "interactive screens");
@@ -70,14 +75,7 @@ await check("operator: home entry, screen inspector, safe console, visor", async
   await p.getByRole("button", { name: /visor/i }).click({ force: true }); await p.waitForTimeout(300);
   assert((await p.locator("#operator-root[data-sync]").count()) === 1, "visor easter egg");
 });
-await check("operator: hero button on home, scene rail, surprise switch toggles the lights", async () => {
-  await p.goto(`${base}/en`, { waitUntil: "networkidle" });
-  assert((await p.locator('section[aria-labelledby="home-title"] a[href="/en/operator"]').count()) === 1, "hero button");
-  assert((await p.locator('header nav a[href="/en/operator"]').count()) === 1, "header link");
-  assert(await p.locator('header nav a[href="/en/operator"]').isVisible(), "header link hidden at desktop width");
-  const heroBottom = await p.evaluate(() => document.querySelector('section[aria-labelledby="home-title"]').getBoundingClientRect().bottom + scrollY);
-  const bandTop = await p.evaluate(() => document.querySelector("#operator-entry-title").closest("section").getBoundingClientRect().top + scrollY);
-  assert(Math.abs(bandTop - heroBottom) < 4, "operator band is not directly under the hero");
+await check("operator: scene rail and surprise switch toggle the lights", async () => {
   await p.goto(`${base}/en/operator`, { waitUntil: "networkidle" });
   assert((await p.locator("[data-rail]").count()) === 8, "rail");
   await p.getByRole("button", { name: "Do not press" }).click(); await p.waitForTimeout(1300);

@@ -6,11 +6,11 @@ import { profile } from "@/config/profile";
 import { common } from "@/content/common";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { HomeHero } from "@/components/pages/home/HomeHero";
+import { FeaturedProjects } from "@/components/pages/home/FeaturedProjects";
 import { Services } from "@/components/pages/home/Services";
 import { AiTeaser } from "@/components/pages/home/AiTeaser";
 import { Process } from "@/components/pages/home/Process";
 import { WorkTeaser } from "@/components/pages/home/WorkTeaser";
-import { OperatorEntry } from "@/components/pages/home/OperatorEntry";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -27,7 +27,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       <HomeHero locale={locale} />
-      <OperatorEntry locale={locale} />
+      <FeaturedProjects locale={locale} />
       <Services locale={locale} />
       <AiTeaser locale={locale} />
       <Process locale={locale} />

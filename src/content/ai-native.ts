@@ -34,7 +34,7 @@ const en = {
     titleA: "AI accelerates the work.",
     titleB: "Engineering judgment decides what ships.",
     lede: "ChatGPT, Claude, local models, Python and agents are parts of one system. This page shows how they connect — and where the checks are.",
-    ctaPrimary: "Build with AI",
+    ctaPrimary: "Contact me",
     ctaSecondary: "See the agent system",
     boardHeading: "The architecture",
     boardBody:
@@ -255,9 +255,9 @@ const en = {
     ],
   },
   cta: {
-    title: "Have a workflow that should run itself — safely?",
-    body: "Describe the task, the data and the constraints. You'll get a clear proposal for what to automate, what stays human and how it gets verified.",
-    label: "Build with AI",
+    title: "Interested in how I work with AI?",
+    body: "I'm open to junior IT roles and Quereinsteiger positions in AI-assisted digital work. Write to me and I'll reply with how my experience fits your team.",
+    label: "Contact me",
   },
 };
 
@@ -274,7 +274,7 @@ const de: AiNativeContent = {
     titleA: "KI beschleunigt die Arbeit.",
     titleB: "Technisches Urteilsvermögen entscheidet, was live geht.",
     lede: "ChatGPT, Claude, lokale Modelle, Python und Agents sind Teile eines Systems. Diese Seite zeigt, wie sie verbunden sind – und wo geprüft wird.",
-    ctaPrimary: "Mit KI bauen",
+    ctaPrimary: "Kontakt aufnehmen",
     ctaSecondary: "Agent-System ansehen",
     boardHeading: "Die Architektur",
     boardBody:
@@ -495,9 +495,9 @@ const de: AiNativeContent = {
     ],
   },
   cta: {
-    title: "Ein Workflow, der von selbst laufen soll – und zwar sicher?",
-    body: "Beschreib die Aufgabe, die Daten und die Rahmenbedingungen. Du bekommst einen klaren Vorschlag, was automatisiert wird, was beim Menschen bleibt und wie geprüft wird.",
-    label: "Mit KI bauen",
+    title: "Interessiert, wie ich mit KI arbeite?",
+    body: "Ich bin offen für Junior-IT-Stellen und Quereinsteiger-Positionen in KI-gestützter digitaler Arbeit. Schreiben Sie mir, und ich antworte, wie meine Erfahrung zu Ihrem Team passt.",
+    label: "Kontakt aufnehmen",
   },
 };
 
@@ -512,7 +512,7 @@ const th: AiNativeContent = {
     titleA: "AI ช่วยให้งานเร็วขึ้น",
     titleB: "แต่วิจารณญาณทางวิศวกรรมตัดสินว่าอะไรพร้อมขึ้นระบบจริง",
     lede: "ChatGPT, Claude, Local Model, Python และ Agent คือชิ้นส่วนของระบบเดียวกัน หน้านี้แสดงว่าทั้งหมดเชื่อมกันอย่างไร และมีจุดตรวจสอบตรงไหน",
-    ctaPrimary: "สร้างด้วย AI",
+    ctaPrimary: "ติดต่อ",
     ctaSecondary: "ดูระบบ Agent",
     boardHeading: "สถาปัตยกรรม",
     boardBody: "AI Orchestration แบบแบ่งชั้น ตั้งแต่ Input, Orchestration, โมเดล, Agent, เครื่องมือ, ข้อมูล ไปจนถึงการควบคุมและส่งมอบ สร้างด้วยสคริปต์ Python จาก Topology ที่กำหนด Type ไว้ เลือกองค์ประกอบใดก็ได้เพื่อดูเส้นทาง",
@@ -707,7 +707,7 @@ const th: AiNativeContent = {
     title: "n8n ขับเคลื่อนงาน Orchestrator เป็นผู้คิด",
     lede: "n8n ดูแล Trigger งานตามรอบเวลา Webhook และการส่งต่องานระหว่างระบบ เมื่อขั้นตอนไหนต้องใช้การคิดวิเคราะห์ จะเรียก Orchestrator แล้วผลลัพธ์จะผ่าน Validation และให้คนอนุมัติเมื่อจำเป็น",
     badge: "สถาปัตยกรรม Automation · ความสามารถด้าน Workflow ของ n8n",
-    honesty: "นี่คือรูปแบบสถาปัตยกรรมที่รับสร้าง ตัวพอร์ตโฟลิโอนี้ไม่ได้รัน n8n ฟอร์มติดต่อใช้ Next.js Server Action และ Resend",
+    honesty: "นี่คือรูปแบบสถาปัตยกรรมที่สร้างขึ้น ตัวพอร์ตโฟลิโอนี้ไม่ได้รัน n8n ฟอร์มติดต่อใช้ Next.js Server Action และ Resend",
     productionTitle: "สาย Automation บน Production",
     productionBody: "จาก Event ในแอปพลิเคชัน ไปจนถึงการทำงานในระบบภายนอกที่ผ่านการอนุมัติ",
     workflowsTitle: "ตัวอย่าง Workflow บน n8n",
@@ -732,9 +732,9 @@ const th: AiNativeContent = {
     ],
   },
   cta: {
-    title: "มี Workflow ที่อยากให้ทำงานเองได้อย่างปลอดภัยไหม",
-    body: "เล่างาน ข้อมูล และข้อจำกัดมาได้เลย จะได้ข้อเสนอที่ชัดเจนว่าอะไรควร automate อะไรควรให้คนดูแล และตรวจสอบอย่างไร",
-    label: "สร้างด้วย AI",
+    title: "สนใจวิธีทำงานกับ AI ไหม",
+    body: "เปิดรับตำแหน่ง IT ระดับ Junior และงาน Quereinsteiger สายงานดิจิทัลที่ใช้ AI เขียนมาได้เลย แล้วจะตอบกลับว่าประสบการณ์เข้ากับทีมของคุณอย่างไร",
+    label: "ติดต่อ",
   },
 };
 

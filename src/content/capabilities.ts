@@ -100,8 +100,8 @@ const en = {
     } satisfies Record<ChainId, { title: string; outcome: string }>,
   },
   cta: {
-    title: "Need these pieces connected for your project?",
-    label: "Build with AI",
+    title: "Looking for someone with these skills?",
+    label: "Contact me",
   },
 };
 
@@ -252,8 +252,8 @@ const de: CapabilitiesContent = {
     },
   },
   cta: {
-    title: "Sollen diese Bausteine in deinem Projekt verbunden werden?",
-    label: "Mit KI bauen",
+    title: "Suchen Sie jemanden mit diesen Fähigkeiten?",
+    label: "Kontakt aufnehmen",
   },
 };
 
@@ -391,8 +391,8 @@ const th: CapabilitiesContent = {
     },
   },
   cta: {
-    title: "อยากให้ชิ้นส่วนเหล่านี้ทำงานร่วมกันในโปรเจกต์ไหม",
-    label: "สร้างด้วย AI",
+    title: "กำลังหาคนที่มีทักษะแบบนี้อยู่ไหม",
+    label: "ติดต่อ",
   },
 };
 

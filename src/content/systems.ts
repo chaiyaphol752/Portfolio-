@@ -117,9 +117,9 @@ const en = {
     noDescription: "No description yet.",
   },
   cta: {
-    title: "Need a backend like this behind your site?",
-    body: "Forms that really deliver, APIs, databases, email and deployment — built, tested and documented.",
-    label: "Start a project",
+    title: "Impressed by the engineering behind this site?",
+    body: "The same care goes into every project: forms that really deliver, APIs, databases, email and deployment — built, tested and documented.",
+    label: "Contact me",
   },
 };
 
@@ -239,9 +239,9 @@ const de: SystemsContent = {
     noDescription: "Noch keine Beschreibung.",
   },
   cta: {
-    title: "So ein Backend für deine Website?",
-    body: "Formulare, die wirklich zustellen, APIs, Datenbanken, E-Mail und Deployment – gebaut, getestet und dokumentiert.",
-    label: "Projekt starten",
+    title: "Beeindruckt von der Technik hinter dieser Website?",
+    body: "Dieselbe Sorgfalt steckt in jedem Projekt: Formulare, die wirklich zustellen, APIs, Datenbanken, E-Mail und Deployment – gebaut, getestet und dokumentiert.",
+    label: "Kontakt aufnehmen",
   },
 };
 
@@ -359,9 +359,9 @@ const th: SystemsContent = {
     noDescription: "ยังไม่มีคำอธิบาย",
   },
   cta: {
-    title: "อยากได้ Backend แบบนี้ให้เว็บไซต์ไหม",
-    body: "ฟอร์มที่ส่งข้อความได้จริง API ฐานข้อมูล อีเมล และการ Deploy สร้าง ทดสอบ และมีเอกสารครบ",
-    label: "เริ่มโปรเจกต์",
+    title: "ประทับใจงานวิศวกรรมเบื้องหลังเว็บไซต์นี้ไหม",
+    body: "ความใส่ใจแบบเดียวกันอยู่ในทุกโปรเจกต์: ฟอร์มที่ส่งข้อความได้จริง API ฐานข้อมูล อีเมล และการ Deploy ทั้งหมดสร้าง ทดสอบ และมีเอกสารครบ",
+    label: "ติดต่อ",
   },
 };
 

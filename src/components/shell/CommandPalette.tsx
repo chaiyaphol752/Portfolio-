@@ -45,7 +45,7 @@ export function CommandPalette({ locale, t, githubUrl, sourceUrl }: Props) {
   const commands = useMemo<Command[]>(() => {
     const go = (href: string) => () => router.push(href);
     const open = (url: string) => () => window.open(url, "_blank", "noopener,noreferrer");
-    const pageCommands: Command[] = pages.map((p) => ({
+    const pageCommands: Command[] = pages.filter((p) => p.listed).map((p) => ({
       id: `page-${p.id}`,
       group: "pages",
       label: t.nav[p.id],

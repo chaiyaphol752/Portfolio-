@@ -3,23 +3,12 @@ import { Resend } from "resend";
 import { profile } from "@/config/profile";
 import type { ContactInput } from "./schema";
 
-const projectTypeLabel: Record<ContactInput["projectType"], string> = {
-  "new-website": "New website",
-  redesign: "Website redesign",
-  features: "Add new features",
-  webapp: "Web application",
-  "ai-integration": "AI integration",
-  automation: "Automation",
-  "local-ai": "Local / private AI",
+const enquiryTypeLabel: Record<ContactInput["enquiryType"], string> = {
+  "job-opportunity": "Job opportunity",
+  internship: "Internship / training",
+  collaboration: "Project collaboration",
+  feedback: "Portfolio feedback",
   other: "Other",
-};
-
-const budgetLabel: Record<NonNullable<ContactInput["budget"]>, string> = {
-  "under-1k": "Under 1,000 USD",
-  "1k-5k": "1,000 – 5,000 USD",
-  "5k-15k": "5,000 – 15,000 USD",
-  "15k-plus": "15,000 USD and up",
-  unsure: "Not sure yet",
 };
 
 const languageLabel: Record<ContactInput["language"], string> = { en: "English", de: "Deutsch", th: "ไทย (Thai)" };
@@ -59,15 +48,14 @@ export function buildOwnerNotification(input: ContactInput, receivedAt = new Dat
     ["Name", input.name],
     ["Email", input.email],
     ...(input.company ? ([["Company", input.company]] as [string, string][]) : []),
-    ["Project type", projectTypeLabel[input.projectType]],
-    ...(input.budget ? ([["Budget", budgetLabel[input.budget]]] as [string, string][]) : []),
+    ["Enquiry type", enquiryTypeLabel[input.enquiryType]],
     ["Preferred language", languageLabel[input.language]],
     ["Received", `${receivedAt.toISOString().replace("T", " ").slice(0, 16)} UTC`],
   ];
-  const subject = headerSafe(`New portfolio enquiry — ${input.name} — ${projectTypeLabel[input.projectType]}`);
+  const subject = headerSafe(`New portfolio message — ${input.name} — ${enquiryTypeLabel[input.enquiryType]}`);
 
   const text = [
-    "New portfolio enquiry",
+    "New portfolio message",
     "",
     ...rows.map(([k, v]) => `${k}: ${v}`),
     "",
@@ -77,18 +65,18 @@ export function buildOwnerNotification(input: ContactInput, receivedAt = new Dat
     "Reply to this email to answer the sender directly.",
   ].join("\n");
 
-  const cell = "padding:10px 0;border-bottom:1px solid #e4e1d8;vertical-align:top;font-size:14px;";
-  const html = `<!doctype html><html><body style="margin:0;background:#f4f2ec;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101114;">
+  const cell = "padding:10px 0;border-bottom:1px solid #2a2f3a;vertical-align:top;font-size:14px;";
+  const html = `<!doctype html><html><body style="margin:0;background:#0c0e13;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#e9ecf3;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px;"><tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #d4d0c4;">
-<tr><td style="padding:28px 32px 8px;"><p style="margin:0;font:12px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#666973;">Portfolio enquiry</p>
-<h1 style="margin:10px 0 0;font-size:24px;line-height:1.2;font-weight:600;">${escapeHtml(input.name)} · ${escapeHtml(projectTypeLabel[input.projectType])}</h1></td></tr>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#12151c;border:1px solid #242935;">
+<tr><td style="padding:28px 32px 8px;"><p style="margin:0;font:12px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#7e8593;">Portfolio message</p>
+<h1 style="margin:10px 0 0;font-size:24px;line-height:1.2;font-weight:600;">${escapeHtml(input.name)} · ${escapeHtml(enquiryTypeLabel[input.enquiryType])}</h1></td></tr>
 <tr><td style="padding:16px 32px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-${rows.map(([k, v]) => `<tr><td style="${cell}width:38%;color:#666973;">${escapeHtml(k)}</td><td style="${cell}">${escapeHtml(v)}</td></tr>`).join("")}
+${rows.map(([k, v]) => `<tr><td style="${cell}width:38%;color:#7e8593;">${escapeHtml(k)}</td><td style="${cell}">${escapeHtml(v)}</td></tr>`).join("")}
 </table></td></tr>
-<tr><td style="padding:8px 32px 28px;"><p style="margin:0 0 8px;font:12px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#666973;">Message</p>
+<tr><td style="padding:8px 32px 28px;"><p style="margin:0 0 8px;font:12px/1.4 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#7e8593;">Message</p>
 <div style="white-space:pre-wrap;font-size:15px;line-height:1.6;">${escapeHtml(input.message)}</div></td></tr>
-<tr><td style="padding:16px 32px;border-top:1px solid #e4e1d8;font-size:12px;color:#666973;">Reply to this email to answer ${escapeHtml(input.name)} directly.</td></tr>
+<tr><td style="padding:16px 32px;border-top:1px solid #2a2f3a;font-size:12px;color:#7e8593;">Reply to this email to answer ${escapeHtml(input.name)} directly.</td></tr>
 </table></td></tr></table></body></html>`;
 
   return { subject, text, html };
@@ -96,21 +84,21 @@ ${rows.map(([k, v]) => `<tr><td style="${cell}width:38%;color:#666973;">${escape
 
 const ackCopy: Record<ContactInput["language"], { subject: string; greeting: (n: string) => string; body: string; signoff: string }> = {
   en: {
-    subject: "Your project enquiry has been received",
+    subject: "Your message has been received",
     greeting: (n) => `Hi ${n},`,
-    body: "Thanks — your project enquiry has been received. I'll review the details and reply using the contact information you provided.",
+    body: "Thanks — your message has been received. I'll review it and reply using the contact information you provided.",
     signoff: "Best regards",
   },
   de: {
-    subject: "Deine Projektanfrage ist angekommen",
+    subject: "Deine Nachricht ist angekommen",
     greeting: (n) => `Hallo ${n},`,
-    body: "Danke – deine Projektanfrage ist angekommen. Ich sehe mir die Details an und antworte über die angegebenen Kontaktdaten.",
+    body: "Danke – deine Nachricht ist angekommen. Ich sehe sie mir an und antworte über die angegebenen Kontaktdaten.",
     signoff: "Viele Grüße",
   },
   th: {
-    subject: "ได้รับคำขอโปรเจกต์แล้ว",
+    subject: "ได้รับข้อความแล้ว",
     greeting: (n) => `สวัสดีคุณ ${n}`,
-    body: "ขอบคุณที่ติดต่อมา ได้รับรายละเอียดโปรเจกต์เรียบร้อยแล้ว จะตรวจสอบและตอบกลับผ่านช่องทางที่ให้ไว้",
+    body: "ขอบคุณที่ติดต่อมา ได้รับข้อความเรียบร้อยแล้ว จะตรวจสอบและตอบกลับผ่านช่องทางที่ให้ไว้",
     signoff: "ด้วยความเคารพ",
   },
 };
@@ -119,8 +107,8 @@ export function buildAcknowledgement(input: ContactInput) {
   const c = ackCopy[input.language];
   const signoff = c.signoff;
   const text = `${c.greeting(input.name)}\n\n${c.body}\n\n${signoff}\n${profile.name}`;
-  const html = `<!doctype html><html><body style="margin:0;padding:32px 16px;background:#f4f2ec;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#101114;">
-<div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #d4d0c4;padding:28px 32px;font-size:15px;line-height:1.6;">
+  const html = `<!doctype html><html><body style="margin:0;padding:32px 16px;background:#0c0e13;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#e9ecf3;">
+<div style="max-width:560px;margin:0 auto;background:#12151c;border:1px solid #242935;padding:28px 32px;font-size:15px;line-height:1.6;">
 <p style="margin:0 0 16px;">${escapeHtml(c.greeting(input.name))}</p><p style="margin:0 0 16px;">${escapeHtml(c.body)}</p>
 <p style="margin:0;">${escapeHtml(signoff)}<br>${escapeHtml(profile.name)}</p></div></body></html>`;
   return { subject: c.subject, text, html };

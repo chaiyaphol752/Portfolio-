@@ -81,7 +81,7 @@ const en: CaseStudiesContent = {
     eyebrow: "Case studies",
     title: "Decisions,",
     titleEmph: "documented.",
-    lede: "Each case runs from problem to deployment. Every chapter opens with one line for clients; the technical detail follows for developers.",
+    lede: "Each case runs from problem to deployment. Every chapter opens with one line in plain language; the technical detail follows.",
   },
   labels: {
     documents: "Documents",
@@ -106,7 +106,7 @@ const en: CaseStudiesContent = {
     diagram: "Diagram",
     forClients: "In short",
     technical: "Technical detail",
-    reading: { label: "Reading mode", full: "Full detail", overview: "Client overview" },
+    reading: { label: "Reading mode", full: "Full detail", overview: "Quick overview" },
     switcher: "Choose a case",
     chapters: "Chapters",
   },
@@ -124,7 +124,7 @@ const en: CaseStudiesContent = {
       stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          client: "A portfolio should prove the work, not just describe it — in the languages clients actually read.",
+          client: "A portfolio should prove the work, not just describe it — in the languages people actually read.",
           body: "Most developer portfolios are a list of logos and claims. This one had to let a visitor check the craft directly: real forms, real server code, a real deployment, readable in English, German and Thai.",
           points: ["Show running software, not screenshots", "Make the offer clear on the first screen", "Keep every claim checkable — the source is public"],
         },
@@ -438,9 +438,9 @@ const en: CaseStudiesContent = {
     },
   ],
   cta: {
-    label: "Discuss your project",
-    title: "Redesign, new feature or AI workflow?",
-    body: "Describe where you are now and where you want to be. You'll get a clear reply about scope, approach and next steps.",
+    label: "Contact me",
+    title: "Like how this is reasoned?",
+    body: "I'm open to junior IT roles and Quereinsteiger positions in web development, automation and AI-assisted digital work. Describe the role and I'll reply with how my experience fits.",
   },
 };
 
@@ -454,7 +454,7 @@ const de: CaseStudiesContent = {
     eyebrow: "Fallstudien",
     title: "Entscheidungen,",
     titleEmph: "dokumentiert.",
-    lede: "Jeder Fall führt vom Problem bis zum Deployment. Jedes Kapitel beginnt mit einem Satz für Auftraggebende; danach folgen die technischen Details.",
+    lede: "Jeder Fall führt vom Problem bis zum Deployment. Jedes Kapitel beginnt mit einem Satz in einfacher Sprache; danach folgen die technischen Details.",
   },
   labels: {
     documents: "Dokumente",
@@ -479,7 +479,7 @@ const de: CaseStudiesContent = {
     diagram: "Diagramm",
     forClients: "Kurz gesagt",
     technical: "Technische Details",
-    reading: { label: "Lesemodus", full: "Alle Details", overview: "Überblick" },
+    reading: { label: "Lesemodus", full: "Alle Details", overview: "Kurzüberblick" },
     switcher: "Fall auswählen",
     chapters: "Kapitel",
   },
@@ -497,7 +497,7 @@ const de: CaseStudiesContent = {
       stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          client: "Ein Portfolio sollte die Arbeit belegen, nicht nur beschreiben – in den Sprachen, die Kundschaft wirklich liest.",
+          client: "Ein Portfolio sollte die Arbeit belegen, nicht nur beschreiben – in den Sprachen, die Menschen wirklich lesen.",
           body: "Die meisten Entwickler-Portfolios sind eine Liste aus Logos und Behauptungen. Hier sollte man das Handwerk direkt prüfen können: echte Formulare, echter Servercode, ein echtes Deployment, lesbar auf Englisch, Deutsch und Thai.",
           points: ["Laufende Software statt Screenshots", "Das Angebot auf dem ersten Bildschirm klar machen", "Jede Aussage überprüfbar – der Quellcode ist öffentlich"],
         },
@@ -811,9 +811,9 @@ const de: CaseStudiesContent = {
     },
   ],
   cta: {
-    label: "Projekt besprechen",
-    title: "Redesign, neues Feature oder KI-Workflow?",
-    body: "Beschreib kurz, wo du stehst und wo du hinwillst. Du bekommst eine klare Antwort zu Umfang, Vorgehen und nächsten Schritten.",
+    label: "Kontakt aufnehmen",
+    title: "Gefällt Ihnen, wie hier gedacht wird?",
+    body: "Ich bin offen für Junior-IT-Stellen und Quereinsteiger-Positionen in Webentwicklung, Automatisierung und KI-gestützter digitaler Arbeit. Beschreiben Sie die Stelle, und ich antworte, wie meine Erfahrung dazu passt.",
   },
 };
 
@@ -827,7 +827,7 @@ const th: CaseStudiesContent = {
     eyebrow: "กรณีศึกษา",
     title: "ทุกการตัดสินใจ",
     titleEmph: "มีที่มาที่ไป",
-    lede: "แต่ละกรณีเล่าตั้งแต่ปัญหาจนถึง Deploy ทุกบทเริ่มด้วยสรุปหนึ่งประโยคสำหรับลูกค้า ตามด้วยรายละเอียดเชิงเทคนิคสำหรับนักพัฒนา",
+    lede: "แต่ละกรณีเล่าตั้งแต่ปัญหาจนถึง Deploy ทุกบทเริ่มด้วยสรุปหนึ่งประโยคแบบภาษาง่าย ๆ ตามด้วยรายละเอียดเชิงเทคนิค",
   },
   labels: {
     documents: "เอกสาร",
@@ -852,7 +852,7 @@ const th: CaseStudiesContent = {
     diagram: "แผนภาพ",
     forClients: "สรุปสั้น ๆ",
     technical: "รายละเอียดทางเทคนิค",
-    reading: { label: "โหมดการอ่าน", full: "รายละเอียดทั้งหมด", overview: "ภาพรวมสำหรับลูกค้า" },
+    reading: { label: "โหมดการอ่าน", full: "รายละเอียดทั้งหมด", overview: "สรุปสั้น" },
     switcher: "เลือกกรณีศึกษา",
     chapters: "บท",
   },
@@ -870,7 +870,7 @@ const th: CaseStudiesContent = {
       stack: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Resend", "Python", "Vitest", "Playwright", "Vercel"],
       sections: {
         problem: {
-          client: "พอร์ตโฟลิโอควรพิสูจน์ฝีมือได้จริง ไม่ใช่แค่บรรยาย และต้องอ่านได้ในภาษาที่ลูกค้าใช้",
+          client: "พอร์ตโฟลิโอควรพิสูจน์ฝีมือได้จริง ไม่ใช่แค่บรรยาย และต้องอ่านได้ในภาษาที่ผู้คนอ่านจริง",
           body: "พอร์ตโฟลิโอนักพัฒนาส่วนใหญ่เป็นแค่รายการโลโก้และคำอ้าง เว็บนี้ต้องให้ผู้เข้าชมตรวจฝีมือได้เอง ทั้งฟอร์มจริง โค้ดฝั่งเซิร์ฟเวอร์จริง และการ Deploy จริง อ่านได้ทั้งภาษาอังกฤษ เยอรมัน และไทย",
           points: ["แสดงซอฟต์แวร์ที่ทำงานจริง ไม่ใช่ภาพหน้าจอ", "บอกบริการให้ชัดตั้งแต่หน้าจอแรก", "ทุกข้อความตรวจสอบได้ เพราะซอร์สโค้ดเปิดสาธารณะ"],
         },
@@ -1184,9 +1184,9 @@ const th: CaseStudiesContent = {
     },
   ],
   cta: {
-    label: "คุยเรื่องโปรเจกต์",
-    title: "Redesign ฟีเจอร์ใหม่ หรือ AI Workflow",
-    body: "เล่าสั้น ๆ ว่าตอนนี้อยู่ตรงไหนและอยากไปถึงไหน แล้วจะได้คำตอบที่ชัดเจนเรื่องขอบเขต แนวทาง และขั้นตอนถัดไป",
+    label: "ติดต่อ",
+    title: "ชอบวิธีคิดแบบนี้ไหม",
+    body: "เปิดรับตำแหน่ง IT ระดับ Junior และงาน Quereinsteiger สายพัฒนาเว็บ ระบบอัตโนมัติ หรืองานดิจิทัลที่ใช้ AI เล่าเรื่องตำแหน่งงานมาได้เลย แล้วจะตอบกลับว่าประสบการณ์เข้ากันได้อย่างไร",
   },
 };
 

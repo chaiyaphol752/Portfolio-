@@ -50,7 +50,7 @@ export function IndexMenu({ locale, t }: { locale: Locale; t: CommonContent }) {
 
           <div className="grid flex-1 gap-10 border-t border-ink pt-6 lg:grid-cols-12">
             <ul className="lg:col-span-8 lg:columns-2 lg:gap-10">
-              {pages.map((p) => (
+              {pages.filter((p) => p.listed).map((p) => (
                 <li key={p.id} className="break-inside-avoid border-b border-line">
                   <Link
                     href={localizedPath(locale, p.slug)}

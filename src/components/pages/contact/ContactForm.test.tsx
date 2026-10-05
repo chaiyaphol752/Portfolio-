@@ -23,8 +23,8 @@ const renderForm = (locale: "en" | "de" = "en") => render(<ContactForm t={contac
 function fillValid() {
   fireEvent.change(field("name"), { target: { value: "Ada Lovelace" } });
   fireEvent.change(field("email"), { target: { value: "ada@example.com" } });
-  fireEvent.change(field("projectType"), { target: { value: "redesign" } });
-  fireEvent.change(field("message"), { target: { value: "Our company website needs a modern redesign and a booking feature." } });
+  fireEvent.change(field("enquiryType"), { target: { value: "job-opportunity" } });
+  fireEvent.change(field("message"), { target: { value: "I would like to talk about a junior web development role in your team." } });
   fireEvent.click(field("consent"));
 }
 
@@ -39,22 +39,22 @@ describe("ContactForm", () => {
     expect(submitContact).not.toHaveBeenCalled();
   });
 
-  it("offers every project type from the brief", () => {
+  it("offers every enquiry type from the schema", () => {
     renderForm();
-    const values = Array.from(field("projectType").querySelectorAll("option")).map((o) => o.getAttribute("value"));
-    expect(values).toEqual(["", "new-website", "redesign", "features", "webapp", "ai-integration", "automation", "local-ai", "other"]);
+    const values = Array.from(field("enquiryType").querySelectorAll("option")).map((o) => o.getAttribute("value"));
+    expect(values).toEqual(["", "job-opportunity", "internship", "collaboration", "feedback", "other"]);
   });
 
-  it("preselects the project type from ?type=", () => {
-    window.history.replaceState(null, "", "/en/contact?type=redesign");
+  it("preselects the enquiry type from ?type=", () => {
+    window.history.replaceState(null, "", "/en/contact?type=job-opportunity");
     renderForm();
-    expect(field("projectType").value).toBe("redesign");
+    expect(field("enquiryType").value).toBe("job-opportunity");
   });
 
   it("ignores unknown ?type= values", () => {
     window.history.replaceState(null, "", "/en/contact?type=<script>");
     renderForm();
-    expect(field("projectType").value).toBe("");
+    expect(field("enquiryType").value).toBe("");
   });
 
   it("defaults the preferred language to the current locale and includes a hidden honeypot", () => {
@@ -74,7 +74,7 @@ describe("ContactForm", () => {
     expect(screen.queryByText(t.success.acknowledged)).toBeNull();
     const formData = submitContact.mock.calls[0]?.[1] as FormData;
     expect(formData.get("email")).toBe("ada@example.com");
-    expect(formData.get("projectType")).toBe("redesign");
+    expect(formData.get("enquiryType")).toBe("job-opportunity");
     expect(formData.get("consent")).toBe("on");
     expect(formData.get("language")).toBe("en");
   });

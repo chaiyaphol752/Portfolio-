@@ -27,7 +27,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <nav aria-label={t.footer.explore} className="lg:col-span-4">
           <p className="eyebrow mb-4">{t.footer.explore}</p>
           <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-            {pages.map((p) => (
+            {pages.filter((p) => p.listed).map((p) => (
               <li key={p.id}>
                 <Link href={localizedPath(locale, p.slug)} className="link-underline">{t.nav[p.id]}</Link>
               </li>

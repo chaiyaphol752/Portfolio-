@@ -20,11 +20,11 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export const viewport: Viewport = { themeColor: "#f4f2ec", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#0c0e13", width: "device-width", initialScale: 1 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
-  title: { default: `${profile.name} — Web developer × AI-native builder`, template: `%s — ${profile.name}` },
+  title: { default: `${profile.name} — ${profile.headline}`, template: `%s — ${profile.name}` },
   applicationName: `${profile.name} — Portfolio`,
   authors: [{ name: profile.name, url: profile.links.github }],
   robots: { index: true, follow: true },
@@ -38,10 +38,10 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     "@type": "Person",
     name: profile.name,
     url: profile.siteUrl,
-    jobTitle: "Web developer and AI-native builder",
+    jobTitle: "AI-assisted Digital Builder (IT Quereinsteiger)",
     email: `mailto:${profile.contact.email}`,
     telephone: profile.contact.phone.display,
-    knowsAbout: ["Web development", "Website redesign", "Next.js", "TypeScript", "Python", "AI integration", "Autonomous agents", "Local AI"],
+    knowsAbout: ["Web development", "Next.js", "TypeScript", "Python", "AI-assisted development", "Git workflows", "Automation", "Prototyping"],
     sameAs: [profile.links.github, profile.links.linkedin, ...profile.links.freelance.map((f) => f.url)].filter(Boolean),
   };
 

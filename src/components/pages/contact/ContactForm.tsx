@@ -3,7 +3,7 @@
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { CheckCircle2, LoaderCircle } from "lucide-react";
 import { submitContact, type ContactState } from "@/app/actions/contact";
-import { budgets, parseContact, projectTypes, type ContactErrorCode, type ContactFieldErrors } from "@/lib/contact/schema";
+import { enquiryTypes, parseContact, type ContactErrorCode, type ContactFieldErrors } from "@/lib/contact/schema";
 import { locales, localeMeta, type Locale } from "@/i18n/config";
 import { interpolate } from "@/lib/interpolate";
 import type { ContactContent } from "@/content/contact";
@@ -47,10 +47,10 @@ interface Props {
   locale: Locale;
 }
 
-/** Reads ?type=redesign etc. so contextual CTAs can preselect what the visitor needs. */
+/** Reads ?type=job-opportunity etc. so contextual CTAs can preselect what the message is about. */
 function typeFromUrl(): string | null {
   const value = new URLSearchParams(window.location.search).get("type");
-  return value && (projectTypes as readonly string[]).includes(value) ? value : null;
+  return value && (enquiryTypes as readonly string[]).includes(value) ? value : null;
 }
 
 export function ContactForm({ t, common, locale }: Props) {
@@ -149,22 +149,12 @@ export function ContactForm({ t, common, locale }: Props) {
       <Field name="company" label={t.labels.company} optionalLabel={t.labels.optional} error={message("company")}>
         {(a) => <input {...a} name="company" type="text" autoComplete="organization" maxLength={120} placeholder={t.placeholders.company} className={control} />}
       </Field>
-      <Field name="projectType" label={t.labels.projectType} error={message("projectType")}>
+      <Field name="enquiryType" label={t.labels.enquiryType} error={message("enquiryType")}>
         {(a) => (
-          <select {...a} ref={typeRef} name="projectType" required defaultValue="" className={control}>
+          <select {...a} ref={typeRef} name="enquiryType" required defaultValue="" className={control}>
             <option value="" disabled>{t.select}</option>
-            {projectTypes.map((p) => (
-              <option key={p} value={p}>{t.projectTypes[p]}</option>
-            ))}
-          </select>
-        )}
-      </Field>
-      <Field name="budget" label={t.labels.budget} optionalLabel={t.labels.optional} error={message("budget")}>
-        {(a) => (
-          <select {...a} name="budget" defaultValue="" className={control}>
-            <option value="">{t.select}</option>
-            {budgets.map((b) => (
-              <option key={b} value={b}>{t.budgets[b]}</option>
+            {enquiryTypes.map((p) => (
+              <option key={p} value={p}>{t.enquiryTypes[p]}</option>
             ))}
           </select>
         )}

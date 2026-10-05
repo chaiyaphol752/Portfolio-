@@ -6,7 +6,7 @@ export type Channel = "email" | "database" | "webhook";
 export type DeliveryResult = { ok: true; channels: Channel[]; acknowledged: boolean } | { ok: false; reason: "unavailable" | "failed" };
 
 async function postWebhook(url: string, input: ContactInput): Promise<void> {
-  const summary = `New portfolio enquiry from ${input.name} <${input.email}> (${input.projectType}${input.budget ? `, ${input.budget}` : ""})`;
+  const summary = `New portfolio message from ${input.name} <${input.email}> (${input.enquiryType})`;
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

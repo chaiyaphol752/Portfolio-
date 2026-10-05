@@ -6,6 +6,7 @@ import { resolveLocale } from "@/lib/locale";
 import { CtaBand } from "@/components/ui/CtaBand";
 import { AboutIntro } from "@/components/pages/about/AboutIntro";
 import { LayerStack } from "@/components/pages/about/LayerStack";
+import { Background } from "@/components/pages/about/Background";
 import { AiToolbox } from "@/components/pages/about/AiToolbox";
 import { WorkingTogether } from "@/components/pages/about/WorkingTogether";
 
@@ -24,6 +25,7 @@ export default async function AboutPage({ params }: Props) {
     <>
       <AboutIntro locale={locale} />
       <LayerStack locale={locale} />
+      <Background locale={locale} />
       <AiToolbox locale={locale} />
       <WorkingTogether locale={locale} />
       <CtaBand locale={locale} title={c.closing.title} body={c.closing.body} label={common[locale].cta.tellMe} />

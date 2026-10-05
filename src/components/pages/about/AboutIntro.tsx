@@ -14,6 +14,7 @@ export function AboutIntro({ locale }: { locale: Locale }) {
     { label: c.facts.based, value: profile.location[locale] },
     { label: c.facts.focus, value: c.facts.focusValue },
     { label: c.facts.languages, value: locales.map((l) => localeMeta[l].name).join(" · ") },
+    { label: c.facts.education, value: c.background.education.degree },
     { label: c.facts.availability, value: t.availability[profile.availability] },
     {
       label: c.facts.contact,

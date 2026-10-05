@@ -99,6 +99,78 @@ function Screen({ variant, compact }: { variant: PreviewVariant; compact: boolea
           </div>
         </div>
       );
+    case "site":
+      // A modern editorial website: hero line, navigation and content rows.
+      return (
+        <div className="flex h-full flex-col gap-2 p-3 sm:p-4">
+          <div className="flex items-center justify-between">
+            {bar("30%", "0.6rem", "bg-ink")}
+            <div className="flex items-center gap-2">
+              {bar("1.6rem", "0.4rem", "bg-ink/50")}
+              {bar("1.6rem", "0.4rem", "bg-ink/50")}
+              {bar("1.6rem", "0.4rem", "bg-accent")}
+            </div>
+          </div>
+          <div className="flex flex-1 items-center gap-3">
+            <div className="flex flex-1 flex-col justify-center gap-1.5">
+              {bar("85%", "0.7rem", "bg-ink")}
+              {bar("60%", "0.7rem", "bg-ink")}
+              <span className="my-0.5" />
+              {bar("90%")}
+              {bar("70%")}
+              <span className="mt-1.5 block h-3 w-12 rounded-full bg-accent" />
+            </div>
+            <div className="relative hidden h-full w-[38%] overflow-hidden rounded-t-full bg-paper-3 sm:block">
+              <span className="absolute left-1/2 top-[34%] size-[40%] -translate-x-1/2 rounded-full bg-accent-soft" />
+              <span className="absolute inset-x-[22%] bottom-0 h-[30%] rounded-t-full bg-ink/70" />
+            </div>
+          </div>
+          <div className={clsx("grid gap-2", compact ? "grid-cols-1" : "grid-cols-3")}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex flex-col gap-1 rounded-sm border border-ink/15 p-2">
+                <span className="block size-2 rounded-full bg-accent/80" />
+                {bar("80%", "0.35rem", "bg-ink/50")}
+                {bar("60%", "0.35rem")}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    case "phone":
+      // An app screen: status bar, content cards and a bottom navigation.
+      return (
+        <div className="flex h-full flex-col bg-paper-2">
+          <div className="flex items-center justify-between px-3 pt-2">
+            <span className="mono text-[0.5rem] text-ink-3">9:41</span>
+            <div className="flex items-center gap-1">
+              <span className="block h-1 w-3 rounded-full bg-ink/50" />
+              <span className="block size-1 rounded-full bg-ink/50" />
+              <span className="block h-1 w-2.5 rounded-full bg-ink/50" />
+            </div>
+          </div>
+          <div className="flex flex-1 flex-col gap-2 p-3">
+            {bar("55%", "0.7rem", "bg-ink")}
+            {bar("80%", "0.4rem")}
+            <div className="my-1 grid flex-1 gap-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex items-center gap-2 rounded-sm border border-ink/15 bg-paper p-2">
+                  <span className={clsx("block size-5 shrink-0 rounded-sm", i === 0 ? "bg-accent" : i === 1 ? "bg-signal" : "bg-ink/40")} />
+                  <span className="flex flex-1 flex-col gap-1">
+                    {bar(`${45 + i * 12}%`, "0.4rem", "bg-ink")}
+                    {bar(`${70 - i * 10}%`, "0.3rem")}
+                  </span>
+                  <span className="mono text-[0.5rem] text-ink-3">›</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-around rounded-md border border-ink/15 bg-paper px-2 py-1.5">
+              {[0, 1, 2, 3].map((i) => (
+                <span key={i} className={clsx("block h-1.5 rounded-full", i === 1 ? "w-5 bg-accent" : "w-3 bg-ink/30")} />
+              ))}
+            </div>
+          </div>
+        </div>
+      );
     case "pipeline":
       // Terminal-style log of a scheduled Python run (illustrative).
       return (

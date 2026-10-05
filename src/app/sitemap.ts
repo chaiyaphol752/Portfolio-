@@ -5,7 +5,7 @@ import { localizedPath } from "@/i18n/routing";
 import { profile } from "@/config/profile";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return pages.flatMap((p) =>
+  return pages.filter((p) => p.listed).flatMap((p) =>
     locales.map((locale) => ({
       url: `${profile.siteUrl}${localizedPath(locale, p.slug)}`,
       lastModified: new Date(),

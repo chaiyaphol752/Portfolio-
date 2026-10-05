@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { categoryIds, projectIds, projectsMeta } from "./data";
 import { projectsContent } from "@/content/projects";
-import { profile } from "@/config/profile";
 
 describe("projects data", () => {
   it("lists every project once, with known categories", () => {
@@ -11,11 +10,11 @@ describe("projects data", () => {
   it("covers every service category", () => {
     for (const c of categoryIds) expect(projectsMeta.some((p) => p.categories.includes(c)), c).toBe(true);
   });
-  it("labels honestly: only this portfolio is a live demo, and only it has a link", () => {
-    const demos = projectsMeta.filter((p) => p.kind === "demo");
-    expect(demos.map((p) => p.id)).toEqual(["this-portfolio"]);
-    expect(demos[0]?.links[0]?.url).toBe(profile.sourceRepo);
-    for (const p of projectsMeta.filter((p) => p.kind !== "demo")) expect(p.links).toEqual([]);
+  it("labels honestly: only the two live projects have links", () => {
+    const live = projectsMeta.filter((p) => p.kind === "live");
+    expect(live.map((p) => p.id).sort()).toEqual(["this-portfolio", "wat-charoen-dham"]);
+    for (const p of projectsMeta.filter((p) => p.kind !== "live")) expect(p.links).toEqual([]);
+    for (const p of live) expect(p.links.length).toBeGreaterThan(0);
   });
   it("has full copy for every project in every locale", () => {
     for (const locale of ["en", "de", "th"] as const) {

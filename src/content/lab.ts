@@ -96,7 +96,7 @@ const en = {
       nav: ["Work", "About", "Contact"],
       title: "Layouts that adapt to the space they are given.",
       body: "This preview uses container queries, so it reacts to the frame width instead of the window.",
-      cta: "Start a project",
+      cta: "Contact me",
       cards: [
         { title: "Design", body: "Type, spacing and hierarchy first." },
         { title: "Build", body: "Typed components and real data." },
@@ -175,7 +175,7 @@ const en = {
       { title: "No dependencies", body: "No HTTP, JSON or color libraries. Less code shipped, and every rule is readable." },
     ],
   },
-  cta: { label: "Build a tool like this" },
+  cta: { label: "Contact me" },
 };
 
 export type LabContent = typeof en;
@@ -272,7 +272,7 @@ const de: LabContent = {
       nav: ["Arbeiten", "Über mich", "Kontakt"],
       title: "Layouts, die sich dem verfügbaren Platz anpassen.",
       body: "Diese Vorschau nutzt Container Queries und reagiert daher auf die Rahmenbreite statt auf das Fenster.",
-      cta: "Projekt starten",
+      cta: "Kontakt aufnehmen",
       cards: [
         { title: "Gestalten", body: "Zuerst Typografie, Abstände und Hierarchie." },
         { title: "Bauen", body: "Typisierte Komponenten und echte Daten." },
@@ -351,7 +351,7 @@ const de: LabContent = {
       { title: "Keine Abhängigkeiten", body: "Keine HTTP-, JSON- oder Farbbibliotheken. Weniger ausgelieferter Code, jede Regel bleibt lesbar." },
     ],
   },
-  cta: { label: "So ein Tool bauen lassen" },
+  cta: { label: "Kontakt aufnehmen" },
 };
 
 const th: LabContent = {
@@ -446,7 +446,7 @@ const th: LabContent = {
       nav: ["ผลงาน", "เกี่ยวกับ", "ติดต่อ"],
       title: "เลย์เอาต์ที่ปรับตามพื้นที่ที่ได้รับ",
       body: "พรีวิวนี้ใช้ Container Query จึงตอบสนองต่อความกว้างของเฟรม ไม่ใช่ความกว้างของหน้าต่าง",
-      cta: "เริ่มโปรเจกต์",
+      cta: "ติดต่อ",
       cards: [
         { title: "ออกแบบ", body: "เริ่มจากตัวอักษร ระยะห่าง และลำดับชั้น" },
         { title: "สร้าง", body: "Component แบบ Typed กับข้อมูลจริง" },
@@ -525,7 +525,7 @@ const th: LabContent = {
       { title: "ไม่พึ่งไลบรารีเสริม", body: "ไม่ใช้ไลบรารี HTTP, JSON หรือสี โค้ดที่ส่งถึงผู้ใช้จึงน้อยลง และทุกกฎอ่านเข้าใจได้" },
     ],
   },
-  cta: { label: "สร้างเครื่องมือแบบนี้" },
+  cta: { label: "ติดต่อ" },
 };
 
 export const labContent: Localized<LabContent> = { en, de, th };
