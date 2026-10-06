@@ -90,7 +90,7 @@ export function CapabilityNetwork({ t }: { t: CapabilitiesContent }) {
           {t.ui.selected} · {t.domains[node.domain].label}
           {node.family === "local" && <> · {t.ui.concept}</>}
         </p>
-        <p className="display-serif mt-2 text-[clamp(2rem,4vw,3.25rem)] leading-none">{label(selected)}</p>
+        <p className="display-serif mt-2 text-[clamp(1.5rem,2.6vw,2.25rem)] leading-none">{label(selected)}</p>
         <p className="mono mt-3 text-xs text-night-mute">{interpolate(t.ui.connections, { n: node.related.length })}</p>
       </div>
       <div className="col-span-7 space-y-5">

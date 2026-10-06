@@ -24,7 +24,7 @@ export function WorkTeaser({ locale }: { locale: Locale }) {
           {proofPages.map((id) => (
             <li key={id} className="border-b border-line">
               <Link href={localizedPath(locale, id)} className="group grid items-baseline gap-1 py-5 sm:grid-cols-[1fr_auto] sm:gap-6 sm:py-6">
-                <span className="text-[clamp(1.5rem,3.2vw,2.6rem)] font-medium leading-tight tracking-[-0.03em] transition-colors group-hover:text-accent-ink">
+                <span className="text-[clamp(1.25rem,2.2vw,1.75rem)] font-medium leading-tight tracking-[-0.02em] transition-colors group-hover:text-accent-ink">
                   {t.nav[id]}
                 </span>
                 <span className="flex items-center gap-3 text-sm text-ink-2">

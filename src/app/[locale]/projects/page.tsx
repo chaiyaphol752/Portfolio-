@@ -37,9 +37,9 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
 
   return (
     <>
-      <header className="container-page pb-[clamp(2.5rem,5vw,4rem)] pt-[clamp(3rem,7vw,6.5rem)]">
+      <header className="container-page pb-[clamp(2.5rem,5vw,4rem)] pt-[clamp(3rem,6vw,5rem)]">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <h1 className="display rise text-[clamp(2.6rem,7vw,6.75rem)]! lg:col-span-9">
+          <h1 className="display rise lg:col-span-9">
             <span className="block">{t.hero.title}</span>
             <span className="display-serif block text-accent-ink">{t.hero.titleAccent}</span>
           </h1>

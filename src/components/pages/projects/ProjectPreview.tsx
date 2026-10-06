@@ -359,7 +359,7 @@ export function ProjectPreview({ name, variant, caption, labels, phone = true }:
           </div>
         </Browser>
         {phone && (
-          <div className="absolute bottom-0 right-0 w-[24%] rounded-xl border border-ink bg-paper p-[3px] shadow-[0_8px_24px_-8px_rgb(16_17_20/0.35)]">
+          <div className="absolute bottom-0 right-0 w-[24%] rounded-lg border border-ink bg-paper p-[3px]">
             <div className="aspect-[9/17] overflow-hidden rounded-[0.6rem] bg-paper">
               <Screen variant={variant} compact />
             </div>

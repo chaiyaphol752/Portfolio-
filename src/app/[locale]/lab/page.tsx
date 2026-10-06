@@ -23,7 +23,7 @@ export default async function LabPage({ params }: Props) {
           <div className="flex flex-col gap-6 border-b border-ink pb-6 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="eyebrow mb-3">{t.hero.eyebrow}</p>
-              <h1 className="text-[clamp(2rem,4.4vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.035em]">{t.hero.title}</h1>
+              <h1 className="h1">{t.hero.title}</h1>
             </div>
             <p className="max-w-[46ch] text-ink-2 md:text-right">{t.hero.lede}</p>
           </div>

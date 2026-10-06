@@ -144,7 +144,7 @@ export function CapabilityExplorer({ t }: { t: CapabilitiesContent }) {
           {node.family === "local" && <> · {t.ui.concept}</>}
         </p>
         <h3 id={`${uid}-title`} ref={headingRef} tabIndex={-1} className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 focus:outline-none">
-          <span className="display-serif break-words text-[clamp(2.1rem,9vw,3rem)] leading-none">{label(selected)}</span>
+          <span className="display-serif break-words text-[clamp(1.75rem,4vw,2.5rem)] leading-none">{label(selected)}</span>
           {selected === "python" && <span className="mono rounded-sm border border-accent px-2 py-0.5 text-[0.7rem] uppercase tracking-wider text-accent">{t.ui.hub}</span>}
         </h3>
         <p className="mono mt-3 text-xs text-night-mute">{interpolate(t.ui.connections, { n: node.related.length })}</p>

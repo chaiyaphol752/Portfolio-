@@ -6,7 +6,11 @@
    accent, hairline rules. Technical surfaces (terminal, diagrams,
    command center) sit one step darker and keep their own tokens.
    The site is dark-only by design: no theme toggle, no light sections.
+
+   Cascade layers: component classes live in `components` so utility
+   classes can always refine them (max-w-*, text-*, etc.).
 ------------------------------------------------------------------- */
+
 @theme {
   /* Core layers */
   --color-paper: #0c0e13;        /* page background */
@@ -15,6 +19,7 @@
   --color-ink: #e9ecf3;          /* text primary */
   --color-ink-2: #b4bac7;        /* text secondary */
   --color-ink-3: #7e8593;        /* text muted */
+  --color-ink-hover: #d8dce6;    /* primary button hover */
   --color-line: #242935;         /* hairline borders */
   /* One controlled accent family (coral) */
   --color-accent: #ff6a45;
@@ -41,195 +46,233 @@
   --breakpoint-xs: 26rem;
 }
 
-:root {
-  --gutter: clamp(1.25rem, 4vw, 3rem);
-  --header-h: 4.25rem;
-  color-scheme: dark;
+@layer base {
+  :root {
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+    --header-h: 4.25rem;
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--color-paper);
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Thai needs more vertical room and no negative tracking. */
+  html[lang="th"] body { line-height: 1.75; }
+  html[lang="th"] .display,
+  html[lang="th"] .display-serif { letter-spacing: 0; line-height: 1.2; }
+  html[lang="th"] .h2 { letter-spacing: 0; line-height: 1.35; }
+  html[lang="th"] .eyebrow { letter-spacing: 0.04em; text-transform: none; }
+
+  ::selection { background: var(--color-accent); color: var(--color-paper); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Skip link: visually hidden until focused, then a fixed pill above the header. */
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    transform: translateY(-200%);
+  }
+  .skip-link:focus { transform: none; outline-color: var(--color-accent); }
+  .on-night :focus-visible { outline-color: var(--color-night-ink); }
+
+  dialog { color: inherit; }
+  dialog::backdrop { background: rgb(4 6 10 / 0.72); }
+  dialog[open] { animation: rise 0.25s ease-out both; }
 }
 
-html {
-  background: var(--color-paper);
-  scroll-padding-top: calc(var(--header-h) + 1rem);
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Thai needs more vertical room and no negative tracking. */
-html[lang="th"] body { line-height: 1.75; }
-html[lang="th"] .display,
-html[lang="th"] .display-serif { letter-spacing: 0; line-height: 1.2; }
-html[lang="th"] .h2 { letter-spacing: 0; line-height: 1.35; }
-html[lang="th"] .eyebrow { letter-spacing: 0.04em; text-transform: none; }
-
-::selection { background: var(--color-accent); color: var(--color-paper); }
-
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-/* Skip link: visually hidden until focused, then a fixed pill above the header. */
-.skip-link {
-  position: fixed;
-  left: 1rem;
-  top: 1rem;
-  z-index: 100;
-  padding: 0.75rem 1.25rem;
-  border-radius: 9999px;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  transform: translateY(-200%);
-}
-.skip-link:focus { transform: none; outline-color: var(--color-accent); }
-.on-night :focus-visible { outline-color: var(--color-night-ink); }
-
-/* ---------- Type ---------- */
-.display {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: clamp(2.9rem, 9.2vw, 9.25rem);
-  line-height: 0.92;
-  letter-spacing: -0.045em;
-  text-wrap: balance;
-}
-.display-serif {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
-html[lang="th"] .display-serif { font-family: var(--font-sans); font-style: normal; font-weight: 300; }
-.h1 {
-  font-size: clamp(2.4rem, 6vw, 5.25rem);
-  font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-.h2 {
-  font-size: clamp(1.75rem, 3.4vw, 3rem);
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-.h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.25; letter-spacing: -0.015em; }
-.lede {
-  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
-  line-height: 1.5;
-  color: var(--color-ink-2);
-  text-wrap: pretty;
-  max-width: 44ch;
-}
-.body-copy { color: var(--color-ink-2); text-wrap: pretty; max-width: 62ch; }
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-ink-3);
-}
-.mono { font-family: var(--font-mono); font-feature-settings: "zero" 1; }
-.tabular { font-variant-numeric: tabular-nums; }
-
-/* Phones: mono micro-labels never drop below ~11.5px. Decorative mock-ups (aria-hidden)
-   and SVG text keep their scale because they depict miniature screens. */
-@media (max-width: 639.98px) {
-  :is(.text-\[0\.55rem\], .text-\[0\.6rem\], .text-\[0\.62rem\], .text-\[0\.65rem\], .text-\[0\.66rem\], .text-\[0\.68rem\]):not([aria-hidden="true"], [aria-hidden="true"] *, svg *) {
+@layer components {
+  /* ---------- Type ----------
+     One controlled scale: hero (identity), page/section titles, subsection titles,
+     body, metadata and mono eyebrows. Sans-serif is the primary language; the serif
+     is reserved for small editorial accents. */
+  .hero-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 5.8vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(2.25rem, 4.8vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .display-serif {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  html[lang="th"] .display-serif { font-family: var(--font-sans); font-style: normal; font-weight: 300; }
+  .h1 {
+    font-size: clamp(1.875rem, 3.4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .h2 {
+    font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.012em; }
+  .lede {
+    font-size: clamp(1.0625rem, 1.35vw, 1.25rem);
+    line-height: 1.55;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+    max-width: 60ch;
+  }
+  .body-copy { color: var(--color-ink-2); text-wrap: pretty; max-width: 65ch; line-height: 1.65; }
+  .eyebrow {
+    font-family: var(--font-mono);
     font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .mono { font-family: var(--font-mono); font-feature-settings: "zero" 1; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Layout helpers ---------- */
+  .container-page { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: clamp(4rem, 7vw, 6.5rem); }
+  .rule { border: 0; border-top: 1px solid var(--color-line); }
+  .rule-ink { border-top-color: var(--color-ink); }
+
+  /* ---------- Surfaces & background depth ---------- */
+  .night {
+    background: var(--color-night);
+    color: var(--color-night-ink);
+  }
+  .night .eyebrow { color: var(--color-night-mute); }
+
+  /* One soft radial light at the top of the page: depth without visible decoration. */
+  .hero-wash {
+    background-image: radial-gradient(120% 90% at 72% -12%, rgb(233 236 243 / 0.05), transparent 55%);
+  }
+
+  /* ---------- Technical backgrounds (use sparingly: Systems, Lab, Command center) ---------- */
+  .grid-paper {
+    background-color: var(--color-paper);
+    background-image:
+      linear-gradient(to right, rgb(233 236 243 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(233 236 243 / 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .grid-night {
+    background-color: var(--color-night);
+    background-image: radial-gradient(circle at 1px 1px, rgb(233 236 243 / 0.07) 1px, transparent 0);
+    background-size: 14px 14px;
+  }
+
+  /* ---------- Links and buttons ----------
+     Three tiers: primary (inverted), ghost (outline), text link (quiet tertiary).
+     Buttons keep the pill as a deliberate brand detail; hovers are tonal, not colorful. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid var(--color-ink);
+    border-radius: 999px;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--color-ink); color: var(--color-paper); }
+  .btn-primary:hover { background: var(--color-ink-hover); border-color: var(--color-ink-hover); color: var(--color-paper); }
+  .btn-ghost { background: transparent; color: var(--color-ink); border-color: var(--color-line); }
+  .btn-ghost:hover { background: var(--color-paper-3); border-color: var(--color-ink-2); color: var(--color-ink); }
+  .night .btn-primary, .btn-on-night { background: var(--color-night-ink); color: var(--color-night); border-color: var(--color-night-ink); }
+  .night .btn-primary:hover, .btn-on-night:hover { background: var(--color-ink-hover); border-color: var(--color-ink-hover); color: var(--color-night); }
+  .night .btn-ghost { color: var(--color-night-ink); border-color: var(--color-night-line); }
+  .night .btn-ghost:hover { background: var(--color-night-3); border-color: var(--color-night-mute); color: var(--color-night-ink); }
+  .btn .arrow { transition: transform 0.18s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+  .btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+  /* Tertiary action: a quiet inline text link with an arrow. */
+  .link-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .link-cta .arrow { color: var(--color-ink-3); transition: transform 0.18s; }
+  .link-cta:hover .arrow { transform: translateX(3px); }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size:100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.25s;
+  }
+  .link-underline:hover { background-size: 0% 1px; background-position: 100% 100%; }
+
+  /* ---------- Entrance: CSS only, no JS, disabled for reduced motion ---------- */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--d, 0) * 90ms); }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
 }
-
-/* ---------- Layout helpers ---------- */
-.container-page { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
-.section { padding-block: clamp(4rem, 9vw, 8.5rem); }
-.rule { border: 0; border-top: 1px solid var(--color-line); }
-.rule-ink { border-top-color: var(--color-ink); }
-
-/* ---------- Surfaces ---------- */
-.night {
-  background: var(--color-night);
-  color: var(--color-night-ink);
-}
-.night .eyebrow { color: var(--color-night-mute); }
-
-/* ---------- Technical backgrounds (use sparingly: Systems, Lab, Command center) ---------- */
-.grid-paper {
-  background-color: var(--color-paper);
-  background-image:
-    linear-gradient(to right, rgb(233 236 243 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(233 236 243 / 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.grid-night {
-  background-color: var(--color-night);
-  background-image: radial-gradient(circle at 1px 1px, rgb(233 236 243 / 0.07) 1px, transparent 0);
-  background-size: 14px 14px;
-}
-
-/* ---------- Links and buttons ---------- */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 3rem;
-  padding: 0.75rem 1.4rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  border: 1px solid var(--color-ink);
-  border-radius: 999px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.btn-primary { background: var(--color-ink); color: var(--color-paper); }
-.btn-primary:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-paper); }
-.btn-ghost { background: transparent; color: var(--color-ink); }
-.btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
-.night .btn-primary, .btn-on-night { background: var(--color-night-ink); color: var(--color-night); border-color: var(--color-night-ink); }
-.night .btn-primary:hover, .btn-on-night:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-paper); }
-.night .btn-ghost { color: var(--color-night-ink); border-color: var(--color-night-ink); }
-.night .btn-ghost:hover { background: var(--color-night-ink); color: var(--color-night); }
-.btn .arrow { transition: transform 0.2s; }
-.btn:hover .arrow { transform: translateX(3px); }
-.btn[disabled] { opacity: 0.55; cursor: not-allowed; }
-
-.link-underline {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 100% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 0.25s;
-}
-.link-underline:hover { background-size: 0% 1px; background-position: 100% 100%; }
-
-/* ---------- Entrance: CSS only, no JS, disabled for reduced motion ---------- */
-@keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
-}
-.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--d, 0) * 90ms); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-delay: 0ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
 
-/* ---------- Native dialog used for menu and command palette ---------- */
-dialog { color: inherit; }
-dialog::backdrop { background: rgb(4 6 10 / 0.72); }
-dialog[open] { animation: rise 0.25s ease-out both; }
-
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+/* Phones: mono micro-labels never drop below ~11.5px. Deliberately unlayered so it
+   wins over utility font sizes (it is a system-level readability guarantee).
+   Decorative mock-ups (aria-hidden) and SVG text keep their scale because they
+   depict miniature screens. */
+@media (max-width: 639.98px) {
+  :is(.text-\[0\.55rem\], .text-\[0\.6rem\], .text-\[0\.62rem\], .text-\[0\.65rem\], .text-\[0\.66rem\], .text-\[0\.68rem\]):not([aria-hidden="true"], [aria-hidden="true"] *, svg *) {
+    font-size: 0.72rem;
+  }
 }

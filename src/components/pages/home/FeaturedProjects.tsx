@@ -29,9 +29,9 @@ export function FeaturedProjects({ locale }: { locale: Locale }) {
           </p>
         </div>
 
-        <ul className="mt-[clamp(2.5rem,5vw,4.5rem)] grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
+        <ul className="mt-[clamp(2.5rem,5vw,4rem)] grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
           {featured.map((p) => (
-            <li key={p.id} className="group relative bg-paper p-6 sm:p-8">
+            <li key={p.id} className="group relative bg-paper p-6 transition-colors hover:bg-paper-2 sm:p-8">
               <span
                 className={
                   "mono inline-flex rounded-sm px-2 py-1 text-[0.66rem] uppercase tracking-wider " +
@@ -40,17 +40,17 @@ export function FeaturedProjects({ locale }: { locale: Locale }) {
               >
                 {t.kind[p.kind]}
               </span>
-              <h3 className="mt-4 text-[1.4rem] font-medium leading-tight tracking-tight">{p.name}</h3>
-              <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-2">{t.projects[p.id].tagline}</p>
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <Link href={href(p.id)} className="group/link inline-flex min-h-11 items-center gap-2 rounded-full border border-ink px-4 py-2 text-sm font-medium transition-colors hover:bg-ink hover:text-paper">
-                  {c.cta.viewWork}
-                  <ArrowRight className="size-4" aria-hidden />
+              <h3 className="mt-4 text-[1.25rem] font-medium leading-tight tracking-[-0.02em]">{p.name}</h3>
+              <p className="mt-3 text-[0.9rem] leading-relaxed text-ink-2">{t.projects[p.id].tagline}</p>
+              <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2">
+                <Link href={href(p.id)} className="link-cta text-sm">
+                  <span className="link-underline">{c.cta.viewWork}</span>
+                  <ArrowRight className="arrow size-4" aria-hidden />
                 </Link>
                 {p.links.map((l) => (
-                  <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="group/link inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-accent-ink">
+                  <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="link-cta text-sm text-accent-ink">
                     <span className="link-underline">{t.detail[l.kind]}</span>
-                    <ArrowUpRight className="size-4" aria-hidden />
+                    <ArrowUpRight className="arrow size-4" aria-hidden />
                     <span className="sr-only"> ({c.externalLink})</span>
                   </a>
                 ))}

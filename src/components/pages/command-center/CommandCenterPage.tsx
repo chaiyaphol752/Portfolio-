@@ -207,7 +207,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
 
               <Panel id="routes" title={p.routes.title} source="build" sourceLabel={src.build} group="map" className={clsx(styles.span7, styles.wide)}>
                 <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="tabular text-[clamp(2.5rem,5vw,3.5rem)] font-medium leading-none tracking-tight">{facts.routes}</span>
+                  <span className="tabular text-[clamp(1.75rem,3vw,2.5rem)] font-medium leading-none tracking-tight">{facts.routes}</span>
                   <span className="text-[0.84rem] text-night-mute">
                     {p.routes.total} · {facts.pages} {p.routes.pages} × {facts.languages}
                   </span>
@@ -281,7 +281,7 @@ export function CommandCenterPage({ locale }: { locale: Locale }) {
               {factItems.map((f) => (
                 <div key={f.label} className="flex flex-col-reverse border-b border-line py-6 pr-4">
                   <dt className="eyebrow mt-2">{f.label}</dt>
-                  <dd className="tabular text-[clamp(2.25rem,4vw,3.5rem)] font-medium leading-none tracking-tight">{f.value}</dd>
+                  <dd className="tabular text-[clamp(1.5rem,2.4vw,2rem)] font-medium leading-none tracking-tight">{f.value}</dd>
                 </div>
               ))}
             </dl>

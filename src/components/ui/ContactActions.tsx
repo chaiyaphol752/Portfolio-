@@ -6,7 +6,7 @@ import type { CommonContent } from "@/content/common";
 /** Email and phone as real mailto:/tel: links. `layout="stack"` for footers and side columns. */
 export function ContactActions({ t, layout = "inline", className, dark }: { t: CommonContent; layout?: "inline" | "stack"; className?: string; dark?: boolean }) {
   const item = clsx(
-    "group inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition-colors",
+    "group inline-flex min-h-11 items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition-colors",
     dark ? "border-night-line hover:border-night-ink" : "border-line hover:border-ink",
   );
   return (

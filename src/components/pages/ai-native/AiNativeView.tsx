@@ -32,13 +32,13 @@ export function AiNativeView({ locale }: { locale: Locale }) {
   return (
     <>
       <section aria-labelledby="ai-title" className="on-night night grid-night">
-        <div className="container-page pt-[clamp(3.5rem,8vw,7rem)] pb-[clamp(3rem,6vw,5rem)]">
-          <p className="eyebrow rise mb-8">{c.hero.eyebrow}</p>
-          <h1 id="ai-title" className="rise max-w-[18ch] text-[clamp(2.6rem,7vw,6.75rem)] font-medium leading-[0.95] tracking-[-0.04em]" style={{ "--d": 1 } as React.CSSProperties}>
+        <div className="container-page pt-[clamp(3rem,6vw,5.5rem)] pb-[clamp(2.5rem,5vw,4.5rem)]">
+          <p className="eyebrow rise mb-6">{c.hero.eyebrow}</p>
+          <h1 id="ai-title" className="display rise max-w-[20ch] text-night-ink" style={{ "--d": 1 } as React.CSSProperties}>
             {c.hero.titleA} <span className="display-serif text-accent">{c.hero.titleB}</span>
           </h1>
-          <div className="rise mt-10 grid gap-8 lg:grid-cols-12 lg:items-end" style={{ "--d": 2 } as React.CSSProperties}>
-            <p className="max-w-[52ch] text-lg text-night-mute lg:col-span-6">{c.hero.lede}</p>
+          <div className="rise mt-8 grid gap-8 lg:grid-cols-12 lg:items-end" style={{ "--d": 2 } as React.CSSProperties}>
+            <p className="max-w-[52ch] text-base text-night-mute lg:col-span-6">{c.hero.lede}</p>
             <div className="flex flex-wrap gap-3 lg:col-span-6 lg:justify-end">
               <ButtonLink href={localizedPath(locale, "contact")}>{c.hero.ctaPrimary}</ButtonLink>
               <ButtonLink href="#agents-title" variant="ghost">{c.hero.ctaSecondary}</ButtonLink>

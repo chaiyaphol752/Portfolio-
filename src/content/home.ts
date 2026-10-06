@@ -7,12 +7,12 @@ const en = {
       "Portfolio of Chaiyaphol — an IT Quereinsteiger in Germany building web, app and automation prototypes with AI assistance. Real projects with honest labels, practical skills and clear positioning.",
   },
   hero: {
-    role: "AI-assisted Digital Builder · IT Quereinsteiger",
-    titleA: "Ideas in.",
-    titleB: "Prototypes out.",
-    titleAccent: "Built with AI.",
+    role: "IT Quereinsteiger · Web · Automation · AI",
+    titleA: "AI-assisted Digital Builder",
+    titleB: "& IT Quereinsteiger",
+    titleAccent: "Ideas in. Prototypes out. Built with AI.",
     lede:
-      "I turn ideas into working web, app and automation prototypes with the help of modern AI tools. My strengths are requirement definition, iterative problem solving, practical Git workflows and learning new technologies quickly.",
+      "I turn ideas into working web, app and automation prototypes with modern AI tools — defining requirements, testing results and improving solutions iteratively.",
     secondary: "See how I use AI",
     outcomesLabel: "What I bring",
     outcomes: [
@@ -133,12 +133,12 @@ const de: HomeContent = {
       "Portfolio von Chaiyaphol – ein IT-Quereinsteiger in Deutschland, der mit KI-Unterstützung Web-, App- und Automatisierungs-Prototypen baut. Echte Projekte mit ehrlichen Labels, praktische Fähigkeiten und klarer Positionierung.",
   },
   hero: {
-    role: "AI-gestützter Digital Builder · IT-Quereinsteiger",
-    titleA: "Ideen rein.",
-    titleB: "Prototypen raus.",
-    titleAccent: "Mit KI gebaut.",
+    role: "IT-Quereinsteiger · Web · Automatisierung · KI",
+    titleA: "AI-gestützter Digital Builder",
+    titleB: "& IT-Quereinsteiger",
+    titleAccent: "Ideen rein. Prototypen raus. Mit KI gebaut.",
     lede:
-      "Ich verwandle Ideen in funktionierende Web-, App- und Automatisierungs-Prototypen – mit Unterstützung moderner KI-Werkzeuge. Meine Stärken: Anforderungen definieren, Probleme iterativ lösen, praktische Git-Workflows und neue Technologien schnell lernen.",
+      "Ich verwandle Ideen in funktionierende Web-, App- und Automatisierungs-Prototypen – mit modernen KI-Werkzeugen, klaren Anforderungen, getesteten Ergebnissen und iterativer Verbesserung.",
     secondary: "So nutze ich KI",
     outcomesLabel: "Das bringe ich mit",
     outcomes: [
@@ -257,12 +257,12 @@ const th: HomeContent = {
       "พอร์ตโฟลิโอของชัยพล — IT Quereinsteiger ในเยอรมนี สร้างต้นแบบเว็บ แอป และระบบอัตโนมัติโดยมี AI ช่วย โปรเจกต์จริงติดป้ายตรงไปตรงมา ทักษะที่ใช้ได้จริง และจุดยืนที่ชัดเจน",
   },
   hero: {
-    role: "นักสร้างดิจิทัลที่ใช้ AI ช่วย · IT Quereinsteiger",
-    titleA: "ป้อนไอเดีย",
-    titleB: "ได้ต้นแบบ",
-    titleAccent: "สร้างด้วย AI",
+    role: "IT Quereinsteiger · เว็บ · ระบบอัตโนมัติ · AI",
+    titleA: "Digital Builder ที่ใช้ AI",
+    titleB: "& IT Quereinsteiger",
+    titleAccent: "ป้อนไอเดีย ได้ต้นแบบ สร้างด้วย AI",
     lede:
-      "เปลี่ยนไอเดียให้เป็นต้นแบบเว็บ แอป และระบบอัตโนมัติที่ใช้งานได้จริง ด้วยความช่วยเหลือของเครื่องมือ AI สมัยใหม่ จุดแข็งคือการกำหนดความต้องการ แก้ปัญหาทีละขั้น ใช้ Git อย่างใช้งานได้จริง และเรียนรู้เทคโนโลยีใหม่ได้เร็ว",
+      "เปลี่ยนไอเดียให้เป็นต้นแบบเว็บ แอป และระบบอัตโนมัติที่ใช้งานได้จริง ด้วยเครื่องมือ AI สมัยใหม่ กำหนดความต้องการชัดเจน ทดสอบผลลัพธ์ และปรับปรุงวนซ้ำจนใช้งานได้ดี",
     secondary: "ดูวิธีใช้ AI",
     outcomesLabel: "สิ่งที่นำมาให้",
     outcomes: [
